@@ -41,6 +41,7 @@ pub mod research_dev;
 pub mod benchmarking;
 pub mod plugins;
 pub mod configuration;
+pub mod deception;
 
 // Re-export core types and traits for easy access
 pub use types::*;
@@ -56,6 +57,10 @@ pub use research_dev::ResearchLaboratory;
 pub use benchmarking::AutobahnBenchmarkSuite;
 pub use plugins::{PluginManager, AutobahnPlugin, PluginMetadata};
 pub use configuration::{ConfigurationManager, AutobahnConfig};
+pub use deception::{PungweAtpSynthase, MetacognitiveAnalysisResult};
+
+// Re-export quantum-oscillatory modules
+pub use v8_pipeline::modules::{Foursidedtriangle, OscillationEndpointManager};
 
 /// Version information
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
@@ -97,6 +102,8 @@ pub struct AutobahnSystem {
     pub trinity_engine: TrinityEngine,
     /// Research and development laboratory
     pub research_lab: ResearchLaboratory,
+    /// Pungwe ATP Synthase for metacognitive oversight
+    pub pungwe_atp_synthase: PungweAtpSynthase,
 }
 
 impl AutobahnSystem {
@@ -108,6 +115,7 @@ impl AutobahnSystem {
             probabilistic_engine: ProbabilisticReasoningEngine::new(),
             trinity_engine: TrinityEngine::new(),
             research_lab: ResearchLaboratory::new(),
+            pungwe_atp_synthase: PungweAtpSynthase::new(),
         }
     }
 
@@ -136,14 +144,34 @@ impl AutobahnSystem {
             _ => None,
         };
 
+        // Perform metacognitive analysis with Pungwe ATP Synthase
+        let processing_context = ProcessingContext {
+            timestamp: chrono::Utc::now(),
+            processing_id: uuid::Uuid::new_v4().to_string(),
+            confidence_threshold: 0.8,
+            max_processing_time_ms: 10000,
+            metadata: std::collections::HashMap::new(),
+        };
+        
+        let metacognitive_analysis = self.pungwe_atp_synthase
+            .analyze_metacognition(&input, &processing_context).await?;
+
+        // Calculate total ATP consumed including Pungwe's truth ATP generation
+        let total_atp_consumed = biological_result.atp_consumed - metacognitive_analysis.truth_atp_generated;
+
         Ok(ComprehensiveResult {
             biological_result,
             uncertainty_analysis,
             temporal_insights: self.temporal_processor.get_detected_patterns().clone(),
+            metacognitive_analysis: Some(metacognitive_analysis),
             processing_metadata: ProcessingMetadata {
-                total_atp_consumed: biological_result.atp_consumed,
+                total_atp_consumed,
                 processing_time_ms: biological_result.processing_time_ms,
-                modules_used: biological_result.modules_activated.clone(),
+                modules_used: {
+                    let mut modules = biological_result.modules_activated.clone();
+                    modules.push("Pungwe".to_string());
+                    modules
+                },
                 confidence_score: biological_result.confidence,
             },
         })
@@ -159,6 +187,8 @@ pub struct ComprehensiveResult {
     pub uncertainty_analysis: Option<UncertaintyAnalysis>,
     /// Temporal patterns detected
     pub temporal_insights: Vec<temporal_processor::TemporalPattern>,
+    /// Metacognitive analysis from Pungwe ATP Synthase
+    pub metacognitive_analysis: Option<MetacognitiveAnalysisResult>,
     /// Processing metadata
     pub processing_metadata: ProcessingMetadata,
 }

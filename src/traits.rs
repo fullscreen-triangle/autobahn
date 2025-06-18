@@ -42,6 +42,23 @@ pub trait MetacognitiveOrchestrator {
     
     /// Get processing capabilities
     fn get_capabilities(&self) -> ProcessingCapabilities;
+    
+    // NEW: Quantum-oscillatory processing methods
+    
+    /// Measure entropy through oscillation endpoint analysis
+    fn measure_entropy_endpoints(&self, content: &str) -> AutobahnResult<OscillationEndpointAnalysis>;
+    
+    /// Process semantic structures using four-sided triangle geometry
+    async fn process_foursided_triangle(&mut self, semantic_structure: SemanticStructure) -> AutobahnResult<GeometricProcessingResult>;
+    
+    /// Maintain quantum coherence across membrane interfaces
+    async fn maintain_quantum_coherence(&mut self) -> AutobahnResult<CoherenceState>;
+    
+    /// Analyze oscillation patterns for semantic meaning extraction
+    fn analyze_oscillation_patterns(&self, content: &str) -> AutobahnResult<OscillationPatternAnalysis>;
+    
+    /// Actively control information entropy through oscillation manipulation
+    async fn control_information_entropy(&mut self, target_entropy: f64, content: &str) -> AutobahnResult<EntropyControlResult>;
 }
 
 /// Specialized result type for metabolism operations

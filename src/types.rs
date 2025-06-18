@@ -475,6 +475,222 @@ pub enum ResolutionStrategy {
     Consensus,
 }
 
+/// NEW: Quantum-Oscillatory Processing Types
+
+/// Analysis of oscillation endpoints for entropy measurement
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct OscillationEndpointAnalysis {
+    /// Statistical distribution of oscillation termination points
+    pub endpoint_distribution: Vec<EndpointFrequency>,
+    /// Calculated entropy from endpoint statistics
+    pub measured_entropy: f64,
+    /// Oscillation frequency patterns
+    pub frequency_patterns: Vec<FrequencyPattern>,
+    /// Coherence score of oscillations
+    pub coherence_score: f64,
+    /// Predicted future endpoints
+    pub predicted_endpoints: Vec<PredictedEndpoint>,
+    /// Processing confidence
+    pub confidence: f64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct EndpointFrequency {
+    pub endpoint_value: f64,
+    pub frequency: u64,
+    pub probability: f64,
+    pub temporal_context: DateTime<Utc>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct FrequencyPattern {
+    pub frequency: f64,
+    pub amplitude: f64,
+    pub phase: f64,
+    pub semantic_meaning: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PredictedEndpoint {
+    pub predicted_value: f64,
+    pub probability: f64,
+    pub time_to_occurrence: f64,
+}
+
+/// Four-sided triangle semantic structure
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SemanticStructure {
+    /// Primary semantic vertices (A, B, C)
+    pub primary_vertices: [SemanticVertex; 3],
+    /// Temporal vertex (D) representing evolution
+    pub temporal_vertex: TemporalVertex,
+    /// Non-Euclidean properties
+    pub geometric_properties: NonEuclideanProperties,
+    /// Quantum superposition states
+    pub quantum_states: Vec<QuantumSemanticState>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SemanticVertex {
+    pub id: String,
+    pub semantic_content: String,
+    pub certainty: f64,
+    pub connections: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct TemporalVertex {
+    pub temporal_content: String,
+    pub evolution_rate: f64,
+    pub temporal_dependencies: Vec<String>,
+    pub future_projections: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct NonEuclideanProperties {
+    pub angular_sum: f64, // > 180 degrees for non-Euclidean
+    pub curvature: f64,
+    pub topological_genus: i32,
+    pub folding_dimensions: Vec<f64>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct QuantumSemanticState {
+    pub state_id: String,
+    pub superposition_components: Vec<SuperpositionComponent>,
+    pub coherence_time: f64,
+    pub decoherence_rate: f64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SuperpositionComponent {
+    pub semantic_content: String,
+    pub amplitude: f64,
+    pub phase: f64,
+}
+
+/// Result of four-sided triangle processing
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct GeometricProcessingResult {
+    /// Processed semantic structure
+    pub processed_structure: SemanticStructure,
+    /// Information compression achieved
+    pub compression_ratio: f64,
+    /// Paradox resolution success
+    pub paradox_resolved: bool,
+    /// Energy cost for processing
+    pub atp_consumed: f64,
+    /// Processing insights
+    pub insights: Vec<String>,
+    /// Temporal evolution predictions
+    pub temporal_predictions: Vec<TemporalPrediction>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct TemporalPrediction {
+    pub timeframe: f64,
+    pub predicted_state: String,
+    pub confidence: f64,
+}
+
+/// Quantum coherence state management
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CoherenceState {
+    /// Current coherence level (0.0 to 1.0)
+    pub coherence_level: f64,
+    /// Decoherence rate
+    pub decoherence_rate: f64,
+    /// Time until critical decoherence
+    pub time_to_decoherence: f64,
+    /// Active quantum states
+    pub active_quantum_states: Vec<QuantumState>,
+    /// Membrane interface health
+    pub membrane_interface_health: f64,
+    /// Energy required for coherence maintenance
+    pub maintenance_atp_cost: f64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct QuantumState {
+    pub state_id: String,
+    pub energy_level: f64,
+    pub stability: f64,
+    pub entanglement_partners: Vec<String>,
+}
+
+/// Analysis of oscillation patterns
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct OscillationPatternAnalysis {
+    /// Detected oscillation modes
+    pub oscillation_modes: Vec<OscillationMode>,
+    /// Harmonic analysis
+    pub harmonic_content: Vec<HarmonicComponent>,
+    /// Phase relationships
+    pub phase_relationships: Vec<PhaseRelationship>,
+    /// Synchronization metrics
+    pub synchronization_score: f64,
+    /// Pattern stability
+    pub pattern_stability: f64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct OscillationMode {
+    pub mode_id: String,
+    pub frequency: f64,
+    pub amplitude: f64,
+    pub damping_factor: f64,
+    pub semantic_significance: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct HarmonicComponent {
+    pub harmonic_number: u32,
+    pub frequency: f64,
+    pub amplitude: f64,
+    pub phase: f64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PhaseRelationship {
+    pub oscillator_a: String,
+    pub oscillator_b: String,
+    pub phase_difference: f64,
+    pub coupling_strength: f64,
+}
+
+/// Result of entropy control operations
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct EntropyControlResult {
+    /// Target entropy requested
+    pub target_entropy: f64,
+    /// Achieved entropy
+    pub achieved_entropy: f64,
+    /// Control accuracy
+    pub control_accuracy: f64,
+    /// Control method used
+    pub control_method: EntropyControlMethod,
+    /// Energy cost for control
+    pub atp_consumed: f64,
+    /// Time to achieve control
+    pub control_time_ms: u64,
+    /// Side effects of control
+    pub side_effects: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum EntropyControlMethod {
+    /// Direct oscillation endpoint manipulation
+    EndpointManipulation,
+    /// Frequency modulation
+    FrequencyModulation,
+    /// Phase adjustment
+    PhaseAdjustment,
+    /// Amplitude control
+    AmplitudeControl,
+    /// Hybrid approach
+    Hybrid(Vec<EntropyControlMethod>),
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
