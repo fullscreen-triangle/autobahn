@@ -16,6 +16,10 @@ readme = "README.md"
 name = "autobahn"
 crate-type = ["lib"]
 
+[[bin]]
+name = "autobahn-cli"
+path = "src/bin/autobahn-cli.rs"
+
 [dependencies]
 # Core probabilistic computing
 rand = "0.8"
@@ -66,6 +70,14 @@ optimization = "0.2"
 # Text processing utilities
 regex = "1.0"
 unicode-segmentation = "1.0"
+
+# Configuration management
+toml = "0.8"
+config = "0.14"
+num_cpus = "1.0"
+
+# CLI support
+clap = "2.34"
 
 [dev-dependencies]
 # Testing frameworks

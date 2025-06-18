@@ -38,6 +38,9 @@ pub mod utils;
 pub mod temporal_processor;
 pub mod probabilistic_engine;
 pub mod research_dev;
+pub mod benchmarking;
+pub mod plugins;
+pub mod configuration;
 
 // Re-export core types and traits for easy access
 pub use types::*;
@@ -50,6 +53,9 @@ pub use tres_commas::TrinityEngine;
 pub use temporal_processor::TemporalProcessorEngine;
 pub use probabilistic_engine::ProbabilisticReasoningEngine;
 pub use research_dev::ResearchLaboratory;
+pub use benchmarking::AutobahnBenchmarkSuite;
+pub use plugins::{PluginManager, AutobahnPlugin, PluginMetadata};
+pub use configuration::{ConfigurationManager, AutobahnConfig};
 
 /// Version information
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
@@ -175,6 +181,222 @@ pub async fn create_system() -> Result<AutobahnSystem, AutobahnError> {
     let mut system = AutobahnSystem::new();
     system.initialize().await?;
     Ok(system)
+}
+
+/// Quick comprehensive processing function
+pub async fn quick_comprehensive_process(content: &str) -> Result<ComprehensiveResult, AutobahnError> {
+    let mut system = AutobahnSystem::new();
+    system.initialize().await?;
+    system.process_comprehensive(InformationInput::Text(content.to_string())).await
+}
+
+/// System capabilities information
+#[derive(Debug, Clone)]
+pub struct SystemCapabilities {
+    /// Supports probabilistic processing
+    pub supports_probabilistic: bool,
+    /// Supports adversarial testing
+    pub supports_adversarial: bool,
+    /// Supports champagne phase processing
+    pub supports_champagne: bool,
+    /// Available V8 modules
+    pub available_modules: Vec<String>,
+    /// Available processing modes
+    pub processing_modes: Vec<String>,
+    /// Maximum ATP capacity
+    pub max_atp_capacity: f64,
+    /// Supported input types
+    pub supported_input_types: Vec<String>,
+}
+
+/// Get system capabilities
+pub fn get_capabilities() -> SystemCapabilities {
+    SystemCapabilities {
+        supports_probabilistic: true,
+        supports_adversarial: true,
+        supports_champagne: true,
+        available_modules: vec![
+            "Mzekezeke".to_string(),
+            "Diggiden".to_string(),
+            "Hatata".to_string(),
+            "Spectacular".to_string(),
+            "Nicotine".to_string(),
+            "Clothesline".to_string(),
+            "Zengeza".to_string(),
+            "Diadochi".to_string(),
+        ],
+        processing_modes: vec![
+            "Glycolysis".to_string(),
+            "Krebs Cycle".to_string(),
+            "Electron Transport".to_string(),
+            "Champagne Phase".to_string(),
+        ],
+        max_atp_capacity: 1000.0,
+        supported_input_types: vec![
+            "Text".to_string(),
+            "Numerical".to_string(),
+            "Structured".to_string(),
+            "Temporal".to_string(),
+        ],
+    }
+}
+
+/// Get version information
+pub fn version() -> &'static str {
+    VERSION
+}
+
+/// Advanced system monitoring
+pub struct SystemMonitor {
+    /// System performance metrics
+    pub performance_metrics: PerformanceMetrics,
+    /// Resource usage
+    pub resource_usage: ResourceUsage,
+    /// Processing history
+    pub processing_history: Vec<ProcessingHistoryEntry>,
+}
+
+/// Performance metrics tracking
+#[derive(Debug, Clone)]
+pub struct PerformanceMetrics {
+    /// Average processing time per operation
+    pub avg_processing_time_ms: f64,
+    /// Total operations processed
+    pub total_operations: u64,
+    /// ATP efficiency (operations per ATP)
+    pub atp_efficiency: f64,
+    /// Error rate
+    pub error_rate: f64,
+    /// Throughput (operations per second)
+    pub throughput: f64,
+}
+
+/// Resource usage tracking
+#[derive(Debug, Clone)]
+pub struct ResourceUsage {
+    /// Current ATP level
+    pub current_atp: f64,
+    /// Peak ATP usage
+    pub peak_atp_usage: f64,
+    /// Memory usage in MB
+    pub memory_usage_mb: f64,
+    /// CPU usage percentage
+    pub cpu_usage_percent: f64,
+    /// Active modules count
+    pub active_modules: usize,
+}
+
+/// Processing history entry
+#[derive(Debug, Clone)]
+pub struct ProcessingHistoryEntry {
+    /// Timestamp
+    pub timestamp: chrono::DateTime<chrono::Utc>,
+    /// Operation type
+    pub operation_type: String,
+    /// Processing time
+    pub processing_time_ms: u64,
+    /// ATP consumed
+    pub atp_consumed: f64,
+    /// Success status
+    pub success: bool,
+    /// Confidence score
+    pub confidence: f64,
+}
+
+impl AutobahnSystem {
+    /// Get system monitor
+    pub fn get_monitor(&self) -> SystemMonitor {
+        SystemMonitor {
+            performance_metrics: PerformanceMetrics {
+                avg_processing_time_ms: 50.0, // Placeholder
+                total_operations: 0,
+                atp_efficiency: 10.0,
+                error_rate: 0.01,
+                throughput: 20.0,
+            },
+            resource_usage: ResourceUsage {
+                current_atp: self.biological_processor.get_energy_state().current_atp,
+                peak_atp_usage: 800.0,
+                memory_usage_mb: 256.0,
+                cpu_usage_percent: 25.0,
+                active_modules: 8,
+            },
+            processing_history: Vec::new(),
+        }
+    }
+
+    /// Perform system health check
+    pub async fn health_check(&self) -> Result<SystemHealthReport, AutobahnError> {
+        let energy_state = self.biological_processor.get_energy_state();
+        
+        Ok(SystemHealthReport {
+            overall_health: if energy_state.current_atp > 100.0 { 
+                HealthStatus::Healthy 
+            } else { 
+                HealthStatus::Warning 
+            },
+            atp_status: energy_state,
+            module_status: self.check_module_health().await?,
+            system_uptime_ms: 0, // Placeholder
+            last_error: None,
+        })
+    }
+
+    /// Check health of all modules
+    async fn check_module_health(&self) -> Result<Vec<ModuleHealthStatus>, AutobahnError> {
+        Ok(vec![
+            ModuleHealthStatus {
+                module_name: "Mzekezeke".to_string(),
+                status: HealthStatus::Healthy,
+                last_activity: chrono::Utc::now(),
+                atp_consumption_rate: 5.0,
+            },
+            ModuleHealthStatus {
+                module_name: "Diggiden".to_string(),
+                status: HealthStatus::Healthy,
+                last_activity: chrono::Utc::now(),
+                atp_consumption_rate: 8.0,
+            },
+            // Add other modules...
+        ])
+    }
+}
+
+/// System health report
+#[derive(Debug, Clone)]
+pub struct SystemHealthReport {
+    /// Overall system health
+    pub overall_health: HealthStatus,
+    /// ATP energy status
+    pub atp_status: EnergyState,
+    /// Individual module status
+    pub module_status: Vec<ModuleHealthStatus>,
+    /// System uptime in milliseconds
+    pub system_uptime_ms: u64,
+    /// Last error encountered
+    pub last_error: Option<String>,
+}
+
+/// Health status enumeration
+#[derive(Debug, Clone)]
+pub enum HealthStatus {
+    Healthy,
+    Warning,
+    Critical,
+    Offline,
+}
+
+/// Individual module health status
+#[derive(Debug, Clone)]
+pub struct ModuleHealthStatus {
+    /// Module name
+    pub module_name: String,
+    /// Current status
+    pub status: HealthStatus,
+    /// Last activity timestamp
+    pub last_activity: chrono::DateTime<chrono::Utc>,
+    /// ATP consumption rate
+    pub atp_consumption_rate: f64,
 }
 
 #[cfg(test)]

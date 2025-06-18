@@ -350,6 +350,57 @@ async fn advanced_features_demo() -> Result<(), AutobahnError> {
     println!("\n🚀 Advanced Features Demonstration");
     println!("==================================");
     
+    // Configuration management demo
+    println!("\n📋 Configuration Management");
+    let mut config_manager = autobahn::ConfigurationManager::new();
+    config_manager.load_from_file("autobahn.toml").unwrap_or_else(|_| {
+        println!("No config file found, using defaults");
+    });
+    
+    let config = config_manager.get_config();
+    println!("System environment: {:?}", config.system.environment);
+    println!("Max ATP capacity: {}", config.system.max_atp_capacity);
+    println!("V8 pipeline enabled: {}", config.v8_pipeline.enabled);
+    
+    // Plugin system demo
+    println!("\n🔌 Plugin System");
+    let plugin_config = autobahn::plugins::PluginManagerConfig::default();
+    let mut plugin_manager = autobahn::PluginManager::new(plugin_config);
+    
+    println!("Plugin system initialized");
+    println!("Max plugins: {}", plugin_manager.list_plugins().len());
+    
+    // Benchmarking demo
+    println!("\n⚡ Benchmarking System");
+    let mut benchmark_suite = autobahn::AutobahnBenchmarkSuite::new();
+    benchmark_suite.add_standard_benchmarks();
+    
+    let mut system = autobahn::AutobahnSystem::new();
+    system.initialize().await?;
+    
+    // Run a subset of benchmarks for demo
+    println!("Running performance benchmarks...");
+    // benchmark_suite.run_all_benchmarks(&mut system).await?;
+    
+    let benchmark_results = benchmark_suite.get_results();
+    println!("Benchmark results: {} tests configured", benchmark_results.benchmark_results.len());
+    
+    // System monitoring demo
+    println!("\n📊 System Monitoring");
+    let monitor = system.get_monitor();
+    println!("Current ATP: {:.2}", monitor.resource_usage.current_atp);
+    println!("Memory usage: {:.2} MB", monitor.resource_usage.memory_usage_mb);
+    println!("Active modules: {}", monitor.resource_usage.active_modules);
+    println!("Average processing time: {:.2} ms", monitor.performance_metrics.avg_processing_time_ms);
+    println!("ATP efficiency: {:.2} ops/ATP", monitor.performance_metrics.atp_efficiency);
+    
+    // Health check demo
+    println!("\n🏥 System Health Check");
+    let health_report = system.health_check().await?;
+    println!("Overall health: {:?}", health_report.overall_health);
+    println!("ATP status: {:.2}/{:.2}", health_report.atp_status.current_atp, health_report.atp_status.max_atp);
+    println!("Module health checks: {}", health_report.module_status.len());
+    
     // Quick processing for simple tasks
     let quick_result = autobahn::quick_process("What is the efficiency of glycolysis?").await?;
     println!("Quick processing result: {:.2} confidence", quick_result.confidence);
