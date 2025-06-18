@@ -1,0 +1,104 @@
+[package]
+name = "autobahn"
+version = "0.1.0"
+edition = "2021"
+authors = ["Kundai Ndhlovu <kundai@example.com>"]
+license = "MIT OR Apache-2.0"
+description = "A biological metabolism computer for probabilistic information processing"
+homepage = "https://github.com/kundai/autobahn"
+repository = "https://github.com/kundai/autobahn"
+documentation = "https://docs.rs/autobahn"
+keywords = ["biology", "metabolism", "probabilistic", "ai", "bioinformatics"]
+categories = ["science", "algorithms", "simulation"]
+readme = "README.md"
+
+[lib]
+name = "autobahn"
+crate-type = ["lib"]
+
+[dependencies]
+# Core probabilistic computing
+rand = "0.8"
+rand_distr = "0.4"
+nalgebra = "0.32"
+statrs = "0.16"
+
+# Bayesian networks and probabilistic inference
+petgraph = "0.6"
+ndarray = "0.15"
+
+# Serialization and data handling
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+bincode = "1.3"
+
+# Async processing for concurrent metabolism
+tokio = { version = "1.0", features = ["full"] }
+futures = "0.3"
+
+# Logging and diagnostics
+log = "0.4"
+env_logger = "0.10"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Time and temporal processing
+chrono = { version = "0.4", features = ["serde"] }
+
+# UUID for unique identifiers
+uuid = { version = "1.0", features = ["v4", "serde"] }
+
+# Hash functions for cryptographic puzzles
+sha2 = "0.10"
+blake3 = "1.0"
+
+# Fuzzy logic support
+fuzzy-logic = "0.1"
+
+# Mathematical optimization
+optimization = "0.2"
+
+# Text processing utilities
+regex = "1.0"
+unicode-segmentation = "1.0"
+
+[dev-dependencies]
+# Testing frameworks
+proptest = "1.0"
+criterion = { version = "0.5", features = ["html_reports"] }
+tokio-test = "0.4"
+
+# Benchmarking
+bencher = "0.1"
+
+[features]
+default = ["full"]
+full = ["v8-pipeline", "tres-commas", "champagne-phase", "adversarial"]
+v8-pipeline = []
+tres-commas = []
+champagne-phase = []
+adversarial = []
+
+# Development features
+debug-mode = []
+extensive-logging = []
+
+[[bench]]
+name = "metabolism_benchmarks"
+harness = false
+
+[[example]]
+name = "basic_processing"
+path = "examples/basic_processing.rs"
+
+[[example]]
+name = "probabilistic_analysis"
+path = "examples/probabilistic_analysis.rs"
+
+[[example]]
+name = "bioinformatics_integration"
+path = "examples/bioinformatics_integration.rs" 
