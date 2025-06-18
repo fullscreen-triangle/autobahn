@@ -1,4 +1,19 @@
-# Autobahn: A Biological Metabolism Computer for Probabilistic Information Processing
+
+<p align="center">
+  <h1 align="center">Autobahn</h1>
+</p>
+
+<p align="center">
+  <img src="assets/img/autobahn.png" alt="Logo" width="400">
+</p>
+
+<p align="center">
+  <em>"When there is absolutely no reason at all to stop"</em>
+</p>
+
+
+#  A Biological Metabolism Computer for Probabilistic Information Processing
+
 
 ## Abstract
 
