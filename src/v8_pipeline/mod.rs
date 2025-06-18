@@ -29,152 +29,199 @@ pub use modules::{
 
 use crate::types::*;
 use crate::error::{AutobahnError, AutobahnResult};
+use crate::traits::QualityRequirements;
+use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
-/// Core V8 metabolism pipeline configuration
-#[derive(Debug, Clone)]
+/// Configuration for the V8 metabolism pipeline
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct V8Configuration {
     /// Maximum ATP capacity
     pub max_atp: f64,
     /// ATP regeneration rate per second
     pub atp_regeneration_rate: f64,
-    /// Energy efficiency factor
-    pub efficiency_factor: f64,
-    /// Module processing timeouts
-    pub module_timeouts_ms: std::collections::HashMap<String, u64>,
+    /// Enable champagne phase processing
+    pub enable_champagne_phase: bool,
+    /// Enable adversarial testing
+    pub enable_adversarial_testing: bool,
+    /// Processing strategy
+    pub processing_strategy: ProcessingStrategy,
     /// Quality thresholds
     pub quality_thresholds: QualityThresholds,
-    /// Enable different processing modes
-    pub enable_champagne_phase: bool,
-    pub enable_adversarial_testing: bool,
-    pub enable_anaerobic_processing: bool,
 }
 
-/// Quality thresholds for biological processing
-#[derive(Debug, Clone)]
+/// Processing strategies for the V8 pipeline
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum ProcessingStrategy {
+    /// Sequential processing through all modules
+    Sequential,
+    /// Parallel processing where possible
+    Parallel,
+    /// Adaptive strategy based on content
+    Adaptive,
+    /// Energy-optimized processing
+    EnergyOptimized,
+}
+
+/// Quality thresholds for different processing stages
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct QualityThresholds {
-    pub min_comprehension_score: f64,
-    pub min_confidence_threshold: f64,
-    pub max_uncertainty_tolerance: f64,
-    pub robustness_requirement: f64,
+    /// Minimum confidence for glycolysis
+    pub glycolysis_confidence: f64,
+    /// Minimum confidence for Krebs cycle
+    pub krebs_confidence: f64,
+    /// Minimum confidence for electron transport
+    pub electron_transport_confidence: f64,
+}
+
+/// Current stage in the V8 pipeline
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum PipelineStage {
+    /// Glycolysis - Context layer processing
+    Glycolysis,
+    /// Krebs cycle - Reasoning layer processing
+    KrebsCycle,
+    /// Electron transport - Intuition layer processing
+    ElectronTransport,
+    /// Champagne phase - Dream processing
+    ChampagnePhase,
+    /// Complete - Processing finished
+    Complete,
+}
+
+/// Processing statistics for the V8 pipeline
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct ProcessingStatistics {
+    /// Total processing operations
+    pub total_operations: u64,
+    /// Successful operations
+    pub successful_operations: u64,
+    /// Failed operations
+    pub failed_operations: u64,
+    /// Total ATP consumed
+    pub total_atp_consumed: f64,
+    /// Total ATP generated
+    pub total_atp_generated: f64,
+    /// Average processing time
+    pub average_processing_time_ms: f64,
+    /// Efficiency metrics
+    pub efficiency_metrics: EfficiencyMetrics,
+}
+
+/// Efficiency metrics for the pipeline
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct EfficiencyMetrics {
+    /// ATP efficiency (generated/consumed)
+    pub atp_efficiency: f64,
+    /// Processing speed (operations/second)
+    pub processing_speed: f64,
+    /// Error rate (failed/total)
+    pub error_rate: f64,
+    /// Quality score (average confidence)
+    pub quality_score: f64,
+}
+
+/// ATP allocation strategy
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ATPAllocation {
+    /// Total ATP required
+    pub total_required: f64,
+    /// ATP for glycolysis
+    pub glycolysis_allocation: f64,
+    /// ATP for Krebs cycle
+    pub krebs_allocation: f64,
+    /// ATP for electron transport
+    pub electron_transport_allocation: f64,
+    /// Reserve ATP for emergency
+    pub reserve_allocation: f64,
+    /// Whether allocation is feasible
+    pub feasible: bool,
 }
 
 impl Default for V8Configuration {
     fn default() -> Self {
-        let mut timeouts = std::collections::HashMap::new();
-        timeouts.insert("mzekezeke".to_string(), 5000);  // 5 seconds
-        timeouts.insert("diggiden".to_string(), 3000);   // 3 seconds
-        timeouts.insert("hatata".to_string(), 4000);     // 4 seconds
-        timeouts.insert("spectacular".to_string(), 10000); // 10 seconds (paradigm detection takes time)
-        timeouts.insert("nicotine".to_string(), 2000);   // 2 seconds
-        timeouts.insert("clothesline".to_string(), 3000); // 3 seconds
-        timeouts.insert("zengeza".to_string(), 2000);    // 2 seconds
-        timeouts.insert("diadochi".to_string(), 8000);   // 8 seconds (external API calls)
-
         Self {
             max_atp: 1000.0,
-            atp_regeneration_rate: 100.0, // 100 ATP per second
-            efficiency_factor: 1.0,
-            module_timeouts_ms: timeouts,
-            quality_thresholds: QualityThresholds {
-                min_comprehension_score: 0.7,
-                min_confidence_threshold: 0.6,
-                max_uncertainty_tolerance: 0.4,
-                robustness_requirement: 0.8,
-            },
+            atp_regeneration_rate: 10.0,
             enable_champagne_phase: true,
             enable_adversarial_testing: true,
-            enable_anaerobic_processing: true,
+            processing_strategy: ProcessingStrategy::Adaptive,
+            quality_thresholds: QualityThresholds::default(),
         }
     }
 }
 
-/// Processing pipeline stages
-#[derive(Debug, Clone, PartialEq)]
-pub enum PipelineStage {
-    /// Context layer processing (Glycolysis)
-    Glycolysis {
-        nicotine_validation: bool,
-        clothesline_comprehension: bool,
-        zengeza_noise_reduction: bool,
-    },
-    /// Reasoning layer processing (Krebs Cycle)
-    KrebsCycle {
-        current_step: u8, // 1-8 for the 8 steps
-        steps_completed: Vec<String>,
-        atp_generated: f64,
-        nadh_generated: f64,
-        fadh2_generated: f64,
-    },
-    /// Intuition layer processing (Electron Transport)
-    ElectronTransport {
-        complex_i_complete: bool,
-        complex_ii_complete: bool,
-        complex_iii_complete: bool,
-        complex_iv_complete: bool,
-        atp_synthase_active: bool,
-    },
-    /// Emergency anaerobic processing
-    AnaerobicProcessing {
-        lactate_accumulation: f64,
-        partial_results: Vec<String>,
-    },
-    /// Dream processing (Champagne Phase)
-    ChampagnePhase {
-        dream_mode: crate::traits::DreamMode,
-        lactate_processing: bool,
-    },
-}
-
-/// Processing statistics for monitoring and optimization
-#[derive(Debug, Clone)]
-pub struct ProcessingStatistics {
-    pub total_operations: u64,
-    pub successful_operations: u64,
-    pub failed_operations: u64,
-    pub average_atp_consumption: f64,
-    pub average_processing_time_ms: f64,
-    pub efficiency_score: f64,
-    pub module_usage_stats: std::collections::HashMap<String, ModuleUsageStats>,
-    pub pathway_distribution: PathwayDistribution,
-}
-
-/// Statistics for individual modules
-#[derive(Debug, Clone)]
-pub struct ModuleUsageStats {
-    pub invocations: u64,
-    pub total_processing_time_ms: u64,
-    pub average_atp_cost: f64,
-    pub success_rate: f64,
-    pub error_count: u64,
-}
-
-/// Distribution of processing pathways used
-#[derive(Debug, Clone)]
-pub struct PathwayDistribution {
-    pub aerobic_percentage: f64,
-    pub anaerobic_percentage: f64,
-    pub champagne_percentage: f64,
-    pub hybrid_percentage: f64,
-}
-
-impl Default for ProcessingStatistics {
+impl Default for QualityThresholds {
     fn default() -> Self {
         Self {
-            total_operations: 0,
-            successful_operations: 0,
-            failed_operations: 0,
-            average_atp_consumption: 0.0,
-            average_processing_time_ms: 0.0,
-            efficiency_score: 0.0,
-            module_usage_stats: std::collections::HashMap::new(),
-            pathway_distribution: PathwayDistribution {
-                aerobic_percentage: 100.0,
-                anaerobic_percentage: 0.0,
-                champagne_percentage: 0.0,
-                hybrid_percentage: 0.0,
-            },
+            glycolysis_confidence: 0.6,
+            krebs_confidence: 0.7,
+            electron_transport_confidence: 0.8,
         }
     }
+}
+
+/// Calculate ATP allocation for processing
+pub fn calculate_atp_allocation(
+    complexity: f64,
+    quality_requirements: &QualityRequirements,
+    available_atp: f64,
+) -> ATPAllocation {
+    // Base ATP requirements
+    let base_glycolysis = 20.0;
+    let base_krebs = 30.0;
+    let base_electron_transport = 50.0;
+    
+    // Scale by complexity
+    let complexity_multiplier = 1.0 + (complexity * 0.5);
+    
+    // Scale by quality requirements
+    let quality_multiplier = 1.0 + (quality_requirements.min_confidence * 0.3);
+    
+    let glycolysis_allocation = base_glycolysis * complexity_multiplier * quality_multiplier;
+    let krebs_allocation = base_krebs * complexity_multiplier * quality_multiplier;
+    let electron_transport_allocation = base_electron_transport * complexity_multiplier * quality_multiplier;
+    
+    let total_required = glycolysis_allocation + krebs_allocation + electron_transport_allocation;
+    let reserve_allocation = total_required * 0.1; // 10% reserve
+    let total_with_reserve = total_required + reserve_allocation;
+    
+    let feasible = total_with_reserve <= available_atp;
+    
+    ATPAllocation {
+        total_required: total_with_reserve,
+        glycolysis_allocation,
+        krebs_allocation,
+        electron_transport_allocation,
+        reserve_allocation,
+        feasible,
+    }
+}
+
+/// Optimize processing strategy based on conditions
+pub fn optimize_processing_strategy(
+    content_complexity: f64,
+    available_atp: f64,
+    time_pressure: f64,
+    quality_requirements: &QualityRequirements,
+) -> ProcessingStrategy {
+    // High time pressure favors parallel processing
+    if time_pressure > 0.8 {
+        return ProcessingStrategy::Parallel;
+    }
+    
+    // Low ATP favors energy optimization
+    if available_atp < 200.0 {
+        return ProcessingStrategy::EnergyOptimized;
+    }
+    
+    // High complexity with high quality requirements favors sequential
+    if content_complexity > 0.8 && quality_requirements.min_confidence > 0.8 {
+        return ProcessingStrategy::Sequential;
+    }
+    
+    // Default to adaptive
+    ProcessingStrategy::Adaptive
 }
 
 /// Validate V8 pipeline configuration
@@ -191,157 +238,26 @@ pub fn validate_configuration(config: &V8Configuration) -> AutobahnResult<()> {
         ));
     }
 
-    if config.efficiency_factor <= 0.0 || config.efficiency_factor > 2.0 {
-        return Err(AutobahnError::ConfigurationError(
-            "Efficiency factor must be between 0 and 2".to_string()
-        ));
-    }
-
     let thresholds = &config.quality_thresholds;
-    if thresholds.min_comprehension_score < 0.0 || thresholds.min_comprehension_score > 1.0 {
+    if thresholds.glycolysis_confidence < 0.0 || thresholds.glycolysis_confidence > 1.0 {
         return Err(AutobahnError::ConfigurationError(
-            "Comprehension score threshold must be between 0 and 1".to_string()
+            "Glycolysis confidence threshold must be between 0 and 1".to_string()
         ));
     }
 
-    if thresholds.min_confidence_threshold < 0.0 || thresholds.min_confidence_threshold > 1.0 {
+    if thresholds.krebs_confidence < 0.0 || thresholds.krebs_confidence > 1.0 {
         return Err(AutobahnError::ConfigurationError(
-            "Confidence threshold must be between 0 and 1".to_string()
+            "Krebs cycle confidence threshold must be between 0 and 1".to_string()
+        ));
+    }
+
+    if thresholds.electron_transport_confidence < 0.0 || thresholds.electron_transport_confidence > 1.0 {
+        return Err(AutobahnError::ConfigurationError(
+            "Electron transport confidence threshold must be between 0 and 1".to_string()
         ));
     }
 
     Ok(())
-}
-
-/// Calculate optimal ATP allocation for processing
-pub fn calculate_atp_allocation(
-    content_complexity: f64,
-    quality_requirements: &crate::traits::QualityRequirements,
-    available_atp: f64,
-) -> ATPAllocation {
-    let base_allocation = content_complexity * 50.0; // Base cost per complexity unit
-    
-    // Adjust for quality requirements
-    let quality_multiplier = if quality_requirements.robustness_required { 1.5 } else { 1.0 };
-    let adversarial_multiplier = if quality_requirements.adversarial_testing { 1.3 } else { 1.0 };
-    let confidence_multiplier = quality_requirements.min_confidence * 1.2;
-    
-    let total_required = base_allocation * quality_multiplier * adversarial_multiplier * confidence_multiplier;
-    
-    // Distribute across processing layers
-    let glycolysis_allocation = total_required * 0.1;   // 10% for initial processing
-    let krebs_allocation = total_required * 0.3;        // 30% for reasoning
-    let electron_transport_allocation = total_required * 0.6; // 60% for final synthesis
-    
-    ATPAllocation {
-        total_required,
-        glycolysis_allocation,
-        krebs_allocation,
-        electron_transport_allocation,
-        reserve_allocation: (available_atp - total_required).max(0.0) * 0.2, // 20% reserve
-        feasible: total_required <= available_atp,
-    }
-}
-
-/// ATP allocation plan for processing
-#[derive(Debug, Clone)]
-pub struct ATPAllocation {
-    pub total_required: f64,
-    pub glycolysis_allocation: f64,
-    pub krebs_allocation: f64,
-    pub electron_transport_allocation: f64,
-    pub reserve_allocation: f64,
-    pub feasible: bool,
-}
-
-/// Determine processing strategy based on available resources and requirements
-pub fn determine_processing_strategy(
-    atp_allocation: &ATPAllocation,
-    energy_state: &EnergyState,
-    quality_requirements: &crate::traits::QualityRequirements,
-) -> ProcessingStrategy {
-    if !atp_allocation.feasible {
-        if energy_state.current_atp >= atp_allocation.total_required * 0.6 {
-            // Can do partial processing
-            return ProcessingStrategy::Anaerobic {
-                partial_processing: true,
-                lactate_tolerance: 0.3,
-                fallback_mode: FallbackMode::ReducedQuality,
-            };
-        } else {
-            // Need to wait or use emergency mode
-            return ProcessingStrategy::Emergency {
-                minimal_processing: true,
-                confidence_reduction: 0.5,
-            };
-        }
-    }
-
-    // Determine optimal pathway
-    if quality_requirements.adversarial_testing && quality_requirements.robustness_required {
-        ProcessingStrategy::FullAerobic {
-            enable_adversarial: true,
-            comprehensive_validation: true,
-            quality_assurance: QualityAssurance::Maximum,
-        }
-    } else if quality_requirements.min_confidence > 0.8 {
-        ProcessingStrategy::HighQuality {
-            enable_champagne_optimization: true,
-            iterative_refinement: true,
-            quality_assurance: QualityAssurance::High,
-        }
-    } else {
-        ProcessingStrategy::Balanced {
-            optimize_for_speed: false,
-            quality_assurance: QualityAssurance::Standard,
-        }
-    }
-}
-
-/// Processing strategy options
-#[derive(Debug, Clone)]
-pub enum ProcessingStrategy {
-    FullAerobic {
-        enable_adversarial: bool,
-        comprehensive_validation: bool,
-        quality_assurance: QualityAssurance,
-    },
-    HighQuality {
-        enable_champagne_optimization: bool,
-        iterative_refinement: bool,
-        quality_assurance: QualityAssurance,
-    },
-    Balanced {
-        optimize_for_speed: bool,
-        quality_assurance: QualityAssurance,
-    },
-    Anaerobic {
-        partial_processing: bool,
-        lactate_tolerance: f64,
-        fallback_mode: FallbackMode,
-    },
-    Emergency {
-        minimal_processing: bool,
-        confidence_reduction: f64,
-    },
-}
-
-/// Quality assurance levels
-#[derive(Debug, Clone)]
-pub enum QualityAssurance {
-    Maximum,
-    High,
-    Standard,
-    Minimal,
-}
-
-/// Fallback modes for resource-constrained processing
-#[derive(Debug, Clone)]
-pub enum FallbackMode {
-    ReducedQuality,
-    PartialResults,
-    CachedResults,
-    DeferredProcessing,
 }
 
 #[cfg(test)]
@@ -352,11 +268,9 @@ mod tests {
     fn test_v8_configuration_default() {
         let config = V8Configuration::default();
         assert_eq!(config.max_atp, 1000.0);
-        assert_eq!(config.atp_regeneration_rate, 100.0);
-        assert_eq!(config.efficiency_factor, 1.0);
+        assert_eq!(config.atp_regeneration_rate, 10.0);
         assert!(config.enable_champagne_phase);
         assert!(config.enable_adversarial_testing);
-        assert!(config.enable_anaerobic_processing);
     }
 
     #[test]
@@ -377,52 +291,66 @@ mod tests {
     }
 
     #[test]
-    fn test_atp_allocation() {
-        let quality_req = crate::traits::QualityRequirements::default();
-        let allocation = calculate_atp_allocation(1.0, &quality_req, 1000.0);
+    fn test_atp_allocation_calculation() {
+        let quality_requirements = QualityRequirements::default();
+        let allocation = calculate_atp_allocation(0.5, &quality_requirements, 500.0);
         
         assert!(allocation.total_required > 0.0);
-        assert!(allocation.feasible);
         assert!(allocation.glycolysis_allocation > 0.0);
         assert!(allocation.krebs_allocation > 0.0);
         assert!(allocation.electron_transport_allocation > 0.0);
+        assert!(allocation.reserve_allocation > 0.0);
     }
 
     #[test]
-    fn test_processing_strategy_determination() {
-        let quality_req = crate::traits::QualityRequirements {
+    fn test_atp_allocation_feasibility() {
+        let quality_requirements = QualityRequirements::default();
+        
+        // Test with sufficient ATP
+        let allocation = calculate_atp_allocation(0.5, &quality_requirements, 1000.0);
+        assert!(allocation.feasible);
+        
+        // Test with insufficient ATP
+        let allocation = calculate_atp_allocation(2.0, &quality_requirements, 50.0);
+        assert!(!allocation.feasible);
+    }
+
+    #[test]
+    fn test_processing_strategy_optimization() {
+        let quality_requirements = QualityRequirements::default();
+        
+        // Test high time pressure
+        let strategy = optimize_processing_strategy(0.5, 500.0, 0.9, &quality_requirements);
+        assert!(matches!(strategy, ProcessingStrategy::Parallel));
+        
+        // Test low ATP
+        let strategy = optimize_processing_strategy(0.5, 100.0, 0.3, &quality_requirements);
+        assert!(matches!(strategy, ProcessingStrategy::EnergyOptimized));
+        
+        // Test high complexity and quality
+        let high_quality = QualityRequirements {
             min_confidence: 0.9,
-            max_uncertainty: 0.1,
-            robustness_required: true,
-            adversarial_testing: true,
+            ..Default::default()
         };
-        
-        let allocation = calculate_atp_allocation(1.0, &quality_req, 1000.0);
-        let energy_state = EnergyState::new(1000.0);
-        
-        let strategy = determine_processing_strategy(&allocation, &energy_state, &quality_req);
-        
-        match strategy {
-            ProcessingStrategy::FullAerobic { enable_adversarial, .. } => {
-                assert!(enable_adversarial);
-            }
-            _ => panic!("Expected FullAerobic strategy for high requirements"),
-        }
+        let strategy = optimize_processing_strategy(0.9, 500.0, 0.3, &high_quality);
+        assert!(matches!(strategy, ProcessingStrategy::Sequential));
     }
 
     #[test]
-    fn test_pipeline_stage_progression() {
-        let glycolysis = PipelineStage::Glycolysis {
-            nicotine_validation: true,
-            clothesline_comprehension: true,
-            zengeza_noise_reduction: true,
-        };
-        
-        match glycolysis {
-            PipelineStage::Glycolysis { nicotine_validation, .. } => {
-                assert!(nicotine_validation);
-            }
-            _ => panic!("Expected Glycolysis stage"),
-        }
+    fn test_processing_statistics_default() {
+        let stats = ProcessingStatistics::default();
+        assert_eq!(stats.total_operations, 0);
+        assert_eq!(stats.successful_operations, 0);
+        assert_eq!(stats.failed_operations, 0);
+        assert_eq!(stats.total_atp_consumed, 0.0);
+        assert_eq!(stats.total_atp_generated, 0.0);
+    }
+
+    #[test]
+    fn test_quality_thresholds_default() {
+        let thresholds = QualityThresholds::default();
+        assert_eq!(thresholds.glycolysis_confidence, 0.6);
+        assert_eq!(thresholds.krebs_confidence, 0.7);
+        assert_eq!(thresholds.electron_transport_confidence, 0.8);
     }
 } 

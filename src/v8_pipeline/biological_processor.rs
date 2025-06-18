@@ -60,15 +60,10 @@ impl BiologicalProcessor {
     pub async fn initialize_modules(&mut self) -> AutobahnResult<()> {
         log::info!("Initializing V8 biological modules...");
 
-        // For now, we'll create placeholder modules
-        // In future iterations, these will be full implementations
-        
-        // TODO: Initialize actual module implementations
-        // self.modules.insert("mzekezeke".to_string(), Box::new(MzekezekerModule::new()));
-        // self.modules.insert("diggiden".to_string(), Box::new(DiggidenModule::new()));
-        // etc.
+        // Initialize all modules using the module factory
+        self.modules = crate::v8_pipeline::ModuleFactory::create_all_modules();
 
-        log::info!("V8 modules initialized successfully");
+        log::info!("V8 modules initialized successfully: {} modules ready", self.modules.len());
         self.ready = true;
         Ok(())
     }
