@@ -2,11 +2,11 @@
 name = "autobahn"
 version = "0.1.0"
 edition = "2021"
-authors = ["Kundai Ndhlovu <kundai@example.com>"]
+authors = ["Kundai Farai Sachikonye <kundai.f.sachikonye@gmail.com>"]
 license = "MIT OR Apache-2.0"
 description = "A biological metabolism computer for probabilistic information processing"
-homepage = "https://github.com/kundai/autobahn"
-repository = "https://github.com/kundai/autobahn"
+homepage = "https://github.com/fullscreen-triangle/autobahn"
+repository = "https://github.com/fullscreen-triangle/autobahn"
 documentation = "https://docs.rs/autobahn"
 keywords = ["biology", "metabolism", "probabilistic", "ai", "bioinformatics"]
 categories = ["science", "algorithms", "simulation"]
@@ -35,6 +35,7 @@ bincode = "1.3"
 # Async processing for concurrent metabolism
 tokio = { version = "1.0", features = ["full"] }
 futures = "0.3"
+async-trait = "0.1"
 
 # Logging and diagnostics
 log = "0.4"
