@@ -1,4 +1,3 @@
-
 <p align="center">
   <h1 align="center">Autobahn</h1>
 </p>
@@ -11,6 +10,34 @@
   <em>"When there is absolutely no reason at all to stop"</em>
 </p>
 
+<p align="center">
+  <a href="https://crates.io/crates/autobahn">
+    <img src="https://img.shields.io/crates/v/autobahn.svg" alt="Crates.io">
+  </a>
+  <a href="https://docs.rs/autobahn">
+    <img src="https://docs.rs/autobahn/badge.svg" alt="Documentation">
+  </a>
+  <a href="https://github.com/fullscreen-triangle/autobahn/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg" alt="License">
+  </a>
+  <a href="https://github.com/fullscreen-triangle/autobahn/actions">
+    <img src="https://github.com/fullscreen-triangle/autobahn/workflows/CI/badge.svg" alt="CI Status">
+  </a>
+  <a href="https://codecov.io/gh/fullscreen-triangle/autobahn">
+    <img src="https://codecov.io/gh/fullscreen-triangle/autobahn/branch/main/graph/badge.svg" alt="Coverage">
+  </a>
+  <a href="https://github.com/fullscreen-triangle/autobahn">
+    <img src="https://img.shields.io/github/stars/fullscreen-triangle/autobahn?style=social" alt="GitHub stars">
+  </a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Rust-1.70+-orange.svg" alt="Rust Version">
+  <img src="https://img.shields.io/badge/Biological-Metabolism-green.svg" alt="Biological Metabolism">
+  <img src="https://img.shields.io/badge/Processing-Probabilistic-purple.svg" alt="Probabilistic Processing">
+  <img src="https://img.shields.io/badge/ATP-Powered-red.svg" alt="ATP Powered">
+  <img src="https://img.shields.io/badge/V8-Pipeline-blue.svg" alt="V8 Pipeline">
+</p>
 
 #  A Biological Metabolism Computer for Probabilistic Information Processing
 
@@ -264,27 +291,247 @@ let diagnostic_reasoning = orchestrator.metabolize_content(patient_notes);
 - **Knowledge Discovery**: Pattern recognition across scientific domains
 - **Reproducibility Assessment**: Validation of research claims through perturbation analysis
 
-## Implementation Status and Development Roadmap
+## Installation
 
-### Core Components (In Development)
-- [x] Conceptual architecture and theoretical framework
-- [x] Documentation of biological metabolism pathways
-- [x] Specification of probabilistic processing paradigms
-- [ ] Rust implementation of V8 metabolism pipeline
-- [ ] Trinity engine consciousness layers
-- [ ] API interface for external packages
+Add Autobahn to your `Cargo.toml`:
 
-### Validation and Testing Framework
-- [ ] Perturbation testing implementation
-- [ ] Adversarial attack simulation
-- [ ] ATP energy management system
-- [ ] Champagne phase dream processing
+```toml
+[dependencies]
+autobahn = "0.1.0"
+```
 
-### Integration and Deployment
-- [ ] Package manager integration (Cargo)
-- [ ] API documentation and examples
-- [ ] Performance benchmarking suite
-- [ ] Cross-platform compatibility testing
+Or install the CLI tool:
+
+```bash
+cargo install autobahn --features="cli"
+```
+
+### System Requirements
+
+- **Rust**: 1.70 or later
+- **Memory**: Minimum 512MB RAM (2GB+ recommended for complex processing)
+- **ATP Capacity**: System will auto-configure based on available resources
+
+## Quick Start
+
+### Basic Processing
+
+```rust
+use autobahn::*;
+
+#[tokio::main]
+async fn main() -> Result<(), AutobahnError> {
+    // Initialize the biological metabolism computer
+    autobahn::init()?;
+    
+    // Quick processing for simple tasks
+    let result = quick_process("Analyze the efficiency of cellular respiration").await?;
+    println!("Confidence: {:.2}", result.confidence);
+    println!("Output: {}", result.content);
+    
+    // Comprehensive processing with full system capabilities
+    let comprehensive = quick_comprehensive_process(
+        "What are the implications of mitochondrial dysfunction in aging?"
+    ).await?;
+    
+    println!("ATP consumed: {:.2}", comprehensive.processing_metadata.total_atp_consumed);
+    println!("Modules used: {:?}", comprehensive.processing_metadata.modules_used);
+    
+    Ok(())
+}
+```
+
+### Advanced System Usage
+
+```rust
+use autobahn::*;
+
+#[tokio::main]
+async fn main() -> Result<(), AutobahnError> {
+    // Create and initialize full system
+    let mut system = AutobahnSystem::new();
+    system.initialize().await?;
+    
+    // Process through biological metabolism pipeline
+    let input = InformationInput::Text("Complex biological analysis".to_string());
+    let result = system.process_comprehensive(input).await?;
+    
+    // Monitor system health
+    let health = system.health_check().await?;
+    println!("System health: {:?}", health.overall_health);
+    println!("ATP status: {:.2}/{:.2}", 
+             health.atp_status.current_atp, 
+             health.atp_status.max_atp);
+    
+    // Get system capabilities
+    let capabilities = get_capabilities();
+    println!("Available modules: {:?}", capabilities.available_modules);
+    
+    Ok(())
+}
+```
+
+## Command Line Interface
+
+Autobahn includes a comprehensive CLI tool for system management and processing:
+
+### Installation
+
+```bash
+cargo install autobahn --bin autobahn-cli
+```
+
+### Basic Usage
+
+```bash
+# Initialize the system
+autobahn-cli init
+
+# Process text through the biological computer
+autobahn-cli process -i "What is the role of ATP in cellular metabolism?"
+
+# Run comprehensive processing
+autobahn-cli process -i "Analyze protein folding dynamics" -m comprehensive
+
+# Check system status and health
+autobahn-cli status
+
+# Run performance benchmarks
+autobahn-cli benchmark -t performance -n 20
+
+# Show system configuration
+autobahn-cli config show
+
+# Generate default configuration file
+autobahn-cli config generate -o my-autobahn.toml
+
+# List installed plugins
+autobahn-cli plugins list
+```
+
+### Configuration Management
+
+Create a custom configuration file:
+
+```toml
+[system]
+name = "My Autobahn System"
+environment = "production"
+max_atp_capacity = 2000.0
+debug_mode = false
+
+[v8_pipeline]
+enabled = true
+processing_timeout_ms = 60000
+enable_parallel_processing = true
+max_concurrent_processes = 8
+
+[probabilistic]
+enabled = true
+default_inference_algorithm = "variable_elimination"
+
+[research]
+enabled = true
+enable_quantum = false
+enable_ml = true
+```
+
+## Performance and Benchmarking
+
+### Running Benchmarks
+
+```bash
+# Performance benchmarks
+autobahn-cli benchmark -t performance
+
+# ATP efficiency tests
+autobahn-cli benchmark -t atp
+
+# Module comparison tests
+autobahn-cli benchmark -t modules
+
+# Stress testing
+autobahn-cli benchmark -t stress
+```
+
+### Programmatic Benchmarking
+
+```rust
+use autobahn::*;
+
+#[tokio::main]
+async fn main() -> Result<(), AutobahnError> {
+    let mut benchmark_suite = AutobahnBenchmarkSuite::new();
+    benchmark_suite.add_standard_benchmarks();
+    
+    let mut system = AutobahnSystem::new();
+    system.initialize().await?;
+    
+    // Run all benchmarks
+    benchmark_suite.run_all_benchmarks(&mut system).await?;
+    
+    // Get results and recommendations
+    let results = benchmark_suite.get_results();
+    for recommendation in &results.optimization_recommendations {
+        println!("Optimization: {} (Priority: {:?})", 
+                 recommendation.description, 
+                 recommendation.priority);
+    }
+    
+    // Generate detailed report
+    let report = benchmark_suite.generate_performance_report();
+    println!("{}", report);
+    
+    Ok(())
+}
+```
+
+## Plugin Development
+
+Extend Autobahn with custom biological modules:
+
+```rust
+use autobahn::plugins::*;
+use async_trait::async_trait;
+
+#[derive(Debug)]
+pub struct MyCustomModule {
+    id: String,
+    // Custom module state
+}
+
+#[async_trait]
+impl AutobahnPlugin for MyCustomModule {
+    fn id(&self) -> &str { &self.id }
+    fn name(&self) -> &str { "Custom Biological Module" }
+    fn version(&self) -> &str { "1.0.0" }
+    fn description(&self) -> &str { "Custom processing module" }
+    fn author(&self) -> &str { "Your Name" }
+    
+    fn capabilities(&self) -> Vec<PluginCapability> {
+        vec![PluginCapability::BiologicalPathwaySimulation]
+    }
+    
+    async fn process(&mut self, input: PluginInput) -> AutobahnResult<PluginOutput> {
+        // Custom processing logic
+        Ok(PluginOutput {
+            data: input.data,
+            metadata: ProcessingResultMetadata {
+                success: true,
+                result_type: "custom_processing".to_string(),
+                quality_metrics: HashMap::new(),
+                warnings: Vec::new(),
+                additional_info: HashMap::new(),
+            },
+            atp_consumed: 10.0,
+            confidence: 0.95,
+            processing_time_ms: 50,
+        })
+    }
+    
+    // Implement other required methods...
+}
+```
 
 ## Contributing and Research Collaboration
 
@@ -296,9 +543,9 @@ We welcome collaboration with researchers in:
 - **Computational Linguistics**: Position-dependent semantics and discourse analysis
 
 ### Technical Contributions
-- **Module Development**: Implementation of individual V8 metabolism components
+- **Module Development**: Implementation of specialized V8 metabolism components
 - **Testing Frameworks**: Adversarial testing and validation systems
-- **Performance Optimization**: ATP management and energy efficiency
+- **Performance Optimization**: ATP management and energy efficiency improvements
 - **API Extensions**: Domain-specific interfaces and integration patterns
 
 ### Research Applications
