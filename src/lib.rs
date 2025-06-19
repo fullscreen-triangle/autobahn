@@ -71,6 +71,7 @@ pub mod entropy;
 pub mod adversarial;
 pub mod models;
 pub mod rag;
+pub mod consciousness;
 
 // Main system integration
 pub mod oscillatory_rag;
@@ -95,6 +96,12 @@ pub use quantum::{QuantumMembraneProcessor, QuantumMembraneState, ENAQTProcessor
 pub use atp::{ATPManager, QuantumATPManager, MetabolicMode, ATPState};
 pub use hierarchy::{NestedHierarchyProcessor, HierarchyLevel, HierarchyResult};
 pub use biological::{BiologicalLayerProcessor, BiologicalLayer, BiologicalProcessingResult};
+pub use consciousness::{
+    ConsciousnessEmergenceEngine, FireConsciousnessEngine, 
+    FireConsciousnessResponse, FireRecognitionResponse, AgencyDetection,
+    IonType, BiologicalMaxwellDemon, BMDSpecialization, FireEnvironment,
+    QuantumCoherenceField, UnderwaterFireplaceTest, ConsciousExperience
+};
 
 // Re-export utility functions
 pub use utils::helpers::*;

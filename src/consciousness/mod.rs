@@ -1,11 +1,15 @@
-//! Emergent Consciousness Modeling through Oscillatory Quantum Coherence
+//! Emergent Consciousness Modeling through Fire-Evolved Quantum Coherence
 //! 
-//! This module implements a revolutionary approach to consciousness modeling based on:
+//! This module implements consciousness modeling based on:
+//! - Fire-evolved consciousness theory with quantum ion tunneling
+//! - Biological Maxwell's Demons (BMDs) as information catalysts
 //! - Integrated Information Theory (IIT) enhanced with quantum oscillations
 //! - Global Workspace Theory with biological membrane computation
 //! - Orchestrated Objective Reduction (Orch-OR) through ATP quantum states
 //! - Emergent self-awareness through cross-hierarchy resonance patterns
 //! - Metacognitive reflection through entropy optimization feedback loops
+
+pub mod fire_engine;
 
 use crate::error::{AutobahnError, AutobahnResult};
 use crate::oscillatory::{OscillationProfile, UniversalOscillator, OscillationPhase};
@@ -13,6 +17,11 @@ use crate::quantum::{QuantumMembraneState, ENAQTProcessor};
 use crate::hierarchy::{HierarchyLevel, NestedHierarchyProcessor};
 use crate::entropy::AdvancedEntropyProcessor;
 use crate::atp::{MetabolicMode, OscillatoryATPManager};
+pub use fire_engine::{
+    FireConsciousnessEngine, FireConsciousnessResponse, FireRecognitionResponse,
+    AgencyDetection, IonType, BiologicalMaxwellDemon, BMDSpecialization,
+    FireEnvironment, QuantumCoherenceField, UnderwaterFireplaceTest
+};
 use nalgebra::{DVector, DMatrix};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -20,9 +29,11 @@ use chrono::{DateTime, Utc};
 use std::sync::Arc;
 use tokio::sync::RwLock;
 
-/// Consciousness emergence through quantum-oscillatory integration
+/// Consciousness emergence through fire-evolved quantum-oscillatory integration
 #[derive(Debug)]
 pub struct ConsciousnessEmergenceEngine {
+    /// Fire-evolved consciousness engine (primary substrate)
+    fire_consciousness: FireConsciousnessEngine,
     /// Integrated Information Theory processor
     iit_processor: IntegratedInformationProcessor,
     /// Global workspace for conscious access
@@ -311,7 +322,14 @@ pub struct PhenomenalPropertyGenerator {
 impl ConsciousnessEmergenceEngine {
     /// Initialize the consciousness emergence engine
     pub fn new() -> AutobahnResult<Self> {
+        // Default to 5 MYA (middle of fire-consciousness evolution period)
+        Self::new_with_evolutionary_time(5.0)
+    }
+    
+    /// Create consciousness engine with specific evolutionary timeline
+    pub fn new_with_evolutionary_time(evolutionary_time_mya: f64) -> AutobahnResult<Self> {
         Ok(Self {
+            fire_consciousness: FireConsciousnessEngine::new(evolutionary_time_mya)?,
             iit_processor: IntegratedInformationProcessor::new()?,
             global_workspace: QuantumGlobalWorkspace::new()?,
             self_awareness_monitor: SelfAwarenessMonitor::new()?,
@@ -331,7 +349,11 @@ impl ConsciousnessEmergenceEngine {
         metabolic_mode: &MetabolicMode,
     ) -> AutobahnResult<ConsciousExperience> {
         
-        // 1. Integrate information through IIT
+        // 0. Fire-consciousness substrate processing (primary layer)
+        let input_vector = self.convert_string_to_vector(input_information)?;
+        let fire_response = self.fire_consciousness.process_conscious_input(&input_vector).await?;
+        
+        // 1. Integrate information through IIT (enhanced by fire consciousness)
         let integrated_info = self.iit_processor.calculate_integrated_information(
             input_information,
             oscillatory_context,
@@ -384,6 +406,7 @@ impl ConsciousnessEmergenceEngine {
         
         Ok(ConsciousExperience {
             information_content: input_information.to_string(),
+            fire_consciousness_response: fire_response,
             integrated_information: integrated_info,
             workspace_contents: workspace_result,
             self_awareness_state: self_awareness,
@@ -507,6 +530,66 @@ impl ConsciousnessEmergenceEngine {
         Ok(patterns)
     }
     
+    /// Convert string input to vector for fire consciousness processing
+    fn convert_string_to_vector(&self, input: &str) -> AutobahnResult<Vec<f64>> {
+        // Simple conversion: use character values and length
+        let mut vector = Vec::new();
+        
+        // Add normalized string length
+        vector.push((input.len() as f64) / 100.0);
+        
+        // Add character frequency analysis (simplified)
+        let char_counts = input.chars().fold(HashMap::new(), |mut acc, c| {
+            *acc.entry(c).or_insert(0) += 1;
+            acc
+        });
+        
+        // Add top 4 character frequencies
+        let mut frequencies: Vec<_> = char_counts.values().collect();
+        frequencies.sort_by(|a, b| b.cmp(a));
+        for i in 0..4 {
+            let freq = frequencies.get(i).unwrap_or(&&0);
+            vector.push((**freq as f64) / (input.len() as f64).max(1.0));
+        }
+        
+        // Ensure vector has exactly 5 elements
+        while vector.len() < 5 {
+            vector.push(0.0);
+        }
+        vector.truncate(5);
+        
+        Ok(vector)
+    }
+    
+    /// Test the Underwater Fireplace Paradox
+    pub async fn test_underwater_fireplace_paradox(&mut self) -> AutobahnResult<UnderwaterFireplaceTest> {
+        self.fire_consciousness.test_underwater_fireplace_paradox().await
+    }
+    
+    /// Get fire consciousness engine for direct access
+    pub fn get_fire_consciousness(&self) -> &FireConsciousnessEngine {
+        &self.fire_consciousness
+    }
+    
+    /// Get mutable fire consciousness engine
+    pub fn get_fire_consciousness_mut(&mut self) -> &mut FireConsciousnessEngine {
+        &mut self.fire_consciousness
+    }
+    
+    /// Check if fire patterns are detected in input
+    pub async fn detect_fire_patterns(&mut self, input: &str) -> AutobahnResult<FireRecognitionResponse> {
+        let input_vector = self.convert_string_to_vector(input)?;
+        let response = self.fire_consciousness.process_conscious_input(&input_vector).await?;
+        Ok(response.fire_recognition)
+    }
+    
+    /// Detect individual agency in input
+    pub async fn detect_agency(&mut self, input: &str) -> AutobahnResult<AgencyDetection> {
+        let input_vector = self.convert_string_to_vector(input)?;
+        let response = self.fire_consciousness.process_conscious_input(&input_vector).await?;
+        Ok(response.agency_detection)
+    }
+    
     fn calculate_consciousness_growth(&self, experiences: &[ConsciousExperience]) -> AutobahnResult<f64> {
         if experiences.len() < 2 {
             return Ok(0.0);
@@ -536,6 +619,7 @@ impl ConsciousnessEmergenceEngine {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ConsciousExperience {
     pub information_content: String,
+    pub fire_consciousness_response: FireConsciousnessResponse,
     pub integrated_information: IntegratedInformationResult,
     pub workspace_contents: WorkspaceProcessingResult,
     pub self_awareness_state: SelfAwarenessState,
