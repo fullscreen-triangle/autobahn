@@ -537,6 +537,8 @@ impl MetacognitiveOrchestrator for BiologicalProcessor {
                 "clothesline".to_string(),
                 "zengeza".to_string(),
                 "diadochi".to_string(),
+                "foursidedtriangle".to_string(),
+                "oscillation_endpoint_manager".to_string(),
             ],
             processing_modes: vec![
                 ProcessingMode::Probabilistic,
@@ -544,6 +546,285 @@ impl MetacognitiveOrchestrator for BiologicalProcessor {
                 ProcessingMode::Dream,
             ],
         }
+    }
+
+    // NEW: Quantum-oscillatory processing methods
+
+    fn measure_entropy_endpoints(&self, content: &str) -> AutobahnResult<OscillationEndpointAnalysis> {
+        log::info!("Measuring entropy endpoints for content");
+        
+        // Create simplified oscillation endpoint analysis
+        let words: Vec<&str> = content.split_whitespace().collect();
+        let mut endpoint_distribution = Vec::new();
+        let mut frequency_patterns = Vec::new();
+        
+        for (i, word) in words.iter().enumerate() {
+            let endpoint_value = (word.len() as f64) * (i as f64 + 1.0) * 0.1;
+            let frequency = 10.0 + (word.len() as f64 * 2.0);
+            
+            endpoint_distribution.push(EndpointFrequency {
+                endpoint_value,
+                frequency: 1,
+                probability: 1.0 / words.len() as f64,
+                temporal_context: Utc::now(),
+            });
+            
+            frequency_patterns.push(FrequencyPattern {
+                frequency,
+                amplitude: 1.0 / (i as f64 + 1.0),
+                phase: (i as f64 * std::f64::consts::PI) / 4.0,
+                semantic_meaning: Some(word.to_string()),
+            });
+        }
+
+        // Calculate entropy from endpoint distribution
+        let mut entropy = 0.0;
+        for endpoint in &endpoint_distribution {
+            if endpoint.probability > 0.0 {
+                entropy -= endpoint.probability * endpoint.probability.log2();
+            }
+        }
+
+        // Calculate coherence score
+        let avg_frequency: f64 = frequency_patterns.iter().map(|p| p.frequency).sum::<f64>() / frequency_patterns.len() as f64;
+        let freq_variance: f64 = frequency_patterns.iter()
+            .map(|p| (p.frequency - avg_frequency).powi(2))
+            .sum::<f64>() / frequency_patterns.len() as f64;
+        let coherence_score = 1.0 / (1.0 + freq_variance / 100.0);
+
+        // Generate predicted endpoints
+        let predicted_endpoints = endpoint_distribution.iter()
+            .map(|e| PredictedEndpoint {
+                predicted_value: e.endpoint_value * 1.1,
+                probability: 0.8,
+                time_to_occurrence: 10.0,
+            })
+            .collect();
+
+        Ok(OscillationEndpointAnalysis {
+            endpoint_distribution,
+            measured_entropy: entropy,
+            frequency_patterns,
+            coherence_score,
+            predicted_endpoints,
+            confidence: coherence_score,
+        })
+    }
+
+    async fn process_foursided_triangle(&mut self, semantic_structure: SemanticStructure) -> AutobahnResult<GeometricProcessingResult> {
+        log::info!("Processing four-sided triangle semantic structure");
+
+        let atp_cost = 15.0;
+        
+        if !self.energy_state.can_afford(atp_cost) {
+            return Err(AutobahnError::InsufficientATP {
+                required: atp_cost,
+                available: self.energy_state.current_atp,
+            });
+        }
+
+        self.energy_state.current_atp -= atp_cost;
+
+        // Analyze the structure for paradoxes
+        let mut paradox_resolved = true;
+        let mut insights = vec!["Four-sided triangle processing initiated".to_string()];
+
+        // Check angular sum for non-Euclidean properties
+        if semantic_structure.geometric_properties.angular_sum > 180.0 {
+            insights.push("Non-Euclidean geometry detected".to_string());
+        } else {
+            paradox_resolved = false;
+            insights.push("Warning: Euclidean constraints detected".to_string());
+        }
+
+        // Process temporal vertex
+        let temporal_evolution = &semantic_structure.temporal_vertex.evolution_rate;
+        if *temporal_evolution > 0.0 {
+            insights.push(format!("Temporal evolution rate: {:.3}", temporal_evolution));
+        }
+
+        // Calculate compression ratio based on folding dimensions
+        let source_complexity = semantic_structure.geometric_properties.folding_dimensions.len() as f64;
+        let compression_ratio = source_complexity / 3.0; // Target 3D compression
+
+        // Generate temporal predictions
+        let temporal_predictions = vec![
+            TemporalPrediction {
+                timeframe: 10.0,
+                predicted_state: "Stabilized semantic structure".to_string(),
+                confidence: 0.8,
+            },
+        ];
+
+        Ok(GeometricProcessingResult {
+            processed_structure: semantic_structure,
+            compression_ratio,
+            paradox_resolved,
+            atp_consumed: atp_cost,
+            insights,
+            temporal_predictions,
+        })
+    }
+
+    async fn maintain_quantum_coherence(&mut self) -> AutobahnResult<CoherenceState> {
+        log::info!("Maintaining quantum coherence across membrane interfaces");
+
+        let atp_cost = 5.0;
+        
+        if !self.energy_state.can_afford(atp_cost) {
+            return Err(AutobahnError::InsufficientATP {
+                required: atp_cost,
+                available: self.energy_state.current_atp,
+            });
+        }
+
+        self.energy_state.current_atp -= atp_cost;
+
+        // Calculate current coherence based on system state
+        let coherence_level = if self.energy_state.current_atp > self.energy_state.max_atp * 0.8 {
+            0.9 // High coherence with sufficient energy
+        } else if self.energy_state.current_atp > self.energy_state.max_atp * 0.5 {
+            0.7 // Moderate coherence
+        } else {
+            0.4 // Low coherence with insufficient energy
+        };
+
+        let decoherence_rate = 1.0 - coherence_level;
+        let time_to_decoherence = coherence_level * 60.0; // Time in seconds
+
+        // Generate active quantum states
+        let active_quantum_states = vec![
+            QuantumState {
+                state_id: "membrane_interface_1".to_string(),
+                energy_level: self.energy_state.current_atp * 0.1,
+                stability: coherence_level,
+                entanglement_partners: vec!["processing_pipeline".to_string()],
+            },
+        ];
+
+        let membrane_interface_health = coherence_level;
+        let maintenance_atp_cost = decoherence_rate * 10.0;
+
+        Ok(CoherenceState {
+            coherence_level,
+            decoherence_rate,
+            time_to_decoherence,
+            active_quantum_states,
+            membrane_interface_health,
+            maintenance_atp_cost,
+        })
+    }
+
+    fn analyze_oscillation_patterns(&self, content: &str) -> AutobahnResult<OscillationPatternAnalysis> {
+        log::info!("Analyzing oscillation patterns for semantic content");
+
+        let words: Vec<&str> = content.split_whitespace().collect();
+        let mut oscillation_modes = Vec::new();
+        let mut harmonic_content = Vec::new();
+        let mut phase_relationships = Vec::new();
+
+        // Generate oscillation modes from content
+        for (i, word) in words.iter().enumerate() {
+            let frequency = 10.0 + (word.len() as f64 * 2.0);
+            let amplitude = 1.0 / (i as f64 + 1.0);
+
+            oscillation_modes.push(OscillationMode {
+                mode_id: format!("mode_{}", i),
+                frequency,
+                amplitude,
+                damping_factor: 0.05,
+                semantic_significance: Some(word.to_string()),
+            });
+
+            // Generate harmonics
+            for harmonic_num in 1..=2 {
+                harmonic_content.push(HarmonicComponent {
+                    harmonic_number: harmonic_num,
+                    frequency: frequency * harmonic_num as f64,
+                    amplitude: amplitude / harmonic_num as f64,
+                    phase: (i as f64 * std::f64::consts::PI) / 4.0,
+                });
+            }
+        }
+
+        // Analyze phase relationships
+        for i in 0..oscillation_modes.len().min(3) {
+            for j in i+1..oscillation_modes.len().min(3) {
+                let mode_a = &oscillation_modes[i];
+                let mode_b = &oscillation_modes[j];
+                
+                let phase_a = (i as f64 * std::f64::consts::PI) / 4.0;
+                let phase_b = (j as f64 * std::f64::consts::PI) / 4.0;
+                let phase_difference = (phase_a - phase_b).abs();
+                let coupling_strength = 1.0 / (1.0 + phase_difference);
+
+                phase_relationships.push(PhaseRelationship {
+                    oscillator_a: mode_a.mode_id.clone(),
+                    oscillator_b: mode_b.mode_id.clone(),
+                    phase_difference,
+                    coupling_strength,
+                });
+            }
+        }
+
+        // Calculate synchronization and stability
+        let synchronization_score = 0.8; // Simplified calculation
+        let pattern_stability = 0.75; // Simplified calculation
+
+        Ok(OscillationPatternAnalysis {
+            oscillation_modes,
+            harmonic_content,
+            phase_relationships,
+            synchronization_score,
+            pattern_stability,
+        })
+    }
+
+    async fn control_information_entropy(&mut self, target_entropy: f64, content: &str) -> AutobahnResult<EntropyControlResult> {
+        log::info!("Controlling information entropy to target: {}", target_entropy);
+
+        // First measure current entropy
+        let current_analysis = self.measure_entropy_endpoints(content)?;
+        let current_entropy = current_analysis.measured_entropy;
+
+        let entropy_difference = (target_entropy - current_entropy).abs();
+        
+        // Select control method based on difference
+        let control_method = if entropy_difference < 0.1 {
+            EntropyControlMethod::PhaseAdjustment
+        } else if entropy_difference < 0.5 {
+            EntropyControlMethod::FrequencyModulation
+        } else {
+            EntropyControlMethod::EndpointManipulation
+        };
+
+        // Calculate ATP cost
+        let atp_cost = 8.0 + entropy_difference * 3.0;
+
+        if !self.energy_state.can_afford(atp_cost) {
+            return Err(AutobahnError::InsufficientATP {
+                required: atp_cost,
+                available: self.energy_state.current_atp,
+            });
+        }
+
+        self.energy_state.current_atp -= atp_cost;
+
+        // Simulate control execution
+        let control_effectiveness = 0.8; // Simplified
+        let entropy_change = (target_entropy - current_entropy) * control_effectiveness;
+        let achieved_entropy = current_entropy + entropy_change;
+        let control_accuracy = 1.0 - ((target_entropy - achieved_entropy).abs() / target_entropy.max(1.0));
+
+        Ok(EntropyControlResult {
+            target_entropy,
+            achieved_entropy,
+            control_accuracy,
+            control_method,
+            atp_consumed: atp_cost,
+            control_time_ms: 50,
+            side_effects: vec![],
+        })
     }
 }
 
