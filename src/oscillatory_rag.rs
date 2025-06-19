@@ -1,533 +1,749 @@
-//! Oscillatory Bio-Metabolic RAG System
+//! Complete Oscillatory Bio-Metabolic RAG System
 //! 
-//! Revolutionary RAG architecture based on biological oscillatory patterns and
-//! quantum-enhanced ATP metabolism. This system implements the Universal Oscillation
-//! Equation across multiple hierarchical levels with entropy control through
-//! oscillation termination point statistics.
+//! This module implements the full theoretical framework from code.md:
+//! - Universal Oscillation Equation integration
+//! - Quantum membrane computation with ENAQT
+//! - 10-level hierarchy processing
+//! - ATP-driven metabolic modes
+//! - Three biological processing layers
+//! - Oscillatory entropy calculations
 
 use crate::error::{AutobahnError, AutobahnResult};
-use crate::types::*;
+use crate::oscillatory::{UniversalOscillator, OscillationProfile, OscillationPhase};
+use crate::quantum::{QuantumMembraneProcessor, ENAQTProcessor};
+use crate::atp::{QuantumATPManager, MetabolicMode, ATPState};
+use crate::hierarchy::{NestedHierarchyProcessor, HierarchyLevel, HierarchyResult};
+use crate::biological::{BiologicalLayerProcessor, BiologicalLayer, BiologicalProcessingResult};
 
-use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
-use uuid::Uuid;
+use std::collections::HashMap;
+use tokio::time::{timeout, Duration};
 use chrono::{DateTime, Utc};
 
-/// Main oscillatory RAG system configuration
-#[derive(Debug, Clone)]
+/// Configuration for the complete oscillatory RAG system
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct OscillatoryRAGConfig {
-    /// Temperature in Kelvin for quantum processing
+    /// Operating temperature in Kelvin (affects quantum coherence)
     pub temperature: f64,
-    /// Target entropy level for system optimization
+    /// Target entropy for oscillatory processing
     pub target_entropy: f64,
-    /// Number of oscillation dimensions
+    /// Number of oscillatory dimensions
     pub oscillation_dimensions: usize,
-    /// Base frequency for oscillatory processing
-    pub base_frequency: f64,
-    /// ATP regeneration rate
+    /// Hierarchy levels to process through
+    pub hierarchy_levels: Vec<HierarchyLevel>,
+    /// Metabolic mode for ATP management
+    pub metabolic_mode: MetabolicMode,
+    /// Enable quantum enhancement processing
+    pub quantum_enhancement: bool,
+    /// Enable ENAQT optimization
+    pub enaqt_optimization: bool,
+    /// Maximum processing time per query
+    pub max_processing_time_ms: u64,
+    /// ATP regeneration rate per second
     pub atp_regeneration_rate: f64,
-    /// Maximum processing hierarchy levels
-    pub max_hierarchy_levels: usize,
-    /// ENAQT quantum coupling strength
-    pub quantum_coupling_strength: f64,
-    /// Enable adversarial deception detection
-    pub enable_adversarial_detection: bool,
-    /// Champagne phase threshold
-    pub champagne_threshold: f64,
 }
 
 impl Default for OscillatoryRAGConfig {
     fn default() -> Self {
         Self {
-            temperature: 310.0, // Human body temperature in Kelvin
-            target_entropy: 2.5, // Optimal information entropy level  
-            oscillation_dimensions: 128, // High-dimensional semantic space
-            base_frequency: 40.0, // Gamma brainwave frequency
-            atp_regeneration_rate: 100.0, // ATP per second
-            max_hierarchy_levels: 10, // Full hierarchy system
-            quantum_coupling_strength: 0.1, // Moderate quantum coupling
-            enable_adversarial_detection: true,
-            champagne_threshold: 0.8, // High confidence threshold
+            temperature: 285.0, // Cold-blooded advantage
+            target_entropy: 2.0,
+            oscillation_dimensions: 8,
+            hierarchy_levels: vec![
+                HierarchyLevel::CellularOscillations,
+                HierarchyLevel::OrganismalOscillations,
+                HierarchyLevel::CognitiveOscillations,
+            ],
+            metabolic_mode: MetabolicMode::ColdBlooded {
+                temperature_advantage: 1.4,
+                metabolic_reduction: 0.7,
+            },
+            quantum_enhancement: true,
+            enaqt_optimization: true,
+            max_processing_time_ms: 30000,
+            atp_regeneration_rate: 100.0,
         }
     }
 }
 
-/// Query context with oscillatory profile
-#[derive(Debug, Clone)]
+/// Query input for oscillatory processing
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct OscillatoryQuery {
-    /// Query text content
+    /// The input query text
     pub content: String,
-    /// Query complexity measure
+    /// Complexity measure (0.0 - 10.0)
     pub complexity: f64,
-    /// Desired processing frequency
+    /// Target oscillation frequency in Hz
     pub frequency: f64,
-    /// Temperature for quantum processing
-    pub temperature: f64,
-    /// Query UUID for tracking
-    pub query_id: Uuid,
-    /// Timestamp
-    pub timestamp: DateTime<Utc>,
+    /// Desired hierarchy levels for processing
+    pub hierarchy_levels: Vec<HierarchyLevel>,
+    /// Required biological layers
+    pub biological_layers: Vec<BiologicalLayer>,
+    /// Maximum acceptable processing cost
+    pub max_cost: Option<f64>,
+    /// Minimum required output quality
+    pub min_quality: Option<f64>,
 }
 
 impl OscillatoryQuery {
     pub fn new(content: String) -> Self {
-        let complexity = Self::calculate_complexity(&content);
+        let complexity = Self::estimate_complexity(&content);
+        let frequency = Self::estimate_frequency(&content);
         
         Self {
             content,
             complexity,
-            frequency: 40.0, // Default gamma frequency
-            temperature: 310.0, // Body temperature
-            query_id: Uuid::new_v4(),
-            timestamp: Utc::now(),
+            frequency,
+            hierarchy_levels: vec![
+                HierarchyLevel::CellularOscillations,
+                HierarchyLevel::OrganismalOscillations,
+                HierarchyLevel::CognitiveOscillations,
+            ],
+            biological_layers: vec![
+                BiologicalLayer::Context,
+                BiologicalLayer::Reasoning,
+                BiologicalLayer::Intuition,
+            ],
+            max_cost: None,
+            min_quality: Some(0.7),
         }
     }
     
-    fn calculate_complexity(content: &str) -> f64 {
-        let word_count = content.split_whitespace().count() as f64;
-        let sentence_count = content.matches(&['.', '!', '?'][..]).count() as f64;
-        let complexity_words = content.matches(&["however", "therefore", "nevertheless", "furthermore"][..]).count() as f64;
+    fn estimate_complexity(content: &str) -> f64 {
+        let base_complexity = (content.len() as f64 / 100.0).min(10.0);
         
-        let length_factor = (word_count / 50.0).min(3.0);
-        let structure_factor = if sentence_count > 0.0 {
-            (word_count / sentence_count / 8.0).min(2.0)
-        } else {
-            1.0
-        };
-        let semantic_factor = (complexity_words / word_count * 10.0).min(1.0);
+        // Adjust for question words and complexity indicators
+        let complexity_indicators = [
+            "why", "how", "explain", "analyze", "compare", "evaluate",
+            "synthesize", "predict", "infer", "deduce", "quantum", "complex"
+        ];
         
-        (length_factor + structure_factor + semantic_factor).max(0.1)
+        let indicator_count = complexity_indicators.iter()
+            .map(|&indicator| content.to_lowercase().matches(indicator).count())
+            .sum::<usize>() as f64;
+        
+        (base_complexity + indicator_count * 0.5).min(10.0)
     }
     
-    pub fn with_temperature(mut self, temperature: f64) -> Self {
-        self.temperature = temperature;
-        self
-    }
-    
-    pub fn with_frequency(mut self, frequency: f64) -> Self {
-        self.frequency = frequency;
-        self
+    fn estimate_frequency(content: &str) -> f64 {
+        let word_count = content.split_whitespace().count();
+        match word_count {
+            0..=10 => 1.0,      // High frequency for simple queries
+            11..=50 => 0.5,     // Medium frequency for moderate queries
+            51..=200 => 0.1,    // Low frequency for complex queries
+            _ => 0.05,          // Very low frequency for extensive queries
+        }
     }
 }
 
-/// Oscillatory RAG response with full metabolic analysis
+/// Complete response from oscillatory processing
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct OscillatoryResponse {
     /// Generated response content
     pub content: String,
-    /// Processing confidence
-    pub confidence: f64,
-    /// ATP metrics
-    pub atp_consumed: f64,
-    pub atp_produced: f64,
-    /// Entropy analysis
-    pub initial_entropy: f64,
-    pub final_entropy: f64,
-    /// Oscillation statistics
-    pub total_oscillations: u64,
-    pub final_frequency: f64,
-    /// Quantum enhancement factor
-    pub quantum_enhancement: f64,
-    /// Temperature advantage
-    pub temperature_advantage: f64,
-    /// Champagne phase achieved
-    pub champagne_achieved: bool,
-    /// Processing metadata
-    pub metadata: ResponseMetadata,
+    /// Processing success status
+    pub success: bool,
+    /// Overall processing quality (0.0 - 1.0)
+    pub quality: f64,
+    /// Total ATP cost consumed
+    pub atp_cost: f64,
+    /// Processing time in milliseconds
+    pub processing_time_ms: f64,
+    /// Oscillatory processing results
+    pub oscillation_results: Vec<OscillationProfile>,
+    /// Quantum processing results
+    pub quantum_results: HashMap<String, f64>,
+    /// Hierarchy processing results
+    pub hierarchy_results: Vec<HierarchyResult>,
+    /// Biological layer processing results
+    pub biological_results: Vec<BiologicalProcessingResult>,
+    /// Final oscillation phase
+    pub final_phase: OscillationPhase,
+    /// Information content achieved
+    pub information_content: f64,
+    /// System state after processing
+    pub system_state: SystemState,
 }
 
+/// Current state of the oscillatory system
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ResponseMetadata {
-    pub query_id: Uuid,
-    pub processing_time_ms: u64,
-    pub resonance_achieved: bool,
-    pub quantum_coherence_maintained: bool,
-    pub timestamp: DateTime<Utc>,
+pub struct SystemState {
+    pub atp_level: f64,
+    pub quantum_coherence: f64,
+    pub oscillation_synchrony: f64,
+    pub hierarchy_coupling: f64,
+    pub biological_efficiency: f64,
+    pub metabolic_mode: MetabolicMode,
+    pub active_oscillators: usize,
+    pub processing_timestamp: DateTime<Utc>,
 }
 
-/// Main Oscillatory Bio-Metabolic RAG System
+/// Complete Oscillatory Bio-Metabolic RAG System
+#[derive(Debug)]
 pub struct OscillatoryRAGSystem {
     /// System configuration
     config: OscillatoryRAGConfig,
-    /// Current system oscillation frequency
-    current_frequency: f64,
-    /// Current ATP level
-    current_atp: f64,
-    /// Current entropy level
-    current_entropy: f64,
-    /// Processing history for learning
-    processing_history: Vec<OscillatoryResponse>,
-    /// System state
-    system_ready: bool,
+    /// Universal oscillator for core dynamics
+    oscillator: UniversalOscillator,
+    /// Quantum membrane processor
+    quantum_processor: QuantumMembraneProcessor,
+    /// ENAQT processor for quantum transport optimization
+    enaqt_processor: ENAQTProcessor,
+    /// ATP manager for metabolic processing
+    atp_manager: QuantumATPManager,
+    /// Hierarchy processor for multi-scale processing
+    hierarchy_processor: NestedHierarchyProcessor,
+    /// Biological layer processor
+    biological_processor: BiologicalLayerProcessor,
+    /// Current system state
+    system_state: SystemState,
+    /// Processing statistics
+    processing_stats: ProcessingStatistics,
+}
+
+#[derive(Debug, Clone, Default)]
+struct ProcessingStatistics {
+    total_queries: usize,
+    successful_queries: usize,
+    total_atp_consumed: f64,
+    total_processing_time_ms: f64,
+    average_quality: f64,
+    quantum_enhancements: usize,
+    hierarchy_emergences: usize,
 }
 
 impl OscillatoryRAGSystem {
-    /// Create new oscillatory RAG system
-    pub fn new(config: OscillatoryRAGConfig) -> AutobahnResult<Self> {
-        log::info!("Initializing Oscillatory Bio-Metabolic RAG System...");
+    /// Initialize the complete oscillatory RAG system
+    pub async fn new(config: OscillatoryRAGConfig) -> AutobahnResult<Self> {
+        log::info!("🧬 Initializing Oscillatory Bio-Metabolic RAG System");
+        log::info!("   Temperature: {:.1} K", config.temperature);
+        log::info!("   Dimensions: {}", config.oscillation_dimensions);
+        log::info!("   Hierarchy Levels: {:?}", config.hierarchy_levels);
+        log::info!("   Metabolic Mode: {:?}", config.metabolic_mode);
+        
+        // Initialize core oscillator
+        let oscillator = UniversalOscillator::new(
+            config.oscillation_dimensions,
+            1.0, // Base frequency
+            0.1, // Damping coefficient
+        );
+        
+        // Initialize quantum processor
+        let quantum_processor = QuantumMembraneProcessor::new(config.temperature)?;
+        
+        // Initialize ENAQT processor
+        let enaqt_processor = ENAQTProcessor::new(config.temperature)?;
+        
+        // Initialize ATP manager
+        let atp_manager = QuantumATPManager::new(
+            1000.0, // Initial ATP level
+            config.atp_regeneration_rate,
+            config.metabolic_mode.clone(),
+        );
+        
+        // Initialize hierarchy processor
+        let hierarchy_processor = NestedHierarchyProcessor::new();
+        
+        // Initialize biological processor
+        let biological_processor = BiologicalLayerProcessor::new(config.temperature);
+        
+        // Initialize system state
+        let system_state = SystemState {
+            atp_level: 1000.0,
+            quantum_coherence: 0.8,
+            oscillation_synchrony: 0.9,
+            hierarchy_coupling: 0.7,
+            biological_efficiency: 0.8,
+            metabolic_mode: config.metabolic_mode.clone(),
+            active_oscillators: 1,
+            processing_timestamp: Utc::now(),
+        };
         
         Ok(Self {
             config,
-            current_frequency: 40.0,
-            current_atp: 1000.0, // Initial ATP
-            current_entropy: 1.0, // Initial entropy
-            processing_history: Vec::new(),
-            system_ready: true,
+            oscillator,
+            quantum_processor,
+            enaqt_processor,
+            atp_manager,
+            hierarchy_processor,
+            biological_processor,
+            system_state,
+            processing_stats: ProcessingStatistics::default(),
         })
     }
     
-    /// Process query through oscillatory bio-metabolic pipeline
-    pub async fn process_query(&mut self, query: OscillatoryQuery) -> AutobahnResult<OscillatoryResponse> {
+    /// Process a query through the complete oscillatory system
+    pub async fn process_query(&mut self, query: &str) -> AutobahnResult<OscillatoryResponse> {
         let start_time = std::time::Instant::now();
+        let oscillatory_query = OscillatoryQuery::new(query.to_string());
         
-        log::info!("Processing query {} with oscillatory RAG", query.query_id);
+        log::info!("🔄 Processing query: {} chars, complexity: {:.1}", 
+                  query.len(), oscillatory_query.complexity);
         
-        // Phase 1: Initialize oscillatory dynamics
-        let initial_entropy = self.current_entropy;
-        let initial_atp = self.current_atp;
+        // Wrap processing in timeout
+        let processing_result = timeout(
+            Duration::from_millis(self.config.max_processing_time_ms),
+            self.process_query_internal(oscillatory_query)
+        ).await;
         
-        // Phase 2: Configure oscillator for query
-        self.configure_for_query(&query)?;
-        
-        // Phase 3: Simulate Universal Oscillation Equation processing
-        let oscillation_results = self.simulate_oscillatory_processing(&query).await?;
-        
-        // Phase 4: Quantum enhancement processing
-        let quantum_enhancement = self.apply_quantum_enhancement(&query, &oscillation_results).await?;
-        
-        // Phase 5: Temperature advantage calculation
-        let temperature_advantage = self.calculate_temperature_advantage(query.temperature);
-        
-        // Phase 6: Biological metabolism simulation
-        let metabolism_results = self.simulate_biological_metabolism(&query).await?;
-        
-        // Phase 7: Entropy analysis
-        let final_entropy = self.calculate_final_entropy(&query, &metabolism_results)?;
-        
-        // Phase 8: Check for champagne phase
-        let champagne_achieved = self.evaluate_champagne_phase(&metabolism_results).await?;
-        
-        // Phase 9: Generate response content
-        let response_content = self.generate_response_content(&query, &metabolism_results).await?;
-        
-        // Update system state
-        self.current_entropy = final_entropy;
-        self.current_atp = initial_atp - metabolism_results.atp_consumed + metabolism_results.atp_produced;
-        
-        // Compile response
-        let response = OscillatoryResponse {
-            content: response_content,
-            confidence: metabolism_results.confidence,
-            atp_consumed: metabolism_results.atp_consumed,
-            atp_produced: metabolism_results.atp_produced,
-            initial_entropy,
-            final_entropy,
-            total_oscillations: oscillation_results.total_oscillations,
-            final_frequency: oscillation_results.final_frequency,
-            quantum_enhancement,
-            temperature_advantage,
-            champagne_achieved,
-            metadata: ResponseMetadata {
-                query_id: query.query_id,
-                processing_time_ms: start_time.elapsed().as_millis() as u64,
-                resonance_achieved: oscillation_results.resonance_achieved,
-                quantum_coherence_maintained: quantum_enhancement > 1.0,
-                timestamp: Utc::now(),
+        match processing_result {
+            Ok(result) => {
+                let processing_time = start_time.elapsed().as_secs_f64() * 1000.0;
+                self.update_processing_stats(&result, processing_time);
+                Ok(result?)
             },
-        };
+            Err(_) => {
+                log::warn!("⏱️ Query processing timeout after {}ms", self.config.max_processing_time_ms);
+                Err(AutobahnError::ModelTimeout {
+                    model_id: "oscillatory_rag".to_string(),
+                    timeout_ms: self.config.max_processing_time_ms,
+                })
+            }
+        }
+    }
+    
+    /// Internal query processing implementation
+    async fn process_query_internal(&mut self, query: OscillatoryQuery) -> AutobahnResult<OscillatoryResponse> {
+        // Phase 1: ATP Cost Assessment and Allocation
+        let estimated_cost = self.estimate_processing_cost(&query)?;
+        self.atp_manager.reserve_atp(estimated_cost).await?;
         
-        // Store in history
-        self.processing_history.push(response.clone());
-        if self.processing_history.len() > 1000 {
-            self.processing_history.drain(..100);
+        log::debug!("💰 Estimated ATP cost: {:.2}, available: {:.2}", 
+                   estimated_cost, self.atp_manager.get_current_atp_level());
+        
+        // Phase 2: Oscillatory Dynamics Configuration
+        self.configure_oscillator_for_query(&query)?;
+        let mut oscillation_results = Vec::new();
+        
+        // Phase 3: Quantum Membrane Processing (if enabled)
+        let mut quantum_results = HashMap::new();
+        if self.config.quantum_enhancement {
+            quantum_results = self.process_quantum_membrane(&query).await?;
+            log::debug!("🔬 Quantum processing completed: {} results", quantum_results.len());
         }
         
-        log::info!("Query {} processed successfully in {}ms", 
-                  query.query_id, 
-                  response.metadata.processing_time_ms);
+        // Phase 4: ENAQT Optimization (if enabled)
+        if self.config.enaqt_optimization && !quantum_results.is_empty() {
+            let optimization_result = self.enaqt_processor.optimize_transport(&query.content, &quantum_results)?;
+            quantum_results.insert("enaqt_efficiency".to_string(), optimization_result);
+            log::debug!("⚡ ENAQT optimization: efficiency {:.2}", optimization_result);
+        }
+        
+        // Phase 5: Multi-Scale Hierarchy Processing
+        let mut hierarchy_results = Vec::new();
+        for level in &query.hierarchy_levels {
+            let hierarchy_result = self.hierarchy_processor.process_at_level(
+                *level,
+                &query.content,
+                query.complexity,
+            )?;
+            hierarchy_results.push(hierarchy_result);
+        }
+        
+        log::debug!("🏗️ Hierarchy processing: {} levels completed", hierarchy_results.len());
+        
+        // Phase 6: Biological Layer Processing
+        let mut biological_results = Vec::new();
+        self.biological_processor.update_metabolic_mode(self.config.metabolic_mode.clone());
+        
+        for layer in &query.biological_layers {
+            let biological_result = self.biological_processor.process_at_layer(
+                *layer,
+                &query.content,
+                query.complexity,
+            )?;
+            biological_results.push(biological_result);
+        }
+        
+        log::debug!("🧠 Biological processing: {} layers completed", biological_results.len());
+        
+        // Phase 7: Oscillatory Integration and Response Generation
+        let integration_result = self.integrate_processing_results(
+            &query,
+            &quantum_results,
+            &hierarchy_results,
+            &biological_results,
+        )?;
+        
+        // Phase 8: Final Oscillation State and Response Assembly
+        let final_profile = self.oscillator.get_current_profile();
+        oscillation_results.push(final_profile.clone());
+        
+        let response_content = self.generate_response_content(&integration_result)?;
+        let overall_quality = self.calculate_overall_quality(&integration_result)?;
+        let actual_atp_cost = self.atp_manager.consume_reserved_atp().await?;
+        
+        // Update system state
+        self.update_system_state(&hierarchy_results, &biological_results, actual_atp_cost);
+        
+        let response = OscillatoryResponse {
+            content: response_content,
+            success: overall_quality > query.min_quality.unwrap_or(0.0),
+            quality: overall_quality,
+            atp_cost: actual_atp_cost,
+            processing_time_ms: 0.0, // Will be set by caller
+            oscillation_results,
+            quantum_results,
+            hierarchy_results,
+            biological_results,
+            final_phase: final_profile.phase,
+            information_content: final_profile.calculate_information_content(),
+            system_state: self.system_state.clone(),
+        };
+        
+        log::info!("✅ Query processed: quality={:.2}, cost={:.2} ATP", 
+                  overall_quality, actual_atp_cost);
         
         Ok(response)
     }
     
-    /// Configure oscillator parameters based on query characteristics
-    fn configure_for_query(&mut self, query: &OscillatoryQuery) -> AutobahnResult<()> {
-        // Adjust frequency based on query complexity
-        self.current_frequency = query.frequency * (1.0 + query.complexity * 0.1);
+    /// Estimate ATP cost for processing a query
+    fn estimate_processing_cost(&self, query: &OscillatoryQuery) -> AutobahnResult<f64> {
+        let base_cost = 10.0 * query.complexity;
         
-        // Update entropy target based on complexity
-        let entropy_factor = (query.complexity / 3.0).clamp(0.5, 2.0);
-        self.current_entropy = self.config.target_entropy * entropy_factor;
+        // Hierarchy processing cost
+        let hierarchy_cost = query.hierarchy_levels.iter()
+            .map(|level| match level {
+                HierarchyLevel::QuantumOscillations => 100.0,
+                HierarchyLevel::AtomicOscillations => 80.0,
+                HierarchyLevel::MolecularOscillations => 60.0,
+                HierarchyLevel::CellularOscillations => 40.0,
+                HierarchyLevel::OrganismalOscillations => 30.0,
+                HierarchyLevel::CognitiveOscillations => 50.0,
+                HierarchyLevel::SocialOscillations => 35.0,
+                HierarchyLevel::TechnologicalOscillations => 45.0,
+                HierarchyLevel::CivilizationalOscillations => 70.0,
+                HierarchyLevel::CosmicOscillations => 90.0,
+            })
+            .sum::<f64>();
         
-        log::debug!("Configured oscillator: freq={:.2} Hz, entropy={:.2}", 
-                   self.current_frequency, self.current_entropy);
+        // Biological layer cost
+        let biological_cost = query.biological_layers.iter()
+            .map(|layer| layer.metabolic_cost_multiplier() * 15.0)
+            .sum::<f64>();
+        
+        // Quantum enhancement cost
+        let quantum_cost = if self.config.quantum_enhancement { 50.0 } else { 0.0 };
+        
+        // ENAQT optimization cost
+        let enaqt_cost = if self.config.enaqt_optimization { 30.0 } else { 0.0 };
+        
+        // Apply metabolic mode modifier
+        let total_base_cost = base_cost + hierarchy_cost + biological_cost + quantum_cost + enaqt_cost;
+        let metabolic_modifier = match &self.config.metabolic_mode {
+            MetabolicMode::SustainedFlight { efficiency_boost, .. } => 1.0 / efficiency_boost,
+            MetabolicMode::ColdBlooded { metabolic_reduction, .. } => *metabolic_reduction,
+            MetabolicMode::MammalianBurden { quantum_cost_multiplier, .. } => *quantum_cost_multiplier,
+            MetabolicMode::AnaerobicEmergency { efficiency_penalty, .. } => 1.0 + efficiency_penalty,
+        };
+        
+        Ok(total_base_cost * metabolic_modifier)
+    }
+    
+    /// Configure oscillator for specific query characteristics
+    fn configure_oscillator_for_query(&mut self, query: &OscillatoryQuery) -> AutobahnResult<()> {
+        // Update frequency based on query requirements
+        let target_frequency = query.frequency;
+        self.oscillator.set_frequency(target_frequency);
+        
+        // Apply forcing function based on complexity
+        let forcing_amplitude = query.complexity / 10.0;
+        self.oscillator.apply_forcing_function(forcing_amplitude);
+        
+        // Set damping based on desired precision
+        let damping = if query.complexity > 7.0 { 0.05 } else { 0.1 };
+        self.oscillator.set_damping(damping);
+        
+        log::debug!("🎛️ Oscillator configured: freq={:.2} Hz, damping={:.3}, forcing={:.2}",
+                   target_frequency, damping, forcing_amplitude);
         
         Ok(())
     }
     
-    /// Simulate oscillatory processing using Universal Oscillation Equation
-    async fn simulate_oscillatory_processing(&mut self, query: &OscillatoryQuery) -> AutobahnResult<OscillationResults> {
-        use crate::oscillatory::UniversalOscillator;
+    /// Process quantum membrane computations
+    async fn process_quantum_membrane(&mut self, query: &OscillatoryQuery) -> AutobahnResult<HashMap<String, f64>> {
+        let mut results = HashMap::new();
         
-        // Create oscillator based on query parameters
-        let mut oscillator = UniversalOscillator::new(
-            1.0,                    // Initial amplitude
-            self.current_frequency, // Natural frequency
-            0.1,                    // Damping coefficient
-            self.config.oscillation_dimensions, // Dimensions
-        );
-        
-        // Add external forcing based on query complexity
-        let forcing_amplitude = query.complexity * 0.5;
-        oscillator = oscillator.with_forcing(move |t| {
-            forcing_amplitude * (2.0 * std::f64::consts::PI * 10.0 * t).sin()
-        });
-        
-        // Evolve oscillator through time steps
-        let dt = 0.01; // 10ms time steps
-        let total_time = 1.0; // 1 second total
-        let steps = (total_time / dt) as usize;
-        
-        let mut total_oscillations = 0;
-        let mut resonance_achieved = false;
-        
-        for _ in 0..steps {
-            oscillator.evolve(dt)?;
-            
-            // Count oscillations (zero crossings)
-            if oscillator.state.position.len() > 0 && oscillator.state.position[0].abs() < 0.01 {
-                total_oscillations += 1;
-            }
-            
-            // Check for resonance
-            if oscillator.calculate_phase() == crate::oscillatory::OscillationPhase::Resonance {
-                resonance_achieved = true;
-            }
-        }
-        
-        let final_frequency = oscillator.state.frequency;
-        let final_amplitude = oscillator.state.amplitude;
-        
-        log::debug!("Oscillation simulation: {} oscillations, final freq={:.2} Hz, amplitude={:.2}", 
-                   total_oscillations, final_frequency, final_amplitude);
-        
-        Ok(OscillationResults {
-            total_oscillations,
-            final_frequency,
-            final_amplitude,
-            resonance_achieved,
-        })
-    }
-    
-    /// Apply quantum enhancement using ENAQT processor
-    async fn apply_quantum_enhancement(&self, query: &OscillatoryQuery, oscillations: &OscillationResults) -> AutobahnResult<f64> {
-        use crate::quantum::ENAQTProcessor;
-        
-        // Create ENAQT processor for quantum enhancement
-        let enaqt = ENAQTProcessor::new(7); // 7-site system (like FMO complex)
+        // Calculate quantum tunneling probability
+        let tunneling_prob = self.quantum_processor.calculate_tunneling_probability(
+            query.complexity * 0.1, // Barrier height in eV
+            1.0, // Particle energy
+        )?;
+        results.insert("tunneling_probability".to_string(), tunneling_prob);
         
         // Calculate transport efficiency
-        let efficiency = enaqt.calculate_transport_efficiency(
-            self.config.quantum_coupling_strength,
-            query.temperature,
-        )?;
-        
-        // Apply enhancement based on resonance and frequency
-        let frequency_factor = (oscillations.final_frequency / 40.0).min(2.0); // Optimal around 40 Hz
-        let resonance_factor = if oscillations.resonance_achieved { 1.5 } else { 1.0 };
-        
-        let quantum_enhancement = efficiency * frequency_factor * resonance_factor;
-        
-        log::debug!("Quantum enhancement: efficiency={:.2}, factor={:.2}", 
-                   efficiency, quantum_enhancement);
-        
-        Ok(quantum_enhancement)
-    }
-    
-    /// Calculate temperature advantage for cold-blooded systems
-    fn calculate_temperature_advantage(&self, temperature: f64) -> f64 {
-        // Exponential advantage as temperature decreases below 300K
-        if temperature < 300.0 {
-            let temp_diff = 300.0 - temperature;
-            1.0 + (temp_diff / 50.0).exp() - 1.0
-        } else {
-            // Penalty for high temperature (mammalian burden)
-            1.0 / (1.0 + (temperature - 300.0) / 100.0)
-        }
-    }
-    
-    /// Simulate biological metabolism with ATP management
-    async fn simulate_biological_metabolism(&mut self, query: &OscillatoryQuery) -> AutobahnResult<MetabolismResults> {
-        use crate::atp::{QuantumATPManager, MetabolicMode};
-        use crate::hierarchy::HierarchyLevel;
-        
-        // Initialize ATP manager
-        let mut atp_manager = QuantumATPManager::new(1000.0, query.temperature);
-        
-        // Determine appropriate hierarchy level for processing
-        let hierarchy_level = if query.complexity < 1.0 {
-            HierarchyLevel::CellularOscillations
-        } else if query.complexity < 2.0 {
-            HierarchyLevel::OrganismalOscillations
-        } else {
-            HierarchyLevel::CognitiveOscillations
-        };
-        
-        // Create quantum oscillatory profile
-        use crate::oscillatory::OscillationProfile;
-        use crate::quantum::QuantumOscillatoryProfile;
-        
-        let base_oscillation = OscillationProfile::new(query.complexity, query.frequency);
-        let quantum_profile = QuantumOscillatoryProfile::new(base_oscillation, query.temperature);
-        
-        // Calculate ATP cost
-        let atp_cost = atp_manager.calculate_quantum_atp_cost(
-            hierarchy_level,
+        let transport_efficiency = self.quantum_processor.calculate_transport_efficiency(
             query.complexity,
-            &quantum_profile,
-        ).await?;
+            self.config.temperature,
+        )?;
+        results.insert("transport_efficiency".to_string(), transport_efficiency);
         
-        // Consume ATP
-        let consumption_success = atp_manager.consume_atp(
-            hierarchy_level,
-            atp_cost,
-            "oscillatory_processing",
-        ).await?;
+        // Calculate quantum coherence time
+        let coherence_time = self.quantum_processor.calculate_coherence_time(
+            self.config.temperature,
+            query.complexity,
+        )?;
+        results.insert("coherence_time_fs".to_string(), coherence_time);
         
-        // Calculate confidence based on ATP availability and quantum enhancement
-        let confidence = if consumption_success {
-            0.8 + (quantum_profile.quantum_advantage() - 1.0) * 0.2
-        } else {
-            0.3 // Low confidence if insufficient ATP
-        };
+        // Apply quantum enhancement to oscillation
+        let quantum_enhancement = 1.0 + transport_efficiency * 0.3;
+        self.oscillator.apply_quantum_enhancement(quantum_enhancement);
         
-        // Generate some ATP through quantum processes
-        let atp_produced = atp_cost * quantum_profile.quantum_advantage() * 0.5;
+        log::debug!("🌌 Quantum membrane results: tunneling={:.4}, transport={:.3}, coherence={:.1}fs",
+                   tunneling_prob, transport_efficiency, coherence_time);
         
-        // Update current ATP
-        self.current_atp = (self.current_atp - atp_cost + atp_produced).max(0.0);
+        Ok(results)
+    }
+    
+    /// Integration structure for processing results
+    #[derive(Debug)]
+    struct IntegrationResult {
+        overall_coherence: f64,
+        information_synthesis: f64,
+        emergence_detected: bool,
+        quantum_advantage: f64,
+        biological_efficiency: f64,
+        hierarchy_coupling: f64,
+        response_components: Vec<String>,
+    }
+    
+    /// Integrate all processing results
+    fn integrate_processing_results(
+        &self,
+        query: &OscillatoryQuery,
+        quantum_results: &HashMap<String, f64>,
+        hierarchy_results: &[HierarchyResult],
+        biological_results: &[BiologicalProcessingResult],
+    ) -> AutobahnResult<IntegrationResult> {
         
-        log::debug!("Metabolism: consumed={:.1} ATP, produced={:.1} ATP, confidence={:.2}", 
-                   atp_cost, atp_produced, confidence);
+        // Calculate overall coherence from all subsystems
+        let quantum_coherence = quantum_results.get("transport_efficiency").unwrap_or(&0.0);
+        let hierarchy_coherence = hierarchy_results.iter()
+            .map(|r| r.coupling_strength)
+            .sum::<f64>() / hierarchy_results.len() as f64;
+        let biological_coherence = biological_results.iter()
+            .map(|r| r.oscillation_coherence)
+            .sum::<f64>() / biological_results.len() as f64;
         
-        Ok(MetabolismResults {
-            atp_consumed: atp_cost,
-            atp_produced,
-            confidence,
-            processing_quality: confidence * quantum_profile.quantum_advantage(),
+        let overall_coherence = (quantum_coherence + hierarchy_coherence + biological_coherence) / 3.0;
+        
+        // Calculate information synthesis
+        let hierarchy_info = hierarchy_results.iter()
+            .map(|r| r.information_content)
+            .sum::<f64>();
+        let biological_info = biological_results.iter()
+            .map(|r| r.information_content)
+            .sum::<f64>();
+        
+        let information_synthesis = hierarchy_info + biological_info;
+        
+        // Detect emergence patterns
+        let emergence_count = hierarchy_results.iter()
+            .filter(|r| r.emergence_detected)
+            .count();
+        let emergence_detected = emergence_count >= 2;
+        
+        // Calculate quantum advantage
+        let quantum_advantage = quantum_results.values().copied().sum::<f64>() / quantum_results.len() as f64;
+        
+        // Calculate biological efficiency
+        let biological_efficiency = biological_results.iter()
+            .map(|r| r.output_quality)
+            .sum::<f64>() / biological_results.len() as f64;
+        
+        // Calculate hierarchy coupling strength
+        let hierarchy_coupling = hierarchy_results.iter()
+            .map(|r| r.coupling_strength)
+            .sum::<f64>() / hierarchy_results.len() as f64;
+        
+        // Generate response components
+        let mut response_components = Vec::new();
+        
+        // Add quantum insights
+        if quantum_advantage > 0.5 {
+            response_components.push(format!(
+                "Quantum membrane processing indicates {} transport efficiency.",
+                if quantum_advantage > 0.8 { "high" } else { "moderate" }
+            ));
+        }
+        
+        // Add hierarchy insights
+        if emergence_detected {
+            response_components.push(format!(
+                "Multi-scale analysis reveals emergent patterns across {} hierarchy levels.",
+                emergence_count
+            ));
+        }
+        
+        // Add biological insights
+        if biological_efficiency > 0.7 {
+            response_components.push(format!(
+                "Biological layer processing achieved {:.0}% efficiency through {}-layer integration.",
+                biological_efficiency * 100.0,
+                biological_results.len()
+            ));
+        }
+        
+        // Add metabolic context
+        response_components.push(format!(
+            "Processing optimized for {:?} metabolic conditions.",
+            self.config.metabolic_mode
+        ));
+        
+        Ok(IntegrationResult {
+            overall_coherence,
+            information_synthesis,
+            emergence_detected,
+            quantum_advantage,
+            biological_efficiency,
+            hierarchy_coupling,
+            response_components,
         })
     }
     
-    /// Calculate final entropy after processing
-    fn calculate_final_entropy(&self, query: &OscillatoryQuery, metabolism: &MetabolismResults) -> AutobahnResult<f64> {
-        // Entropy changes based on information processing
-        let information_bits = query.content.len() as f64 * 8.0; // Rough estimate
-        let entropy_reduction = information_bits / (1000.0 * metabolism.processing_quality);
+    /// Generate final response content
+    fn generate_response_content(&self, integration: &IntegrationResult) -> AutobahnResult<String> {
+        let mut response = String::new();
         
-        let final_entropy = (self.current_entropy - entropy_reduction).max(0.1);
-        
-        log::debug!("Entropy: initial={:.2}, reduction={:.2}, final={:.2}", 
-                   self.current_entropy, entropy_reduction, final_entropy);
-        
-        Ok(final_entropy)
-    }
-    
-    /// Evaluate whether champagne phase was achieved
-    async fn evaluate_champagne_phase(&self, metabolism: &MetabolismResults) -> AutobahnResult<bool> {
-        // Champagne phase achieved if high confidence and efficiency
-        let champagne_achieved = metabolism.confidence > self.config.champagne_threshold
-            && metabolism.processing_quality > 1.5;
-        
-        if champagne_achieved {
-            log::info!("🍾 Champagne phase achieved! High-quality processing detected.");
+        // Add main response based on integration results
+        if integration.emergence_detected {
+            response.push_str("## Emergent Pattern Analysis\n\n");
+            response.push_str("The multi-scale oscillatory analysis reveals emergent properties that arise from the complex interplay between quantum membrane dynamics, hierarchical organization, and biological processing layers.\n\n");
         }
         
-        Ok(champagne_achieved)
+        if integration.quantum_advantage > 0.6 {
+            response.push_str("## Quantum-Enhanced Insights\n\n");
+            response.push_str("Quantum membrane computation provides enhanced information transport efficiency, leveraging Environment-Assisted Quantum Transport (ENAQT) principles for optimal processing.\n\n");
+        }
+        
+        response.push_str("## Integrated Analysis\n\n");
+        
+        // Add component insights
+        for component in &integration.response_components {
+            response.push_str(&format!("- {}\n", component));
+        }
+        
+        response.push_str("\n## Processing Summary\n\n");
+        response.push_str(&format!(
+            "- Overall Coherence: {:.1}%\n",
+            integration.overall_coherence * 100.0
+        ));
+        response.push_str(&format!(
+            "- Information Synthesis: {:.2} bits\n",
+            integration.information_synthesis
+        ));
+        response.push_str(&format!(
+            "- Quantum Advantage: {:.1}%\n",
+            integration.quantum_advantage * 100.0
+        ));
+        response.push_str(&format!(
+            "- Biological Efficiency: {:.1}%\n",
+            integration.biological_efficiency * 100.0
+        ));
+        response.push_str(&format!(
+            "- Hierarchy Coupling: {:.1}%\n",
+            integration.hierarchy_coupling * 100.0
+        ));
+        
+        Ok(response)
     }
     
-    /// Generate response content based on processing results
-    async fn generate_response_content(&self, query: &OscillatoryQuery, metabolism: &MetabolismResults) -> AutobahnResult<String> {
-        // Simple response generation based on processing quality
-        let base_response = format!(
-            "Processed query '{}' through oscillatory bio-metabolic pipeline.",
-            query.content.chars().take(50).collect::<String>()
-        );
+    /// Calculate overall processing quality
+    fn calculate_overall_quality(&self, integration: &IntegrationResult) -> AutobahnResult<f64> {
+        let base_quality = 0.5;
         
-        let quality_suffix = if metabolism.processing_quality > 2.0 {
-            " High-quality quantum-enhanced processing achieved."
-        } else if metabolism.processing_quality > 1.0 {
-            " Standard quantum processing completed."
-        } else {
-            " Basic processing with limited quantum enhancement."
-        };
+        let coherence_bonus = integration.overall_coherence * 0.3;
+        let quantum_bonus = integration.quantum_advantage * 0.2;
+        let biological_bonus = integration.biological_efficiency * 0.2;
+        let emergence_bonus = if integration.emergence_detected { 0.1 } else { 0.0 };
         
-        let confidence_note = format!(
-            " Processing confidence: {:.1}%",
-            metabolism.confidence * 100.0
-        );
+        let total_quality = base_quality + coherence_bonus + quantum_bonus + biological_bonus + emergence_bonus;
         
-        Ok(format!("{}{}{}", base_response, quality_suffix, confidence_note))
+        Ok(total_quality.min(1.0))
     }
     
-    /// Get current system status
-    pub fn get_system_status(&self) -> SystemStatus {
-        SystemStatus {
-            current_atp: self.current_atp,
-            current_entropy: self.current_entropy,
-            current_frequency: self.current_frequency,
-            total_queries_processed: self.processing_history.len(),
-            system_ready: self.system_ready,
-            average_confidence: self.calculate_average_confidence(),
+    /// Update system state after processing
+    fn update_system_state(
+        &mut self,
+        hierarchy_results: &[HierarchyResult],
+        biological_results: &[BiologicalProcessingResult],
+        atp_consumed: f64,
+    ) {
+        self.system_state.atp_level = self.atp_manager.get_current_atp_level();
+        
+        self.system_state.hierarchy_coupling = hierarchy_results.iter()
+            .map(|r| r.coupling_strength)
+            .sum::<f64>() / hierarchy_results.len() as f64;
+        
+        self.system_state.biological_efficiency = biological_results.iter()
+            .map(|r| r.output_quality)
+            .sum::<f64>() / biological_results.len() as f64;
+        
+        self.system_state.processing_timestamp = Utc::now();
+        
+        log::debug!("📊 System state updated: ATP={:.1}, coupling={:.2}, efficiency={:.2}",
+                   self.system_state.atp_level,
+                   self.system_state.hierarchy_coupling,
+                   self.system_state.biological_efficiency);
+    }
+    
+    /// Update processing statistics
+    fn update_processing_stats(&mut self, response: &OscillatoryResponse, processing_time: f64) {
+        self.processing_stats.total_queries += 1;
+        
+        if response.success {
+            self.processing_stats.successful_queries += 1;
+        }
+        
+        self.processing_stats.total_atp_consumed += response.atp_cost;
+        self.processing_stats.total_processing_time_ms += processing_time;
+        
+        let current_avg = self.processing_stats.average_quality;
+        let n = self.processing_stats.total_queries as f64;
+        self.processing_stats.average_quality = (current_avg * (n - 1.0) + response.quality) / n;
+        
+        if !response.quantum_results.is_empty() {
+            self.processing_stats.quantum_enhancements += 1;
+        }
+        
+        let emergence_count = response.hierarchy_results.iter()
+            .filter(|r| r.emergence_detected)
+            .count();
+        if emergence_count > 0 {
+            self.processing_stats.hierarchy_emergences += 1;
         }
     }
     
-    /// Calculate average confidence from processing history
-    fn calculate_average_confidence(&self) -> f64 {
-        if self.processing_history.is_empty() {
-            return 0.0;
+    /// Get current system statistics
+    pub fn get_processing_statistics(&self) -> ProcessingStatistics {
+        self.processing_stats.clone()
+    }
+    
+    /// Get current system state
+    pub fn get_system_state(&self) -> SystemState {
+        self.system_state.clone()
+    }
+    
+    /// Update system configuration
+    pub fn update_config(&mut self, new_config: OscillatoryRAGConfig) -> AutobahnResult<()> {
+        log::info!("🔧 Updating system configuration");
+        
+        // Update metabolic mode if changed
+        if new_config.metabolic_mode != self.config.metabolic_mode {
+            self.atp_manager.update_metabolic_mode(new_config.metabolic_mode.clone())?;
+            self.biological_processor.update_metabolic_mode(new_config.metabolic_mode.clone());
         }
         
-        let total_confidence: f64 = self.processing_history
-            .iter()
-            .map(|response| response.confidence)
-            .sum();
+        // Update temperature if changed
+        if (new_config.temperature - self.config.temperature).abs() > 1.0 {
+            // Note: Would need to reinitialize quantum processors for significant temperature changes
+            log::warn!("Temperature change detected: {:.1}K -> {:.1}K", 
+                      self.config.temperature, new_config.temperature);
+        }
         
-        total_confidence / self.processing_history.len() as f64
+        self.config = new_config;
+        self.system_state.metabolic_mode = self.config.metabolic_mode.clone();
+        
+        Ok(())
     }
-}
-
-// Helper structs for internal processing
-#[derive(Debug, Clone)]
-struct OscillationResults {
-    total_oscillations: u64,
-    final_frequency: f64,
-    final_amplitude: f64,
-    resonance_achieved: bool,
-}
-
-#[derive(Debug, Clone)]
-struct MetabolismResults {
-    atp_consumed: f64,
-    atp_produced: f64,
-    confidence: f64,
-    processing_quality: f64,
-}
-
-/// System status information
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SystemStatus {
-    pub current_atp: f64,
-    pub current_entropy: f64,
-    pub current_frequency: f64,
-    pub total_queries_processed: usize,
-    pub system_ready: bool,
-    pub average_confidence: f64,
-}
-
-// Re-export key types
-pub use {
-    OscillatoryRAGConfig,
-    OscillatoryQuery,
-    OscillatoryResponse,
-    OscillatoryRAGSystem,
-    SystemStatus,
-}; 
+} 

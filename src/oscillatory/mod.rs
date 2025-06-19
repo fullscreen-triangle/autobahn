@@ -170,10 +170,9 @@ impl UniversalOscillator {
     /// Evolve the oscillator by time step dt using the Universal Oscillation Equation
     pub fn evolve(&mut self, dt: f64) -> AutobahnResult<()> {
         if dt <= 0.0 {
-            return Err(AutobahnError::ConfigurationError {
-                parameter: "dt".to_string(),
-                value: dt.to_string(),
-            });
+            return Err(AutobahnError::ConfigurationError(
+                format!("Invalid time step: {}", dt)
+            ));
         }
         
         // Get current time for forcing function
@@ -241,7 +240,7 @@ impl UniversalOscillator {
         
         Ok(())
     }
-    
+
     /// Determine current oscillation phase based on position and velocity
     pub fn calculate_phase(&self) -> OscillationPhase {
         let velocity_magnitude = self.state.velocity.norm();
@@ -314,14 +313,14 @@ impl UniversalOscillator {
         
         (n * sum_xy - sum_x * sum_y) / denominator
     }
-    
+
     /// Get oscillation energy
     pub fn total_energy(&self) -> f64 {
         let kinetic = 0.5 * self.state.velocity.norm_squared();
         let potential = 0.5 * self.state.natural_frequency.powi(2) * self.state.position.norm_squared();
         kinetic + potential
     }
-    
+
     /// Get current oscillation profile
     pub fn get_profile(&self) -> OscillationProfile {
         let mut profile = OscillationProfile::new(self.state.amplitude, self.state.frequency);
@@ -332,6 +331,39 @@ impl UniversalOscillator {
             f64::INFINITY
         };
         profile
+    }
+    
+    /// Synchronize with another oscillator (mutual coupling)
+    pub fn synchronize_with(&mut self, other: &UniversalOscillator, coupling_strength: f64) -> AutobahnResult<()> {
+        if coupling_strength < 0.0 || coupling_strength > 1.0 {
+            return Err(AutobahnError::ConfigurationError(
+                format!("Invalid coupling strength: {}", coupling_strength)
+            ));
+        }
+        
+        // Calculate phase difference
+        let phase_diff = other.state.phase - self.state.phase;
+        
+        // Apply coupling force proportional to phase difference
+        let coupling_force = coupling_strength * phase_diff.sin();
+        
+        // Modify the external forcing to include coupling
+        let current_forcing = self.state.external_forcing_amplitude;
+        let new_forcing = current_forcing + coupling_force;
+        
+        // Update forcing amplitude
+        self.state.external_forcing_amplitude = new_forcing;
+        
+        Ok(())
+    }
+    
+    /// Calculate quality factor Q = ω₀/(2γ)
+    pub fn quality_factor(&self) -> f64 {
+        if self.state.damping_coefficient > 0.0 {
+            self.state.natural_frequency / (2.0 * self.state.damping_coefficient)
+        } else {
+            f64::INFINITY
+        }
     }
 }
 

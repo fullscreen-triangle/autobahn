@@ -1,9 +1,164 @@
-//! Error handling for the Autobahn biological metabolism computer
-//!
-//! This module defines all error types that can occur during biological processing,
-//! from ATP depletion to adversarial attacks to processing failures.
+//! Comprehensive error handling for the oscillatory bio-metabolic system.
+//! Errors are categorized by their biological and physical origins.
 
 use thiserror::Error;
+
+#[derive(Error, Debug)]
+pub enum AutobahnError {
+    // ATP and Energy Management Errors
+    #[error("Insufficient ATP: required {required:.2}, available {available:.2}")]
+    InsufficientATP { required: f64, available: f64 },
+    
+    #[error("ATP regeneration failed: rate {rate:.2} below minimum threshold")]
+    ATPRegenerationFailure { rate: f64 },
+    
+    #[error("Metabolic mode transition failed: cannot switch from {from:?} to {to:?}")]
+    MetabolicTransitionFailure { from: String, to: String },
+    
+    // Oscillatory Dynamics Errors
+    #[error("Oscillation desynchronization: frequency mismatch {observer:.2} Hz vs {system:.2} Hz")]
+    DesynchronizationError { observer: f64, system: f64 },
+    
+    #[error("Oscillation amplitude overflow: {amplitude:.2} exceeds maximum {max_amplitude:.2}")]
+    AmplitudeOverflow { amplitude: f64, max_amplitude: f64 },
+    
+    #[error("Phase coherence lost: coherence time {coherence_time_fs:.2} fs below threshold")]
+    CoherenceLoss { coherence_time_fs: f64 },
+    
+    // Quantum Mechanical Errors
+    #[error("Quantum tunneling probability calculation failed: barrier height {barrier_height:.2} eV")]
+    QuantumTunnelingFailure { barrier_height: f64 },
+    
+    #[error("ENAQT coupling optimization failed: coupling strength {coupling:.2} out of bounds")]
+    ENAQTCouplingFailure { coupling: f64 },
+    
+    #[error("Quantum coherence decoherence rate {rate:.2} exceeds transport rate")]
+    QuantumDecoherenceFailure { rate: f64 },
+    
+    // Hierarchy and Scale Errors
+    #[error("Hierarchy level {level} not supported (valid range: 1-10)")]
+    UnsupportedHierarchyLevel { level: u8 },
+    
+    #[error("Cross-scale coupling failed between levels {level1} and {level2}")]
+    CrossScaleCouplingFailure { level1: u8, level2: u8 },
+    
+    #[error("Hierarchy emergence detection failed: insufficient data points {data_points}")]
+    EmergenceDetectionFailure { data_points: usize },
+    
+    // Model Selection and Processing Errors
+    #[error("Model selection failed: no resonance found for profile")]
+    ModelSelectionFailure,
+    
+    #[error("Model API error: {model_id} returned status {status}")]
+    ModelAPIError { model_id: String, status: u16 },
+    
+    #[error("Model timeout: {model_id} exceeded {timeout_ms}ms")]
+    ModelTimeout { model_id: String, timeout_ms: u64 },
+    
+    // Entropy and Information Errors
+    #[error("Entropy calculation overflow: oscillation endpoints {endpoints}")]
+    EntropyOverflow { endpoints: usize },
+    
+    #[error("Information value calculation failed: negative probability {probability:.2}")]
+    NegativeProbability { probability: f64 },
+    
+    #[error("Oscillation termination distribution invalid: sum {sum:.2} ≠ 1.0")]
+    InvalidDistribution { sum: f64 },
+    
+    // Biological System Errors
+    #[error("Radical damage threshold exceeded: {current_damage:.2} > {threshold:.2}")]
+    RadicalDamageThreshold { current_damage: f64, threshold: f64 },
+    
+    #[error("Membrane integrity compromised: thickness {thickness_nm:.2} nm below minimum")]
+    MembraneIntegrityFailure { thickness_nm: f64 },
+    
+    #[error("Biological layer {layer:?} processing failed")]
+    BiologicalLayerFailure { layer: String },
+    
+    // System Integration Errors
+    #[error("Configuration error: {0}")]
+    ConfigurationError(String),
+    
+    #[error("Resource exhaustion: {resource} depleted")]
+    ResourceExhaustion { resource: String },
+    
+    #[error("System shutdown initiated: {reason}")]
+    SystemShutdown { reason: String },
+    
+    #[error("Physics error: {message}")]
+    PhysicsError { message: String },
+    
+    // External Integration Errors
+    #[error("Serialization error: {message}")]
+    SerializationError { message: String },
+    
+    #[error("Network error: {message}")]
+    NetworkError { message: String },
+    
+    #[error("Database error: {message}")]
+    DatabaseError { message: String },
+}
+
+impl From<serde_json::Error> for AutobahnError {
+    fn from(err: serde_json::Error) -> Self {
+        AutobahnError::SerializationError {
+            message: err.to_string(),
+        }
+    }
+}
+
+impl From<reqwest::Error> for AutobahnError {
+    fn from(err: reqwest::Error) -> Self {
+        AutobahnError::NetworkError {
+            message: err.to_string(),
+        }
+    }
+}
+
+pub type AutobahnResult<T> = std::result::Result<T, AutobahnError>;
+
+// Utility functions for error context
+impl AutobahnError {
+    pub fn is_recoverable(&self) -> bool {
+        match self {
+            // Recoverable errors that can be retried or handled gracefully
+            AutobahnError::InsufficientATP { .. } => true,
+            AutobahnError::ModelTimeout { .. } => true,
+            AutobahnError::NetworkError { .. } => true,
+            AutobahnError::DesynchronizationError { .. } => true,
+            AutobahnError::CoherenceLoss { .. } => true,
+            
+            // Non-recoverable errors that indicate fundamental problems
+            AutobahnError::SystemShutdown { .. } => false,
+            AutobahnError::MembraneIntegrityFailure { .. } => false,
+            AutobahnError::RadicalDamageThreshold { .. } => false,
+            AutobahnError::UnsupportedHierarchyLevel { .. } => false,
+            
+            // Context-dependent errors
+            _ => true,
+        }
+    }
+    
+    pub fn severity_level(&self) -> ErrorSeverity {
+        match self {
+            AutobahnError::SystemShutdown { .. } => ErrorSeverity::Critical,
+            AutobahnError::MembraneIntegrityFailure { .. } => ErrorSeverity::Critical,
+            AutobahnError::RadicalDamageThreshold { .. } => ErrorSeverity::High,
+            AutobahnError::InsufficientATP { .. } => ErrorSeverity::High,
+            AutobahnError::ModelSelectionFailure => ErrorSeverity::Medium,
+            AutobahnError::CoherenceLoss { .. } => ErrorSeverity::Medium,
+            _ => ErrorSeverity::Low,
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ErrorSeverity {
+    Low,
+    Medium,
+    High,
+    Critical,
+}
 
 /// Main error type for Autobahn operations
 #[derive(Error, Debug)]

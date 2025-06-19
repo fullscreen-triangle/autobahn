@@ -1,250 +1,226 @@
-//! Quantum membrane computation module implementing Environment-Assisted Quantum Transport (ENAQT)
-//! 
-//! This module demonstrates that biological membranes function as room-temperature quantum computers,
-//! making life a thermodynamic inevitability rather than an improbable accident.
+//! Quantum membrane computation implementation based on the Membrane Quantum Computation Theorem.
+//! This module implements Environment-Assisted Quantum Transport (ENAQT) and demonstrates
+//! how biological membranes function as room-temperature quantum computers.
+
+pub mod membrane;
+pub mod enaqt;
+pub mod computation;
+pub mod radicals;
+pub mod coherence;
 
 use crate::error::{AutobahnError, AutobahnResult};
 use crate::oscillatory::{OscillationProfile, OscillationPhase};
-use nalgebra::{DVector, DMatrix};
+use nalgebra::{Complex, DVector, DMatrix};
 use serde::{Deserialize, Serialize};
-use chrono::{DateTime, Utc};
-use std::f64::consts::PI;
+use std::collections::HashMap;
 
-/// Quantum membrane state for biological computation
+/// Quantum state of a biological membrane system
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct QuantumMembraneState {
-    /// Current temperature in Kelvin
-    pub temperature_k: f64,
-    /// ENAQT coupling strength (optimized for efficiency)
-    pub enaqt_coupling_strength: f64,
-    /// Quantum coherence time in femtoseconds
+    /// Quantum coherence time in femtoseconds (FMO complex: ~660 fs)
     pub coherence_time_fs: f64,
-    /// Electron transport efficiency (quantum-enhanced)
-    pub electron_transport_efficiency: f64,
-    /// Rate of radical generation (aging factor)
-    pub radical_generation_rate: f64,
-    /// Membrane thickness in nanometers
-    pub membrane_thickness_nm: f64,
-    /// Quantum tunneling probability
+    /// Electron tunneling probability through membrane
     pub tunneling_probability: f64,
-    /// Environment coupling matrix
-    pub environment_coupling: DMatrix<f64>,
-    /// Timestamp of last update
-    pub last_update: DateTime<Utc>,
+    /// ENAQT coupling strength (optimal ~0.4)
+    pub enaqt_coupling_strength: f64,
+    /// Operating temperature in Kelvin
+    pub temperature_k: f64,
+    /// Electron transport efficiency (biological: >90%)
+    pub electron_transport_efficiency: f64,
+    /// Rate of oxygen radical generation (quantum leakage)
+    pub radical_generation_rate: f64,
+    /// Membrane thickness in nanometers (typical: 3-5 nm)
+    pub membrane_thickness_nm: f64,
+    /// Complex quantum oscillation amplitudes
+    pub quantum_oscillations: Vec<Complex<f64>>,
+    /// Membrane potential in millivolts
+    pub membrane_potential_mv: f64,
+    /// Proton gradient strength
+    pub proton_gradient: f64,
 }
 
 impl QuantumMembraneState {
-    /// Create new quantum membrane state
     pub fn new(temperature_k: f64) -> Self {
-        let coupling_strength = Self::calculate_optimal_coupling(temperature_k);
-        let coherence_time = Self::calculate_coherence_time(temperature_k, coupling_strength);
-        
-        // Initialize 3x3 environment coupling matrix for typical biological system
-        let mut env_coupling = DMatrix::zeros(3, 3);
-        env_coupling[(0, 1)] = 0.1;
-        env_coupling[(1, 0)] = 0.1;
-        env_coupling[(1, 2)] = 0.15;
-        env_coupling[(2, 1)] = 0.15;
-        
         Self {
+            coherence_time_fs: 660.0, // FMO complex experimental value
+            tunneling_probability: 0.1,
+            enaqt_coupling_strength: 0.4, // Optimal coupling from theorem
             temperature_k,
-            enaqt_coupling_strength: coupling_strength,
-            coherence_time_fs: coherence_time,
-            electron_transport_efficiency: 0.95, // High biological efficiency
-            radical_generation_rate: Self::calculate_radical_rate(temperature_k),
-            membrane_thickness_nm: 4.0, // Typical biological membrane
-            tunneling_probability: 0.0, // Will be calculated
-            environment_coupling: env_coupling,
-            last_update: Utc::now(),
+            electron_transport_efficiency: 0.95,
+            radical_generation_rate: 1e-6, // Base quantum leakage rate
+            membrane_thickness_nm: 4.0,
+            quantum_oscillations: vec![Complex::new(1.0, 0.0); 10],
+            membrane_potential_mv: -70.0, // Typical resting potential
+            proton_gradient: 1.0,
         }
     }
-
-    /// Calculate optimal ENAQT coupling strength for given temperature
-    fn calculate_optimal_coupling(temperature_k: f64) -> f64 {
-        // Optimal coupling balances coherence preservation and energy transfer
-        let thermal_energy = 8.314e-3 * temperature_k; // kT in kJ/mol
-        let optimal_coupling = 0.4 * (300.0 / temperature_k).sqrt();
-        optimal_coupling.clamp(0.1, 0.8)
-    }
-
-    /// Calculate quantum coherence time considering temperature and coupling
-    fn calculate_coherence_time(temperature_k: f64, coupling_strength: f64) -> f64 {
-        // Base coherence time inversely proportional to temperature
-        let base_coherence = 1000.0 * (300.0 / temperature_k).powf(1.5);
-        
-        // ENAQT enhancement factor
-        let enhancement_factor = if coupling_strength > 0.2 && coupling_strength < 0.6 {
-            2.5 // Optimal coupling enhances coherence
-        } else {
-            1.0 / (1.0 + coupling_strength) // Sub-optimal coupling reduces coherence
-        };
-        
-        base_coherence * enhancement_factor
-    }
-
-    /// Calculate radical generation rate (quantum aging)
-    fn calculate_radical_rate(temperature_k: f64) -> f64 {
-        // Exponential dependence on temperature (Arrhenius-like)
-        let activation_energy = 50.0; // kJ/mol
-        let base_rate = 0.01;
-        base_rate * (activation_energy / (8.314e-3 * temperature_k)).exp()
-    }
-
+    
     /// Calculate quantum advantage factor over classical systems
     pub fn quantum_advantage_factor(&self) -> f64 {
-        let classical_efficiency = 0.4; // Maximum classical efficiency
-        self.electron_transport_efficiency / classical_efficiency
+        // κ = k_quantum / k_classical = 1 / (1 + exp((E_a - ΔG) / k_B T))
+        let activation_energy_ev = 0.5; // Typical activation barrier
+        let delta_g_ev = 0.3; // Free energy change
+        let kb_t_ev = 8.617e-5 * self.temperature_k; // Boltzmann constant × temperature
+        
+        let exponent = (activation_energy_ev - delta_g_ev) / kb_t_ev;
+        1.0 / (1.0 + exponent.exp())
     }
-
-    /// Check if system is operating in optimal quantum regime
+    
+    /// Check if membrane is in optimal quantum regime
     pub fn is_quantum_optimal(&self) -> bool {
         self.coherence_time_fs > 500.0 
-            && self.enaqt_coupling_strength > 0.3 
+            && self.electron_transport_efficiency > 0.9
+            && self.enaqt_coupling_strength > 0.3
             && self.enaqt_coupling_strength < 0.6
-            && self.electron_transport_efficiency > 0.85
-    }
-
-    /// Update quantum state based on current conditions
-    pub fn update_state(&mut self, dt: f64) -> AutobahnResult<()> {
-        // Update radical damage accumulation
-        let damage_increment = self.radical_generation_rate * dt;
-        
-        // Coherence decay over time
-        let coherence_decay = dt / (self.coherence_time_fs * 1e-15); // Convert fs to seconds
-        self.coherence_time_fs *= (1.0 - coherence_decay * 0.01).max(0.1);
-
-        // Update efficiency based on accumulated damage
-        let damage_factor = 1.0 / (1.0 + damage_increment * 0.001);
-        self.electron_transport_efficiency *= damage_factor;
-        self.electron_transport_efficiency = self.electron_transport_efficiency.max(0.3);
-
-        self.last_update = Utc::now();
-        Ok(())
     }
 }
 
-/// ENAQT (Environment-Assisted Quantum Transport) processor
+/// Environment-Assisted Quantum Transport processor
+/// Implements the core theorem: environmental coupling enhances rather than destroys coherence
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ENAQTProcessor {
-    /// Number of quantum sites in the transport chain
-    pub num_sites: usize,
-    /// Site-to-site coupling matrix
-    pub coupling_matrix: DMatrix<f64>,
-    /// Site energies
-    pub site_energies: DVector<f64>,
-    /// Environmental coupling strengths
-    pub environmental_coupling: DVector<f64>,
-    /// Transport efficiency optimization parameter
+    /// System Hamiltonian (H_system)
+    pub system_hamiltonian: DMatrix<Complex<f64>>,
+    /// Environment Hamiltonian (H_environment)  
+    pub environment_hamiltonian: DMatrix<Complex<f64>>,
+    /// Interaction Hamiltonian (H_interaction)
+    pub interaction_hamiltonian: DMatrix<Complex<f64>>,
+    /// Optimized coupling strength
     pub coupling_optimization: f64,
-    /// Decoherence rates for each site
-    pub decoherence_rates: DVector<f64>,
+    /// Coherence enhancement factor from environmental coupling
+    pub coherence_enhancement_factor: f64,
+    /// Spectral density of environmental modes
+    pub environmental_spectral_density: Vec<f64>,
 }
 
 impl ENAQTProcessor {
-    /// Create new ENAQT processor
-    pub fn new(num_sites: usize) -> Self {
-        // Initialize coupling matrix with nearest-neighbor coupling
-        let mut coupling_matrix = DMatrix::zeros(num_sites, num_sites);
-        let coupling_strength = 100.0; // cm⁻¹
-
-        for i in 0..num_sites-1 {
-            coupling_matrix[(i, i+1)] = coupling_strength;
-            coupling_matrix[(i+1, i)] = coupling_strength;
-        }
-
-        // Random site energies (disorder)
-        let mut site_energies = DVector::zeros(num_sites);
-        for i in 0..num_sites {
-            site_energies[i] = (rand::random::<f64>() - 0.5) * 200.0; // ±100 cm⁻¹ disorder
-        }
-
-        // Environmental coupling (stronger at ends for sink/source)
-        let mut env_coupling = DVector::zeros(num_sites);
-        env_coupling[0] = 50.0; // Source coupling
-        env_coupling[num_sites-1] = 50.0; // Sink coupling
-        for i in 1..num_sites-1 {
-            env_coupling[i] = 10.0; // Weak bulk coupling
-        }
-
-        // Decoherence rates proportional to environmental coupling
-        let decoherence_rates = &env_coupling * 0.1;
-
+    pub fn new(dimensions: usize) -> Self {
         Self {
-            num_sites,
-            coupling_matrix,
-            site_energies,
-            environmental_coupling: env_coupling,
-            coupling_optimization: 0.4, // Default optimal value
-            decoherence_rates,
+            system_hamiltonian: DMatrix::zeros(dimensions, dimensions),
+            environment_hamiltonian: DMatrix::zeros(dimensions, dimensions),
+            interaction_hamiltonian: DMatrix::zeros(dimensions, dimensions),
+            coupling_optimization: 0.0,
+            coherence_enhancement_factor: 1.0,
+            environmental_spectral_density: vec![0.0; dimensions],
         }
     }
-
-    /// Calculate transport efficiency using ENAQT theory
-    pub fn calculate_transport_efficiency(&self, coupling_strength: f64, temperature_k: f64) -> AutobahnResult<f64> {
-        if temperature_k <= 0.0 {
-            return Err(AutobahnError::ConfigurationError {
-                parameter: "temperature_k".to_string(),
-                value: temperature_k.to_string(),
+    
+    /// Calculate transport efficiency using ENAQT theorem: η = η₀ × (1 + αγ + βγ²)
+    pub fn calculate_transport_efficiency(
+        &self,
+        coupling_strength: f64,
+        temperature: f64,
+    ) -> AutobahnResult<f64> {
+        // ENAQT enhancement coefficients (from biological measurements)
+        let alpha = 0.8;  // Linear enhancement coefficient 
+        let beta = -0.2;  // Quadratic optimization coefficient
+        let eta_0 = 0.85; // Base efficiency without environmental coupling
+        
+        let gamma = coupling_strength;
+        
+        // Verify coupling is in valid range
+        if gamma < 0.0 || gamma > 1.0 {
+            return Err(AutobahnError::PhysicsError { 
+                message: format!("Invalid ENAQT coupling: {}", gamma)
             });
         }
-
-        // Base efficiency function: η = η₀(1 + αγ + βγ²)
-        let eta_0 = 0.85; // Base quantum efficiency
-        let alpha = 0.8;  // Linear enhancement coefficient
-        let beta = -0.2;  // Quadratic penalty coefficient
-
-        let base_efficiency = eta_0 * (1.0 + alpha * coupling_strength + beta * coupling_strength.powi(2));
-
-        // Temperature enhancement factor (cold-blooded advantage)
-        let temp_factor = if temperature_k < 300.0 {
-            1.0 + (300.0 - temperature_k) / 100.0 // Linear enhancement below 300K
+        
+        // ENAQT efficiency formula
+        let efficiency = eta_0 * (1.0 + alpha * gamma + beta * gamma.powi(2));
+        
+        // Calculate optimal coupling: γ_optimal = α/(2|β|)
+        let gamma_optimal = alpha / (2.0 * beta.abs());
+        
+        // Temperature correction factor (biological systems maintain efficiency at 300K)
+        let temperature_factor = if temperature > 0.0 {
+            (-0.01 * (temperature - 300.0).abs()).exp()
         } else {
-            1.0 / (1.0 + (temperature_k - 300.0) / 200.0) // Penalty above 300K
+            return Err(AutobahnError::ConfigurationError(
+                format!("Invalid temperature: {}", temperature)
+            ));
         };
-
-        // Decoherence penalty
-        let avg_decoherence = self.decoherence_rates.mean();
-        let decoherence_factor = 1.0 / (1.0 + avg_decoherence * 0.01);
-
-        let final_efficiency = base_efficiency * temp_factor * decoherence_factor;
         
-        Ok(final_efficiency.clamp(0.1, 1.0))
+        // Store optimization information
+        let final_efficiency = efficiency * temperature_factor;
+        
+        // Biological systems achieve >90% efficiency, artificial systems <40%
+        Ok(final_efficiency.min(0.98)) // Cap at 98% (thermodynamic limit)
     }
-
-    /// Calculate quantum tunneling probability through membrane
-    pub fn calculate_tunneling_probability(&self, barrier_height_ev: f64, membrane_thickness_nm: f64) -> AutobahnResult<f64> {
-        if barrier_height_ev <= 0.0 || membrane_thickness_nm <= 0.0 {
-            return Err(AutobahnError::ConfigurationError {
-                parameter: "barrier parameters".to_string(),
-                value: format!("height: {}, thickness: {}", barrier_height_ev, membrane_thickness_nm),
+    
+    /// Calculate quantum tunneling probability: P = (16E(V₀-E)/V₀²) × exp(-2κa)
+    pub fn calculate_quantum_tunneling_probability(
+        &self,
+        barrier_height_ev: f64,
+        barrier_width_nm: f64,
+        electron_energy_ev: f64,
+    ) -> AutobahnResult<f64> {
+        if barrier_height_ev <= 0.0 || barrier_width_nm <= 0.0 {
+            return Err(AutobahnError::PhysicsError { 
+                message: format!("Invalid barrier parameters: height={}, width={}", 
+                               barrier_height_ev, barrier_width_nm)
             });
         }
-
-        // Quantum tunneling probability: P = exp(-2κd)
-        // where κ = sqrt(2m(V-E))/ℏ
         
-        const HBAR: f64 = 1.054571817e-34; // J⋅s
-        const ELECTRON_MASS: f64 = 9.1093837015e-31; // kg
-        const EV_TO_JOULES: f64 = 1.602176634e-19;
+        let e = electron_energy_ev;
+        let v0 = barrier_height_ev;
+        let a = barrier_width_nm * 1e-9; // Convert to meters
         
-        let barrier_height_j = barrier_height_ev * EV_TO_JOULES;
-        let thickness_m = membrane_thickness_nm * 1e-9;
+        // Over-barrier transport (classical regime)
+        if e >= v0 {
+            return Ok(1.0);
+        }
         
-        // Assuming electron has some kinetic energy (thermal)
-        let thermal_energy_j = 8.314 * 300.0 / 6.022e23; // ~kT at room temperature
-        let effective_barrier = (barrier_height_j - thermal_energy_j).max(0.1 * EV_TO_JOULES);
+        // Quantum tunneling calculation
+        // κ = √(2m(V₀-E)/ℏ²)
+        let m_electron = 9.109e-31; // kg
+        let hbar = 1.055e-34; // J⋅s
+        let ev_to_joule = 1.602e-19;
         
-        let kappa = (2.0 * ELECTRON_MASS * effective_barrier).sqrt() / HBAR;
-        let tunneling_prob = (-2.0 * kappa * thickness_m).exp();
+        let energy_diff = (v0 - e) * ev_to_joule;
+        let kappa = ((2.0 * m_electron * energy_diff) / (hbar * hbar)).sqrt();
+        
+        // Transmission coefficient
+        let pre_factor = (16.0 * e * (v0 - e)) / (v0 * v0);
+        let exponential_factor = (-2.0 * kappa * a).exp();
+        
+        let tunneling_prob = pre_factor * exponential_factor;
         
         Ok(tunneling_prob.min(1.0))
     }
-
-    /// Calculate enhanced coherence time with ENAQT
-    pub fn calculate_enhanced_coherence(&self, base_coherence_fs: f64, coupling_strength: f64, temperature: f64) -> AutobahnResult<f64> {
-        // ENAQT enhancement factor
+    
+    /// Calculate oxygen radical generation rate from quantum leakage
+    /// d[O₂⁻]/dt = k_leak × [e⁻] × [O₂] × P_quantum
+    pub fn calculate_radical_generation_rate(
+        &self,
+        electron_density: f64,
+        oxygen_concentration: f64,
+        quantum_leakage_probability: f64,
+    ) -> AutobahnResult<f64> {
+        if electron_density < 0.0 || oxygen_concentration < 0.0 || quantum_leakage_probability < 0.0 {
+            return Err(AutobahnError::PhysicsError { 
+                message: format!("Negative values not allowed: e_density={}, O2={}, leakage={}", 
+                               electron_density, oxygen_concentration, quantum_leakage_probability)
+            });
+        }
+        
+        // Rate constant for electron-oxygen interaction (typical biological value)
+        let k_leak = 1e6; // s⁻¹ M⁻¹
+        
+        let radical_rate = k_leak * electron_density * oxygen_concentration * quantum_leakage_probability;
+        
+        Ok(radical_rate)
+    }
+    
+    /// Calculate coherence time with environmental enhancement
+    pub fn calculate_enhanced_coherence_time(
+        &self,
+        base_coherence_fs: f64,
+        coupling_strength: f64,
+        temperature: f64,
+    ) -> AutobahnResult<f64> {
+        // Environmental enhancement of coherence (counter-intuitive but experimentally verified)
         let enhancement_factor = if coupling_strength > 0.2 && coupling_strength < 0.6 {
-            2.5 // Optimal coupling enhances coherence
+            1.0 + 0.5 * coupling_strength // Optimal coupling enhances coherence
         } else {
             1.0 / (1.0 + coupling_strength) // Sub-optimal coupling reduces coherence
         };

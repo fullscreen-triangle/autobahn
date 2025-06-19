@@ -4,6 +4,11 @@
 //! This module demonstrates how consciousness emerges from nested oscillatory dynamics
 //! across multiple time and length scales.
 
+pub mod levels;
+pub mod emergence;
+pub mod coupling;
+pub mod processing;
+
 use crate::error::{AutobahnError, AutobahnResult};
 use crate::oscillatory::{OscillationProfile, OscillationPhase, UniversalOscillator};
 use crate::quantum::{QuantumOscillatoryProfile, QuantumMembraneState};
