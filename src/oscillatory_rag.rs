@@ -249,200 +249,226 @@ impl OscillatoryRAGSystem {
         Ok(response)
     }
     
-    /// Configure system for specific query
+    /// Configure oscillator parameters based on query characteristics
     fn configure_for_query(&mut self, query: &OscillatoryQuery) -> AutobahnResult<()> {
         // Adjust frequency based on query complexity
         self.current_frequency = query.frequency * (1.0 + query.complexity * 0.1);
         
-        // Ensure adequate ATP for processing
-        let estimated_atp_needed = query.complexity * 50.0;
-        if self.current_atp < estimated_atp_needed {
-            // Regenerate ATP
-            self.current_atp += self.config.atp_regeneration_rate;
-            log::debug!("Regenerated ATP: now at {:.1}", self.current_atp);
-        }
+        // Update entropy target based on complexity
+        let entropy_factor = (query.complexity / 3.0).clamp(0.5, 2.0);
+        self.current_entropy = self.config.target_entropy * entropy_factor;
+        
+        log::debug!("Configured oscillator: freq={:.2} Hz, entropy={:.2}", 
+                   self.current_frequency, self.current_entropy);
         
         Ok(())
     }
     
     /// Simulate oscillatory processing using Universal Oscillation Equation
     async fn simulate_oscillatory_processing(&mut self, query: &OscillatoryQuery) -> AutobahnResult<OscillationResults> {
-        log::debug!("Simulating oscillatory processing with Universal Oscillation Equation");
+        use crate::oscillatory::UniversalOscillator;
         
-        // Simulation parameters
-        let dt = 0.001; // Time step
-        let total_time = query.complexity * 0.1; // Processing time scales with complexity
-        let total_steps = (total_time / dt) as usize;
+        // Create oscillator based on query parameters
+        let mut oscillator = UniversalOscillator::new(
+            1.0,                    // Initial amplitude
+            self.current_frequency, // Natural frequency
+            0.1,                    // Damping coefficient
+            self.config.oscillation_dimensions, // Dimensions
+        );
         
-        let mut amplitude = 1.0;
-        let mut velocity = 0.0;
-        let mut total_oscillations = 0u64;
+        // Add external forcing based on query complexity
+        let forcing_amplitude = query.complexity * 0.5;
+        oscillator = oscillator.with_forcing(move |t| {
+            forcing_amplitude * (2.0 * std::f64::consts::PI * 10.0 * t).sin()
+        });
+        
+        // Evolve oscillator through time steps
+        let dt = 0.01; // 10ms time steps
+        let total_time = 1.0; // 1 second total
+        let steps = (total_time / dt) as usize;
+        
+        let mut total_oscillations = 0;
         let mut resonance_achieved = false;
         
-        // Universal Oscillation Equation: d²y/dt² + γ(dy/dt) + ω²y = F(t)
-        let damping_coefficient = 0.1;
-        let natural_frequency = self.current_frequency;
-        let omega_squared = natural_frequency.powi(2);
-        
-        for step in 0..total_steps.min(10000) { // Limit computation
-            let t = step as f64 * dt;
+        for _ in 0..steps {
+            oscillator.evolve(dt)?;
             
-            // External forcing function F(t) - based on query content
-            let forcing = 0.1 * (natural_frequency * t).sin() * query.complexity;
-            
-            // Calculate acceleration: a = -γv - ω²y + F(t)
-            let acceleration = -damping_coefficient * velocity - omega_squared * amplitude + forcing;
-            
-            // Velocity Verlet integration
-            velocity += acceleration * dt;
-            amplitude += velocity * dt;
-            
-            // Check for oscillation completion (zero crossing)
-            if step > 0 && amplitude * velocity < 0.0 {
+            // Count oscillations (zero crossings)
+            if oscillator.state.position.len() > 0 && oscillator.state.position[0].abs() < 0.01 {
                 total_oscillations += 1;
             }
             
-            // Check for resonance (amplitude > 2.0)
-            if amplitude.abs() > 2.0 {
+            // Check for resonance
+            if oscillator.calculate_phase() == crate::oscillatory::OscillationPhase::Resonance {
                 resonance_achieved = true;
-            }
-            
-            // Energy conservation check
-            let energy = 0.5 * velocity.powi(2) + 0.5 * omega_squared * amplitude.powi(2);
-            if energy > 100.0 {
-                log::warn!("Energy instability detected, terminating oscillation");
-                break;
             }
         }
         
+        let final_frequency = oscillator.state.frequency;
+        let final_amplitude = oscillator.state.amplitude;
+        
+        log::debug!("Oscillation simulation: {} oscillations, final freq={:.2} Hz, amplitude={:.2}", 
+                   total_oscillations, final_frequency, final_amplitude);
+        
         Ok(OscillationResults {
             total_oscillations,
-            final_frequency: natural_frequency,
-            final_amplitude: amplitude,
+            final_frequency,
+            final_amplitude,
             resonance_achieved,
         })
     }
     
-    /// Apply quantum enhancement through ENAQT
+    /// Apply quantum enhancement using ENAQT processor
     async fn apply_quantum_enhancement(&self, query: &OscillatoryQuery, oscillations: &OscillationResults) -> AutobahnResult<f64> {
-        log::debug!("Applying quantum enhancement");
+        use crate::quantum::ENAQTProcessor;
         
-        // ENAQT enhancement factor η = η₀(1 + αγ + βγ²)
-        let gamma = self.config.quantum_coupling_strength;
-        let alpha = 0.1;
-        let beta = 0.01;
-        let eta_0 = 1.0;
+        // Create ENAQT processor for quantum enhancement
+        let enaqt = ENAQTProcessor::new(7); // 7-site system (like FMO complex)
         
-        let enhancement_factor = eta_0 * (1.0 + alpha * gamma + beta * gamma.powi(2));
+        // Calculate transport efficiency
+        let efficiency = enaqt.calculate_transport_efficiency(
+            self.config.quantum_coupling_strength,
+            query.temperature,
+        )?;
         
-        // Temperature-dependent quantum coherence
-        let coherence_factor = if query.temperature < 298.0 {
-            1.0 + (298.0 - query.temperature) / 298.0 * 0.5 // Cold-blooded advantage
-        } else {
-            (-0.001 * (query.temperature - 298.0)).exp() // Thermal decoherence
-        };
+        // Apply enhancement based on resonance and frequency
+        let frequency_factor = (oscillations.final_frequency / 40.0).min(2.0); // Optimal around 40 Hz
+        let resonance_factor = if oscillations.resonance_achieved { 1.5 } else { 1.0 };
         
-        Ok(enhancement_factor * coherence_factor)
+        let quantum_enhancement = efficiency * frequency_factor * resonance_factor;
+        
+        log::debug!("Quantum enhancement: efficiency={:.2}, factor={:.2}", 
+                   efficiency, quantum_enhancement);
+        
+        Ok(quantum_enhancement)
     }
     
-    /// Calculate temperature advantage
+    /// Calculate temperature advantage for cold-blooded systems
     fn calculate_temperature_advantage(&self, temperature: f64) -> f64 {
-        if temperature < 298.0 {
-            // Cold-blooded advantage
-            let advantage = (298.0 - temperature) / 298.0;
-            1.0 + advantage * 0.5 // Up to 50% boost
+        // Exponential advantage as temperature decreases below 300K
+        if temperature < 300.0 {
+            let temp_diff = 300.0 - temperature;
+            1.0 + (temp_diff / 50.0).exp() - 1.0
         } else {
-            // Warm-blooded efficiency
-            1.0 - (temperature - 298.0) / 298.0 * 0.1 // Gradual decline
+            // Penalty for high temperature (mammalian burden)
+            1.0 / (1.0 + (temperature - 300.0) / 100.0)
         }
     }
     
-    /// Simulate biological metabolism
+    /// Simulate biological metabolism with ATP management
     async fn simulate_biological_metabolism(&mut self, query: &OscillatoryQuery) -> AutobahnResult<MetabolismResults> {
-        log::debug!("Simulating biological metabolism");
+        use crate::atp::{QuantumATPManager, MetabolicMode};
+        use crate::hierarchy::HierarchyLevel;
         
-        // ATP consumption based on complexity and length
-        let base_consumption = query.complexity * 10.0 + query.content.len() as f64 * 0.1;
-        let atp_consumed = base_consumption * (1.0 + (query.temperature - 298.0) / 298.0 * 0.2);
+        // Initialize ATP manager
+        let mut atp_manager = QuantumATPManager::new(1000.0, query.temperature);
         
-        // ATP production through cellular respiration
-        // Glycolysis: 2 ATP
-        // Krebs cycle: 2 ATP + 6 NADH + 2 FADH2
-        // Electron transport: ~32 ATP from NADH/FADH2
-        let glycolysis_atp = 2.0;
-        let krebs_atp = 2.0;
-        let electron_transport_atp = 32.0 * query.complexity; // Scales with complexity
-        
-        let total_atp_produced = glycolysis_atp + krebs_atp + electron_transport_atp;
-        
-        // Calculate processing confidence
-        let confidence = if self.current_atp > atp_consumed {
-            let efficiency = total_atp_produced / atp_consumed;
-            (efficiency * 0.5).min(1.0).max(0.1)
+        // Determine appropriate hierarchy level for processing
+        let hierarchy_level = if query.complexity < 1.0 {
+            HierarchyLevel::CellularOscillations
+        } else if query.complexity < 2.0 {
+            HierarchyLevel::OrganismalOscillations
         } else {
-            0.1 // Low confidence if insufficient ATP
+            HierarchyLevel::CognitiveOscillations
         };
         
+        // Create quantum oscillatory profile
+        use crate::oscillatory::OscillationProfile;
+        use crate::quantum::QuantumOscillatoryProfile;
+        
+        let base_oscillation = OscillationProfile::new(query.complexity, query.frequency);
+        let quantum_profile = QuantumOscillatoryProfile::new(base_oscillation, query.temperature);
+        
+        // Calculate ATP cost
+        let atp_cost = atp_manager.calculate_quantum_atp_cost(
+            hierarchy_level,
+            query.complexity,
+            &quantum_profile,
+        ).await?;
+        
+        // Consume ATP
+        let consumption_success = atp_manager.consume_atp(
+            hierarchy_level,
+            atp_cost,
+            "oscillatory_processing",
+        ).await?;
+        
+        // Calculate confidence based on ATP availability and quantum enhancement
+        let confidence = if consumption_success {
+            0.8 + (quantum_profile.quantum_advantage() - 1.0) * 0.2
+        } else {
+            0.3 // Low confidence if insufficient ATP
+        };
+        
+        // Generate some ATP through quantum processes
+        let atp_produced = atp_cost * quantum_profile.quantum_advantage() * 0.5;
+        
+        // Update current ATP
+        self.current_atp = (self.current_atp - atp_cost + atp_produced).max(0.0);
+        
+        log::debug!("Metabolism: consumed={:.1} ATP, produced={:.1} ATP, confidence={:.2}", 
+                   atp_cost, atp_produced, confidence);
+        
         Ok(MetabolismResults {
-            atp_consumed,
-            atp_produced: total_atp_produced,
+            atp_consumed: atp_cost,
+            atp_produced,
             confidence,
-            processing_quality: confidence,
+            processing_quality: confidence * quantum_profile.quantum_advantage(),
         })
     }
     
     /// Calculate final entropy after processing
     fn calculate_final_entropy(&self, query: &OscillatoryQuery, metabolism: &MetabolismResults) -> AutobahnResult<f64> {
         // Entropy changes based on information processing
-        let information_gain = metabolism.processing_quality * query.complexity;
-        let entropy_reduction = information_gain * 0.1;
+        let information_bits = query.content.len() as f64 * 8.0; // Rough estimate
+        let entropy_reduction = information_bits / (1000.0 * metabolism.processing_quality);
         
-        // Entropy also increases due to thermodynamic processes
-        let entropy_increase = query.temperature / 298.0 * 0.05;
+        let final_entropy = (self.current_entropy - entropy_reduction).max(0.1);
         
-        let final_entropy = self.current_entropy - entropy_reduction + entropy_increase;
+        log::debug!("Entropy: initial={:.2}, reduction={:.2}, final={:.2}", 
+                   self.current_entropy, entropy_reduction, final_entropy);
         
-        Ok(final_entropy.max(0.0))
+        Ok(final_entropy)
     }
     
-    /// Evaluate champagne phase potential
+    /// Evaluate whether champagne phase was achieved
     async fn evaluate_champagne_phase(&self, metabolism: &MetabolismResults) -> AutobahnResult<bool> {
-        let champagne_potential = metabolism.confidence * metabolism.processing_quality;
+        // Champagne phase achieved if high confidence and efficiency
+        let champagne_achieved = metabolism.confidence > self.config.champagne_threshold
+            && metabolism.processing_quality > 1.5;
         
-        if champagne_potential > self.config.champagne_threshold {
-            log::info!("Champagne phase achieved! Potential: {:.3}", champagne_potential);
-            Ok(true)
-        } else {
-            Ok(false)
+        if champagne_achieved {
+            log::info!("🍾 Champagne phase achieved! High-quality processing detected.");
         }
+        
+        Ok(champagne_achieved)
     }
     
-    /// Generate response content
+    /// Generate response content based on processing results
     async fn generate_response_content(&self, query: &OscillatoryQuery, metabolism: &MetabolismResults) -> AutobahnResult<String> {
-        // Simple response generation based on metabolism results
-        let quality_descriptor = if metabolism.processing_quality > 0.8 {
-            "high-quality"
-        } else if metabolism.processing_quality > 0.5 {
-            "moderate-quality"
-        } else {
-            "basic"
-        };
-        
-        let response = format!(
-            "Processed query through oscillatory bio-metabolic RAG with {} understanding. \
-            ATP efficiency: {:.2}, Processing confidence: {:.2}. \
-            Content analysis: {} (complexity: {:.2})",
-            quality_descriptor,
-            metabolism.atp_produced / metabolism.atp_consumed.max(1.0),
-            metabolism.confidence,
-            query.content,
-            query.complexity
+        // Simple response generation based on processing quality
+        let base_response = format!(
+            "Processed query '{}' through oscillatory bio-metabolic pipeline.",
+            query.content.chars().take(50).collect::<String>()
         );
         
-        Ok(response)
+        let quality_suffix = if metabolism.processing_quality > 2.0 {
+            " High-quality quantum-enhanced processing achieved."
+        } else if metabolism.processing_quality > 1.0 {
+            " Standard quantum processing completed."
+        } else {
+            " Basic processing with limited quantum enhancement."
+        };
+        
+        let confidence_note = format!(
+            " Processing confidence: {:.1}%",
+            metabolism.confidence * 100.0
+        );
+        
+        Ok(format!("{}{}{}", base_response, quality_suffix, confidence_note))
     }
     
-    /// Get system status
+    /// Get current system status
     pub fn get_system_status(&self) -> SystemStatus {
         SystemStatus {
             current_atp: self.current_atp,
@@ -454,20 +480,22 @@ impl OscillatoryRAGSystem {
         }
     }
     
+    /// Calculate average confidence from processing history
     fn calculate_average_confidence(&self) -> f64 {
         if self.processing_history.is_empty() {
             return 0.0;
         }
         
-        let total_confidence: f64 = self.processing_history.iter()
-            .map(|r| r.confidence)
+        let total_confidence: f64 = self.processing_history
+            .iter()
+            .map(|response| response.confidence)
             .sum();
         
         total_confidence / self.processing_history.len() as f64
     }
 }
 
-// Supporting structures
+// Helper structs for internal processing
 #[derive(Debug, Clone)]
 struct OscillationResults {
     total_oscillations: u64,
@@ -484,6 +512,7 @@ struct MetabolismResults {
     processing_quality: f64,
 }
 
+/// System status information
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SystemStatus {
     pub current_atp: f64,

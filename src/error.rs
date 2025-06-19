@@ -100,6 +100,10 @@ pub enum AutobahnError {
     #[error("Missing required component: {component}")]
     MissingComponentError { component: String },
 
+    /// Physics and simulation errors
+    #[error("Physics error: {message}")]
+    PhysicsError { message: String },
+
     /// Generic errors
     #[error("Internal error: {0}")]
     InternalError(String),

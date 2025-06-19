@@ -234,8 +234,8 @@ impl UniversalOscillator {
         
         // Check for amplitude overflow
         if self.state.amplitude > 1e6 {
-            return Err(AutobahnError::ProcessingError {
-                message: format!("Amplitude overflow: {:.2} exceeds maximum 1e6", self.state.amplitude),
+            return Err(AutobahnError::PhysicsError {
+                message: format!("Amplitude overflow: {:.2}", self.state.amplitude),
             });
         }
         
@@ -287,35 +287,54 @@ impl UniversalOscillator {
             .map(|(_, state)| state.amplitude)
             .collect();
         
-        // Check if amplitude is consistently growing
-        let mut growing_count = 0;
-        for i in 1..recent_amplitudes.len() {
-            if recent_amplitudes[i-1] > recent_amplitudes[i] {
-                growing_count += 1;
-            }
-        }
+        // Calculate amplitude growth rate
+        let slope = self.calculate_amplitude_slope(&recent_amplitudes);
         
-        growing_count >= 7 // At least 70% of recent samples show growth
+        // Resonance detected if amplitude is increasing significantly
+        slope > 0.1 && self.state.external_forcing_amplitude.abs() > 0.01
     }
     
-    /// Calculate total energy of the oscillator
+    /// Calculate slope of amplitude over time using simple linear regression
+    fn calculate_amplitude_slope(&self, amplitudes: &[f64]) -> f64 {
+        if amplitudes.len() < 2 {
+            return 0.0;
+        }
+        
+        let n = amplitudes.len() as f64;
+        let sum_x: f64 = (0..amplitudes.len()).map(|i| i as f64).sum();
+        let sum_y: f64 = amplitudes.iter().sum();
+        let sum_xy: f64 = amplitudes.iter().enumerate()
+            .map(|(i, &y)| i as f64 * y).sum();
+        let sum_x_squared: f64 = (0..amplitudes.len()).map(|i| (i as f64).powi(2)).sum();
+        
+        let denominator = n * sum_x_squared - sum_x.powi(2);
+        if denominator.abs() < 1e-10 {
+            return 0.0;
+        }
+        
+        (n * sum_xy - sum_x * sum_y) / denominator
+    }
+    
+    /// Get oscillation energy
     pub fn total_energy(&self) -> f64 {
         let kinetic = 0.5 * self.state.velocity.norm_squared();
         let potential = 0.5 * self.state.natural_frequency.powi(2) * self.state.position.norm_squared();
         kinetic + potential
     }
     
-    /// Get oscillation profile for external use
+    /// Get current oscillation profile
     pub fn get_profile(&self) -> OscillationProfile {
-        let mut profile = OscillationProfile::new(
-            self.total_energy(), 
-            self.state.frequency
-        );
-        
+        let mut profile = OscillationProfile::new(self.state.amplitude, self.state.frequency);
         profile.phase = self.calculate_phase();
-        profile.quality_factor = self.state.natural_frequency / self.state.damping_coefficient.max(1e-10);
-        profile.bandwidth = self.state.frequency / profile.quality_factor.max(1.0);
-        
+        profile.quality_factor = if self.state.damping_coefficient > 0.0 {
+            self.state.natural_frequency / (2.0 * self.state.damping_coefficient)
+        } else {
+            f64::INFINITY
+        };
         profile
     }
-} 
+}
+
+// Implement Send + Sync for UniversalOscillator
+unsafe impl Send for UniversalOscillator {}
+unsafe impl Sync for UniversalOscillator {} 
