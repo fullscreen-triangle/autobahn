@@ -66,6 +66,12 @@ pub mod atp;
 pub mod hierarchy;
 pub mod biological;
 
+// Enhanced AI modules with intelligent optimization
+pub mod entropy;
+pub mod adversarial;
+pub mod models;
+pub mod rag;
+
 // Main system integration
 pub mod oscillatory_rag;
 
