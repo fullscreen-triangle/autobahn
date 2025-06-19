@@ -42,6 +42,12 @@ pub mod benchmarking;
 pub mod plugins;
 pub mod configuration;
 pub mod deception;
+// Quantum-oscillatory modules
+pub mod oscillatory;
+pub mod hierarchy;
+pub mod quantum;
+pub mod atp;
+pub mod oscillatory_rag;
 
 // Re-export core types and traits for easy access
 pub use types::*;
@@ -61,6 +67,11 @@ pub use deception::{PungweAtpSynthase, MetacognitiveAnalysisResult};
 
 // Re-export quantum-oscillatory modules
 pub use v8_pipeline::modules::{Foursidedtriangle, OscillationEndpointManager};
+pub use oscillatory_rag::{OscillatoryRAGSystem, OscillatoryQuery, OscillatoryResponse, OscillatoryRAGConfig};
+pub use oscillatory::{UniversalOscillator, OscillationProfile, OscillationPhase};
+pub use quantum::{QuantumOscillatoryProfile, ENAQTProcessor};
+pub use atp::{QuantumATPManager, MetabolicMode};
+pub use hierarchy::HierarchyLevel;
 
 /// Version information
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
