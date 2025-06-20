@@ -1,0 +1,28 @@
+# Development Dockerfile for Autobahn Consciousness Framework
+
+FROM rust:1.75-slim
+
+# Install system dependencies and development tools
+RUN apt-get update && apt-get install -y \
+    pkg-config \
+    libssl-dev \
+    build-essential \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install cargo tools for development
+RUN cargo install cargo-watch cargo-edit cargo-audit
+
+# Create app directory
+WORKDIR /app
+
+# Set environment for development
+ENV RUST_LOG=debug
+ENV RUST_BACKTRACE=full
+
+# Expose ports for development
+EXPOSE 8080 9229
+
+# Default command for development
+CMD ["cargo", "watch", "-x", "check"] 

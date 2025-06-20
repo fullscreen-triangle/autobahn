@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  autobahn:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: autobahn-consciousness
+    restart: unless-stopped
+    
+    # Environment variables
+    environment:
+      - RUST_LOG=info
+      - RUST_BACKTRACE=1
+    
+    # Volume mounts
+    volumes:
+      - autobahn_data:/app/data
+      - ../autobahn.toml:/app/autobahn.toml:ro
+      - ../logs:/app/logs
+    
+    # Port mapping (for future web interface)
+    ports:
+      - "8080:8080"
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "autobahn-cli", "--version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Development service with hot reload
+  autobahn-dev:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dev
+    container_name: autobahn-dev
+    restart: "no"
+    
+    environment:
+      - RUST_LOG=debug
+      - RUST_BACKTRACE=full
+    
+    volumes:
+      - ..:/app
+      - cargo_cache:/usr/local/cargo/registry
+      - target_cache:/app/target
+    
+    ports:
+      - "8080:8080"
+      - "9229:9229"  # Debug port
+    
+    command: ["cargo", "watch", "-x", "run --all-features"]
+    
+    profiles:
+      - dev
+
+volumes:
+  autobahn_data:
+    driver: local
+  cargo_cache:
+    driver: local
+  target_cache:
+    driver: local
+
+networks:
+  default:
+    name: autobahn-network 

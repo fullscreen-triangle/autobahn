@@ -1,0 +1,48 @@
+# Clippy configuration for Autobahn project
+# Comprehensive linting rules for consciousness framework development
+
+# Cognitive complexity threshold
+cognitive-complexity-threshold = 30
+
+# Documentation requirements
+missing-docs-in-private-items = false
+doc-valid-idents = [
+    "ATP", "RAG", "BMD", "IIT", "ENAQT", "MYA", "Hz", "fs", "K+", "Na+", "Ca2+", "Mg2+", "H+",
+    "Autobahn", "Krebs", "glycolysis", "phi", "Φ", "BCEM", "VM", "OS", "API", "CLI", "JSON",
+    "UUID", "URL", "HTTP", "HTTPS", "TCP", "UDP", "IO", "CPU", "GPU", "RAM", "SSD", "HDD",
+    "GitHub", "GitLab", "OAuth", "JWT", "SSL", "TLS", "DNS", "IP", "IPv4", "IPv6", "MAC",
+    "AI", "ML", "DL", "NN", "CNN", "RNN", "LSTM", "GRU", "NLP", "CV", "RL", "GAN", "VAE"
+]
+
+# Complexity and performance
+type-complexity-threshold = 250
+too-many-arguments-threshold = 8
+too-many-lines-threshold = 150
+large-types-passed-by-value = 256
+
+# Allow certain patterns common in consciousness/biological modeling
+allowed-idents-below-min-chars = [
+    "x", "y", "z", "i", "j", "k", "n", "m", "t", "dt", "dx", "dy", "dz",
+    "phi", "psi", "mu", "nu", "xi", "pi", "tau", "eta", "rho", "sigma",
+    "alpha", "beta", "gamma", "delta", "epsilon", "theta", "lambda", "omega"
+]
+
+# Biological/scientific naming conventions
+enum-variant-name-threshold = 3
+struct-excessive-bools = 5
+single-char-binding-names-threshold = 5
+
+# Performance considerations for consciousness processing
+trivial-copy-size-limit = 128
+pass-by-value-size-limit = 256
+large-stack-arrays = 1024
+
+# Allow common patterns in biological/consciousness modeling
+avoid-breaking-exported-api = true
+msrv = "1.70.0"
+
+# Specific allowances for consciousness framework patterns
+disallowed-names = []  # Allow scientific variable names
+
+# Function complexity for biological processes
+cyclomatic-complexity-threshold = 25 

@@ -1,0 +1,260 @@
+# Example configuration file for Autobahn Consciousness Framework
+# Copy this to autobahn.toml and modify as needed for your specific use case
+
+[system]
+# Maximum ATP capacity for processing (units: ATP molecules equivalent)
+max_atp = 15000.0
+
+# Operating temperature in Kelvin (310K = 37°C human body temperature)
+operating_temperature = 310.0
+
+# Enable quantum optimization for enhanced processing
+quantum_optimization = true
+
+# Evolutionary timeline parameter (millions of years ago)
+# 0.5 = 500,000 years ago (full fire adaptation)
+# 2.0 = 2 million years ago (fire control emergence)
+# 3.0 = 3 million years ago (pre-fire baseline)
+evolutionary_timeline = 0.5
+
+[consciousness]
+# Consciousness emergence threshold (0.0 to 1.0)
+# Higher values require stronger consciousness signals
+emergence_threshold = 0.7
+
+# Fire recognition sensitivity (0.0 to 1.0)
+# Controls how readily fire patterns are detected
+fire_recognition_sensitivity = 0.8
+
+# Agency detection threshold for individual consciousness
+agency_detection_threshold = 0.6
+
+# Underwater fireplace paradox override strength
+# Controls how strongly hardwired fire recognition overrides logic
+paradox_override_strength = 0.9
+
+[biological]
+# Biological processing layers to enable
+# Options: "Context", "Reasoning", "Intuition"
+layers = ["Context", "Reasoning", "Intuition"]
+
+# Metabolic mode for ATP consumption
+# Options: "HighPerformance", "EnergyConservation", "Balanced", "Anaerobic"
+metabolic_mode = "Balanced"
+
+# Ion channel coherence settings
+[biological.ion_channels]
+# Enable coherent ion tunneling
+coherent_tunneling = true
+
+# Ion types and their relative concentrations
+h_plus_concentration = 1.0      # H+ ions
+na_plus_concentration = 0.8     # Na+ ions  
+k_plus_concentration = 0.9      # K+ ions
+ca_plus_concentration = 0.6     # Ca2+ ions
+mg_plus_concentration = 0.7     # Mg2+ ions
+
+# Membrane efficiency parameters
+membrane_efficiency_target = 0.89
+coherence_maintenance_threshold = 0.85
+
+[oscillatory]
+# Frequency range for oscillatory processing (Hz)
+frequency_range = [0.1, 100.0]
+
+# Hierarchy levels to process
+# Options: "Quantum", "Molecular", "Cellular", "Organismal", "Neural", 
+#          "Cognitive", "Social", "Ecological", "Planetary", "Cosmic"
+hierarchy_levels = [
+    "Molecular", 
+    "Cellular", 
+    "Organismal", 
+    "Neural",
+    "Cognitive"
+]
+
+# Cross-scale coupling strength (0.0 to 1.0)
+coupling_strength = 0.8
+
+# Emergence detection sensitivity
+emergence_detection_sensitivity = 0.75
+
+# Target entropy for optimization (bits)
+target_entropy = 2.2
+
+[fire_consciousness]
+# Fire circle environment parameters
+[fire_consciousness.environment]
+# Optimal light intensity for consciousness emergence
+light_intensity = 0.7
+
+# Fire wavelength spectrum optimization (nanometers)
+optimal_wavelength_min = 600.0
+optimal_wavelength_max = 700.0
+
+# Temperature range for fire recognition
+fire_temperature_min = 600.0  # Kelvin
+fire_temperature_max = 1200.0 # Kelvin
+
+# Darkness level that triggers fire seeking behavior
+darkness_threshold = 0.3
+
+[fire_consciousness.biological_maxwells_demons]
+# Enable different types of Biological Maxwell's Demons
+fire_recognition = true
+agency_detection = true
+spatial_memory = true
+temporal_planning = true
+
+# BMD processing efficiency
+bmd_efficiency = 0.92
+
+[predeterminism]
+# Thermodynamic necessity analysis settings
+[predeterminism.thermodynamic]
+# Enable categorical predeterminism detection
+enable_categorical_analysis = true
+
+# Configuration space dimensions to explore
+configuration_dimensions = 10
+
+# Heat death trajectory calculation precision
+trajectory_precision = 0.001
+
+# Entropy production rate threshold
+entropy_production_threshold = 0.1
+
+[predeterminism.categories]
+# Categorical completion tracking
+universal_information_processing = true
+consciousness_emergence = true
+thermodynamic_optimization = true
+
+# Expected surprise paradox handling
+handle_surprise_paradox = true
+
+# Evil dissolution framework
+enable_evil_dissolution = true
+
+[security]
+# Adversarial detection sensitivity (0.0 to 1.0)
+adversarial_sensitivity = 0.8
+
+# Enable biological immune system protection
+immune_protection = true
+
+# Immune system parameters
+[security.immune_system]
+# T-cell, B-cell, and memory cell simulation
+enable_t_cells = true
+enable_b_cells = true
+enable_memory_cells = true
+
+# Threat pattern learning rate
+learning_rate = 0.1
+
+# Memory retention for threat patterns (hours)
+threat_memory_retention = 168  # 1 week
+
+# Coherence interference detection threshold
+coherence_interference_threshold = 0.7
+
+[performance]
+# Real-time processing requirements
+enable_real_time = false
+
+# Maximum processing time per query (seconds)
+max_processing_time = 30.0
+
+# Parallel processing settings
+enable_parallel_processing = true
+max_concurrent_queries = 4
+
+# Memory usage limits
+max_memory_mb = 2048
+
+# Caching settings
+enable_caching = true
+cache_size_mb = 256
+cache_ttl_seconds = 3600
+
+[logging]
+# Log level options: "trace", "debug", "info", "warn", "error"
+level = "info"
+
+# Enable logging to file
+log_to_file = true
+log_file = "autobahn.log"
+
+# Enable structured logging (JSON format)
+structured_logging = false
+
+# Log rotation settings
+max_log_size_mb = 100
+max_log_files = 5
+
+# Component-specific logging levels
+[logging.components]
+consciousness = "info"
+biological = "info"
+oscillatory = "info"
+predeterminism = "info"
+security = "warn"
+performance = "info"
+
+[monitoring]
+# Enable system health monitoring
+enable_monitoring = true
+
+# Health check interval (seconds)
+health_check_interval = 60
+
+# Statistical drift detection
+enable_drift_detection = true
+drift_detection_window = 1000  # samples
+
+# Performance metrics collection
+collect_performance_metrics = true
+metrics_retention_hours = 24
+
+# Alert thresholds
+[monitoring.alerts]
+consciousness_level_drop = 0.5
+atp_depletion_threshold = 0.1
+system_health_threshold = 0.7
+processing_time_threshold = 15.0
+
+[experimental]
+# Experimental features (use with caution)
+enable_experimental_features = false
+
+# Qualia generation (in development)
+enable_qualia_generation = false
+
+# Advanced fire-light coupling
+enable_advanced_fire_coupling = false
+
+# Temporal determinism navigation
+enable_temporal_navigation = false
+
+# Full membrane computation modeling
+enable_full_membrane_computation = false
+
+# Advanced behavioral encoding
+enable_behavioral_encoding = false
+
+[debug]
+# Debug mode settings
+debug_mode = false
+
+# Verbose output for development
+verbose_processing = false
+
+# Save intermediate processing states
+save_intermediate_states = false
+
+# Enable profiling
+enable_profiling = false
+
+# Profiling output directory
+profiling_output_dir = "./profiling/" 

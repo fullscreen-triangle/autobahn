@@ -1,0 +1,39 @@
+# Cargo configuration for Autobahn project
+
+[build]
+# Use all available CPU cores for compilation
+jobs = 0
+
+[target.x86_64-unknown-linux-gnu]
+# Linux-specific settings
+rustflags = ["-C", "target-cpu=native"]
+
+[target.x86_64-apple-darwin]
+# macOS Intel-specific settings
+rustflags = ["-C", "target-cpu=native"]
+
+[target.aarch64-apple-darwin]
+# macOS Apple Silicon-specific settings
+rustflags = ["-C", "target-cpu=native"]
+
+[alias]
+# Useful aliases for development
+b = "build"
+c = "check"
+t = "test"
+r = "run"
+br = "build --release"
+tr = "test --release"
+fmt = "fmt --all"
+clippy-all = "clippy --all-targets --all-features"
+
+# Consciousness framework specific aliases
+demo = "run --example comprehensive_example --all-features"
+consciousness = "run --example complete_fire_consciousness_demo --all-features"
+rag = "run --example enhanced_bio_rag_demo --all-features"
+cli = "run --bin autobahn-cli --all-features"
+
+[env]
+# Environment variables for development
+RUST_BACKTRACE = "1"
+RUST_LOG = "debug" 
