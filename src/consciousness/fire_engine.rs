@@ -164,6 +164,278 @@ impl QuantumCoherenceField {
     }
 }
 
+/// Evolutionary timeline of fire-consciousness coupling
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct EvolutionaryTimeline {
+    /// Current time in millions of years ago (MYA)
+    pub time_mya: f64,
+    /// Hominid cognitive complexity (bits)
+    pub cognitive_complexity: f64,
+    /// Fire adaptation level (0.0 to 1.0)
+    pub fire_adaptation: f64,
+    /// Consciousness emergence level (0.0 to 1.0)
+    pub consciousness_level: f64,
+}
+
+impl EvolutionaryTimeline {
+    /// Create timeline for specific period
+    pub fn new(time_mya: f64) -> Self {
+        let (cognitive_complexity, fire_adaptation, consciousness_level) = match time_mya {
+            t if t > 2.0 => (6.0, 0.1, 0.0),  // Pre-conscious fire interaction
+            t if t > 1.5 => (8.5, 0.4, 0.2),  // Quantum-BMD coupling begins
+            t if t > 1.0 => (10.2, 0.7, 0.5), // Agency recognition emerges
+            t if t > 0.5 => (11.8, 0.9, 0.8), // Cultural transmission
+            _ => (12.5, 1.0, 1.0),             // Modern human consciousness
+        };
+        
+        Self {
+            time_mya,
+            cognitive_complexity,
+            fire_adaptation,
+            consciousness_level,
+        }
+    }
+    
+    /// Calculate evolutionary pressure for fire adaptation
+    pub fn fire_adaptation_pressure(&self, fire_env: &FireEnvironment) -> f64 {
+        let exposure_prob = fire_env.fire_exposure_probability(10.0, 180.0); // 10 km² territory, 180-day dry season
+        let survival_benefit = self.fire_adaptation * 0.3; // Up to 30% survival increase
+        let cognitive_benefit = (self.cognitive_complexity - 8.0).max(0.0) / 4.0; // Threshold effect at 8 bits
+        
+        exposure_prob * (survival_benefit + cognitive_benefit)
+    }
+}
+
+/// Main consciousness system integrating all components
+#[derive(Debug)]
+pub struct ConsciousnessSystem {
+    /// Quantum coherence field from ion channels
+    pub quantum_field: QuantumCoherenceField,
+    /// Collection of biological Maxwell's demons
+    pub bmds: Vec<BiologicalMaxwellDemon>,
+    /// Current fire environment
+    pub fire_environment: FireEnvironment,
+    /// Evolutionary timeline context
+    pub timeline: EvolutionaryTimeline,
+    /// Current consciousness level (0.0 to 1.0)
+    pub consciousness_level: f64,
+    /// Agency recognition capability
+    pub agency_recognition: f64,
+    /// Darkness fear level (uniquely human)
+    pub darkness_fear: f64,
+}
+
+impl ConsciousnessSystem {
+    /// Create new consciousness system for specific evolutionary period
+    pub fn new(time_mya: f64) -> AutobahnResult<Self> {
+        // Create ion channels with fire adaptations
+        let mut ion_channels = Vec::new();
+        let fire_adaptation = if time_mya < 1.5 { 0.8 } else { 0.3 }; // Higher adaptation in later periods
+        
+        for _ in 0..1000 { // 1000 ion channels (simplified)
+            ion_channels.push(IonChannel {
+                ion_type: IonType::Hydrogen, // Primary consciousness ion
+                conductance_siemens: 1e-12, // 1 picosiemen
+                voltage_threshold_mv: -55.0, // mV
+                phase_offset: rand::random::<f64>() * 2.0 * std::f64::consts::PI,
+                fire_adaptation_factor: fire_adaptation,
+                spatial_location: (
+                    rand::random::<f64>() * 100.0,
+                    rand::random::<f64>() * 100.0,
+                    rand::random::<f64>() * 100.0,
+                ),
+            });
+        }
+        
+        // Create fire environment
+        let fire_environment = FireEnvironment::olduvai_ecosystem();
+        
+        // Create quantum field
+        let quantum_field = QuantumCoherenceField::new(&ion_channels, &fire_environment)?;
+        
+        // Create specialized BMDs
+        let bmds = vec![
+            BiologicalMaxwellDemon::new(BMDSpecialization::FireRecognition),
+            BiologicalMaxwellDemon::new(BMDSpecialization::AgencyDetection),
+            BiologicalMaxwellDemon::new(BMDSpecialization::SpatialMemory),
+            BiologicalMaxwellDemon::new(BMDSpecialization::TemporalPlanning),
+            BiologicalMaxwellDemon::new(BMDSpecialization::SocialCoordination),
+            BiologicalMaxwellDemon::new(BMDSpecialization::ThreatAssessment),
+        ];
+        
+        let timeline = EvolutionaryTimeline::new(time_mya);
+        
+        // Calculate initial consciousness level
+        let consciousness_level = if quantum_field.meets_consciousness_threshold {
+            timeline.consciousness_level * fire_environment.consciousness_enhancement_factor()?
+        } else {
+            0.0
+        };
+        
+        // Agency recognition emerges around 1.0 MYA
+        let agency_recognition = if time_mya < 1.0 { 0.8 } else { 0.1 };
+        
+        // Darkness fear emerges with fire-dependent consciousness
+        let darkness_fear = consciousness_level * 0.9; // Strong correlation
+        
+        Ok(Self {
+            quantum_field,
+            bmds,
+            fire_environment,
+            timeline,
+            consciousness_level,
+            agency_recognition,
+            darkness_fear,
+        })
+    }
+    
+    /// Process environmental input through complete consciousness system
+    pub async fn process_input(&mut self, input: &[f64]) -> AutobahnResult<ConsciousnessResponse> {
+        // Step 1: Check for fire patterns (Underwater Fireplace Paradox)
+        let fire_recognition = self.recognize_fire_patterns(input).await?;
+        
+        // Step 2: Process through BMDs with quantum enhancement
+        let mut bmd_outputs = Vec::new();
+        for bmd in &mut self.bmds {
+            let output = bmd.process_information(input, &self.quantum_field, &self.fire_environment).await?;
+            bmd_outputs.push(output);
+        }
+        
+        // Step 3: Integrate BMD outputs
+        let integrated_response = self.integrate_bmd_outputs(&bmd_outputs)?;
+        
+        // Step 4: Apply consciousness-level modulation
+        let conscious_response = self.apply_consciousness_modulation(&integrated_response);
+        
+        // Step 5: Check for agency recognition
+        let agency_detected = self.detect_individual_agency(input).await?;
+        
+        // Step 6: Calculate darkness response (if applicable)
+        let darkness_response = self.calculate_darkness_response(input);
+        
+        Ok(ConsciousnessResponse {
+            fire_recognition,
+            conscious_processing: conscious_response,
+            agency_detection: agency_detected,
+            darkness_fear_activation: darkness_response,
+            quantum_coherence: self.quantum_field.meets_consciousness_threshold,
+            consciousness_level: self.consciousness_level,
+        })
+    }
+    
+    /// Recognize fire patterns (hardwired recognition that overrides logic)
+    async fn recognize_fire_patterns(&self, input: &[f64]) -> AutobahnResult<FireRecognitionResponse> {
+        // Underwater Fireplace Paradox: Fire recognition overrides logical impossibility
+        let fire_signature = [0.8, 0.6, 0.4, 0.9, 0.7]; // Simplified fire pattern
+        let similarity = cosine_similarity(input, &fire_signature)?;
+        
+        let recognition_strength = similarity * 1.2; // Enhanced recognition
+        let logical_override = recognition_strength > 0.5; // Overrides logic if strong enough
+        
+        // Check for impossible fire contexts (underwater, vacuum, etc.)
+        let impossible_context = self.detect_impossible_fire_context(input);
+        let human_attribution = recognition_strength > 0.7; // Strong fires attributed to humans
+        
+        Ok(FireRecognitionResponse {
+            recognition_strength,
+            logical_override,
+            impossible_context,
+            human_attribution,
+            fire_signature_match: similarity,
+        })
+    }
+    
+    fn detect_impossible_fire_context(&self, input: &[f64]) -> bool {
+        // Simplified detection of impossible contexts
+        let water_signature = [0.2, 0.8, 0.9, 0.1, 0.3];
+        let water_similarity = cosine_similarity(input, &water_signature).unwrap_or(0.0);
+        water_similarity > 0.6 // High water similarity = impossible fire context
+    }
+    
+    async fn detect_individual_agency(&self, input: &[f64]) -> AutobahnResult<AgencyDetection> {
+        let agency_patterns = [0.7, 0.5, 0.8, 0.6, 0.9]; // Simplified agency signature
+        let similarity = cosine_similarity(input, &agency_patterns)?;
+        
+        let agency_detected = similarity > 0.6 && self.agency_recognition > 0.5;
+        let agency_strength = similarity * self.agency_recognition;
+        
+        let individual_signatures = if agency_detected {
+            vec!["Individual_1".to_string(), "Individual_2".to_string()]
+        } else {
+            vec![]
+        };
+        
+        let witness_context_active = self.fire_environment.group_size >= 3; // Need witnesses
+        
+        Ok(AgencyDetection {
+            agency_detected,
+            agency_strength,
+            individual_signatures,
+            witness_context_active,
+        })
+    }
+    
+    fn calculate_darkness_response(&self, input: &[f64]) -> f64 {
+        // Check for darkness patterns
+        let light_level: f64 = input.iter().sum::<f64>() / input.len() as f64;
+        
+        if light_level < 0.3 {
+            self.darkness_fear * (0.3 - light_level) * 3.33 // Scales to 1.0 at light_level=0
+        } else {
+            0.0
+        }
+    }
+    
+    fn integrate_bmd_outputs(&self, outputs: &[Vec<f64>]) -> AutobahnResult<Vec<f64>> {
+        if outputs.is_empty() {
+            return Ok(vec![0.0; 10]); // Default output size
+        }
+        
+        let output_size = outputs[0].len();
+        let mut integrated = vec![0.0; output_size];
+        
+        for output in outputs {
+            for (i, &value) in output.iter().enumerate() {
+                if i < integrated.len() {
+                    integrated[i] += value / outputs.len() as f64; // Average integration
+                }
+            }
+        }
+        
+        Ok(integrated)
+    }
+    
+    fn apply_consciousness_modulation(&self, response: &[f64]) -> Vec<f64> {
+        response.iter()
+            .map(|&x| x * self.consciousness_level)
+            .collect()
+    }
+    
+    /// Test underwater fireplace paradox
+    pub async fn test_underwater_fireplace_paradox(&mut self) -> AutobahnResult<UnderwaterFireplaceTest> {
+        // Create impossible underwater fire scenario
+        let impossible_fire_env = FireEnvironment::impossible_underwater();
+        let old_env = std::mem::replace(&mut self.fire_environment, impossible_fire_env);
+        
+        // Fire pattern in impossible context
+        let underwater_fire_input = [0.8, 0.6, 0.4, 0.9, 0.7]; // Strong fire signature
+        
+        let response = self.process_input(&underwater_fire_input).await?;
+        
+        // Restore original environment
+        self.fire_environment = old_env;
+        
+        Ok(UnderwaterFireplaceTest {
+            paradox_demonstrated: response.fire_recognition.logical_override && response.fire_recognition.impossible_context,
+            recognition_strength: response.fire_recognition.recognition_strength,
+            logical_override: response.fire_recognition.logical_override,
+            impossible_context: response.fire_recognition.impossible_context,
+            human_attribution: response.fire_recognition.human_attribution,
+            consciousness_level: response.consciousness_level,
+        })
+    }
+}
+
 /// Individual ion channel with quantum properties
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct IonChannel {

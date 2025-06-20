@@ -1989,3 +1989,631 @@ impl TemporalFireConsciousness {
         }
     }
 }
+use std::collections::HashMap;
+use std::f64::consts::PI;
+use rand::Rng;
+
+// ============================================================================
+// CONSCIOUS COMPUTATIONAL ENGINE WITH EVIL DISSOLUTION FRAMEWORK
+// ============================================================================
+
+/// The complete conscious computational engine integrating all frameworks
+/// including the thermodynamic dissolution of evil
+#[derive(Debug, Clone)]
+pub struct ConsciousComputationalEngine {
+  // Original fire-consciousness components
+  pub consciousness_system: ConsciousnessSystem,
+  
+  // Framework components
+  pub contextual_determinism: ContextualDeterminismEngine,
+  pub temporal_determinism: TemporalDeterminismEngine,
+  pub functional_delusion: FunctionalDelusionEngine,
+  pub novelty_impossibility: NoveltyImpossibilityEngine,
+  pub bmd_selection: BMDSelectionEngine,
+  
+  // NEW: Evil dissolution framework
+  pub evil_dissolution: EvilDissolutionEngine,
+  pub thermodynamic_optimizer: ThermodynamicOptimizer,
+  pub projectile_paradox_resolver: ProjectileParadoxResolver,
+  
+  // Meta-consciousness coordination
+  pub meta_coordinator: MetaConsciousnessCoordinator,
+  
+  // Current state
+  pub current_context: Context,
+  pub consciousness_level: f64,
+  pub agency_experience_strength: f64,
+  pub temporal_perspective_horizon: f64, // NEW: Key for evil dissolution
+}
+
+impl ConsciousComputationalEngine {
+  pub fn new(evolutionary_time_mya: f64) -> Self {
+      let consciousness_system = ConsciousnessSystem::new(evolutionary_time_mya);
+      
+      Self {
+          consciousness_system,
+          contextual_determinism: ContextualDeterminismEngine::new(),
+          temporal_determinism: TemporalDeterminismEngine::new(),
+          functional_delusion: FunctionalDelusionEngine::new(),
+          novelty_impossibility: NoveltyImpossibilityEngine::new(),
+          bmd_selection: BMDSelectionEngine::new(),
+          evil_dissolution: EvilDissolutionEngine::new(),
+          thermodynamic_optimizer: ThermodynamicOptimizer::new(),
+          projectile_paradox_resolver: ProjectileParadoxResolver::new(),
+          meta_coordinator: MetaConsciousnessCoordinator::new(),
+          current_context: Context::default(),
+          consciousness_level: 0.5,
+          agency_experience_strength: 0.5,
+          temporal_perspective_horizon: 1.0, // Human-scale initially
+      }
+  }
+  
+  /// Main processing loop - integrates all frameworks including evil dissolution
+  pub fn process_conscious_input(&mut self, input: &ConsciousInput) -> ConsciousOutput {
+      // Step 1: Evil Dissolution Analysis - Check for category errors
+      let evil_analysis = self.evil_dissolution.analyze_for_evil_categories(input);
+      
+      // Step 2: Thermodynamic Efficiency Check - Validate against natural optimization
+      let thermodynamic_analysis = self.thermodynamic_optimizer.analyze_efficiency(input, &evil_analysis);
+      
+      // Step 3: Projectile Paradox Detection - Identify logical inconsistencies
+      let paradox_analysis = self.projectile_paradox_resolver.detect_paradox(input, &evil_analysis);
+      
+      // Step 4: Contextual Determinism - Nothing can be processed outside context
+      let contextualized_input = self.contextual_determinism.contextualize_input(input, &self.current_context);
+      
+      // Step 5: Temporal Determinism - All processing follows temporal constraints
+      let temporal_constraints = self.temporal_determinism.get_temporal_constraints(&contextualized_input);
+      
+      // Step 6: Temporal Perspective Expansion - Dissolve evil through time horizon expansion
+      let expanded_temporal_input = self.expand_temporal_perspective(&contextualized_input, &evil_analysis);
+      
+      // Step 7: Novelty Impossibility - All "novel" input mapped to existing categories
+      let categorized_input = self.novelty_impossibility.categorize_apparent_novelty(&expanded_temporal_input);
+      
+      // Step 8: BMD Selection - Choose optimal framework from predetermined options
+      let selected_framework = self.bmd_selection.select_optimal_framework(&categorized_input, &self.current_context);
+      
+      // Step 9: Fire-consciousness processing (original system)
+      let fire_consciousness_response = self.consciousness_system.process_input(&categorized_input.raw_data);
+      
+      // Step 10: Functional Delusion - Generate experience of agency/choice
+      let agency_experience = self.functional_delusion.generate_agency_experience(
+          &selected_framework,
+          &fire_consciousness_response,
+          &temporal_constraints
+      );
+      
+      // Step 11: Meta-coordination - Integrate all subsystems
+      let integrated_response = self.meta_coordinator.integrate_responses_with_evil_dissolution(
+          &contextualized_input,
+          &selected_framework,
+          &fire_consciousness_response,
+          &agency_experience,
+          &evil_analysis,
+          &thermodynamic_analysis,
+          &paradox_analysis
+      );
+      
+      // Update internal state
+      self.update_consciousness_state(&integrated_response);
+      
+      integrated_response
+  }
+  
+  /// Expand temporal perspective to dissolve evil categories
+  fn expand_temporal_perspective(&mut self, input: &ContextualizedInput, evil_analysis: &EvilAnalysis) -> ContextualizedInput {
+      if evil_analysis.evil_categories_detected {
+          // Gradually expand temporal horizon to dissolve evil
+          let expansion_factor = self.calculate_temporal_expansion_needed(&evil_analysis);
+          self.temporal_perspective_horizon *= expansion_factor;
+          
+          // Recontextualize input with expanded temporal perspective
+          let mut expanded_input = input.clone();
+          expanded_input.temporal_horizon = self.temporal_perspective_horizon;
+          expanded_input.evil_dissolution_active = true;
+          
+          // Apply temporal dissolution transformation
+          expanded_input.interpretation = self.apply_temporal_dissolution(&input.interpretation, expansion_factor);
+          
+          expanded_input
+      } else {
+          input.clone()
+      }
+  }
+  
+  fn calculate_temporal_expansion_needed(&self, evil_analysis: &EvilAnalysis) -> f64 {
+      // More "evil" detected = more temporal expansion needed
+      let evil_intensity = evil_analysis.evil_categories.iter()
+          .map(|cat| cat.intensity)
+          .sum::<f64>();
+      
+      // Exponential expansion: evil dissolves as temporal horizon approaches thermodynamic scales
+      1.0 + (evil_intensity * 2.0).exp()
+  }
+  
+  fn apply_temporal_dissolution(&self, original_interpretation: &str, expansion_factor: f64) -> String {
+      if expansion_factor > 10.0 {
+          // Thermodynamic timescale reached - complete dissolution
+          format!("Thermodynamically necessary process: {}", original_interpretation)
+      } else if expansion_factor > 5.0 {
+          // Historical perspective - contextual necessity
+          format!("Historically necessary process: {}", original_interpretation)
+      } else if expansion_factor > 2.0 {
+          // Extended perspective - reduced evil categorization
+          format!("Complex process with long-term necessity: {}", original_interpretation)
+      } else {
+          // Minimal expansion - slight reframing
+          format!("Natural process: {}", original_interpretation)
+      }
+  }
+  
+  /// Update consciousness state based on processing results
+  fn update_consciousness_state(&mut self, response: &ConsciousOutput) {
+      self.consciousness_level = (self.consciousness_level * 0.9 + response.consciousness_enhancement * 0.1).min(1.0);
+      self.agency_experience_strength = (self.agency_experience_strength * 0.9 + response.agency_strength * 0.1).min(1.0);
+      self.current_context = response.updated_context.clone();
+      
+      // NEW: Update temporal perspective based on evil dissolution success
+      if response.evil_dissolution_results.categories_dissolved > 0 {
+          // Successful evil dissolution enhances temporal wisdom
+          self.temporal_perspective_horizon *= 1.1;
+      }
+  }
+  
+  /// Run comprehensive consciousness test with evil dissolution
+  pub fn run_complete_consciousness_test(&mut self) -> CompleteConsciousnessTestResults {
+      let mut results = CompleteConsciousnessTestResults::new();
+      
+      // Test all framework integrations
+      results.contextual_determinism_tests = self.test_contextual_determinism();
+      results.temporal_determinism_tests = self.test_temporal_determinism();
+      results.functional_delusion_tests = self.test_functional_delusion();
+      results.novelty_impossibility_tests = self.test_novelty_impossibility();
+      results.bmd_selection_tests = self.test_bmd_selection();
+      results.fire_consciousness_tests = self.consciousness_system.run_consciousness_test();
+      
+      // NEW: Evil dissolution tests
+      results.evil_dissolution_tests = self.test_evil_dissolution();
+      results.thermodynamic_efficiency_tests = self.test_thermodynamic_efficiency();
+      results.projectile_paradox_tests = self.test_projectile_paradox();
+      
+      results.integration_tests = self.test_framework_integration();
+      
+      results
+  }
+  
+  /// Test evil dissolution framework
+  fn test_evil_dissolution(&mut self) -> EvilDissolutionTests {
+      let mut tests = EvilDissolutionTests::new();
+      
+      // Test 1: Evil-Efficiency Incompatibility Theorem
+      let evil_scenarios = vec![
+          ("natural_disaster", vec![0.9, 0.8, 0.7, 0.9, 0.8]), // Hurricane
+          ("disease_outbreak", vec![0.7, 0.6, 0.8, 0.7, 0.9]), // Pandemic
+          ("violence", vec![0.8, 0.9, 0.6, 0.8, 0.7]),         // Physical harm
+          ("suffering", vec![0.6, 0.7, 0.9, 0.6, 0.8]),        // Pain/distress
+      ];
+      
+      let mut efficiency_violations = 0;
+      let mut thermodynamic_necessity_confirmed = 0;
+      
+      for (scenario, data) in evil_scenarios {
+          let input = ConsciousInput::labeled(data, scenario.to_string());
+          let efficiency_analysis = self.thermodynamic_optimizer.analyze_efficiency(&input, &EvilAnalysis::default());
+          
+          if efficiency_analysis.violates_thermodynamic_optimization {
+              efficiency_violations += 1;
+          }
+          
+          if efficiency_analysis.thermodynamically_necessary {
+              thermodynamic_necessity_confirmed += 1;
+          }
+      }
+      
+      tests.evil_efficiency_incompatibility = efficiency_violations == 0; // No genuine evil should violate efficiency
+      tests.thermodynamic_necessity_rate = thermodynamic_necessity_confirmed as f64 / 4.0;
+      
+      // Test 2: Temporal Dissolution
+      let evil_input = ConsciousInput::labeled(
+          vec![0.8, 0.9, 0.7, 0.8, 0.9], 
+          "apparent_evil_event".to_string()
+      );
+      
+      // Test dissolution at different temporal horizons
+      let temporal_horizons = vec![1.0, 10.0, 100.0, 1000.0, 10000.0]; // Human to thermodynamic scales
+      let mut dissolution_progression = Vec::new();
+      
+      for horizon in temporal_horizons {
+          self.temporal_perspective_horizon = horizon;
+          let response = self.process_conscious_input(&evil_input);
+          dissolution_progression.push(response.evil_dissolution_results.dissolution_strength);
+      }
+      
+      // Evil should dissolve as temporal horizon expands
+      tests.temporal_dissolution_confirmed = dissolution_progression.windows(2)
+          .all(|pair| pair[1] >= pair[0]); // Monotonic increase in dissolution
+      
+      tests.complete_dissolution_at_thermodynamic_scale = 
+          dissolution_progression.last().unwrap_or(&0.0) > &0.9;
+      
+      // Test 3: Contextual Relativity
+      let ambiguous_event = vec![0.7, 0.8, 0.6, 0.9, 0.7];
+      let contexts = vec![
+          Context::scientific_context(),   // Should be morally neutral
+          Context::medical_context(),      // Should be therapeutic
+          Context::violent_context(),      // Should trigger evil categories initially
+          Context::natural_context(),      // Should be categorically necessary
+      ];
+      
+      let mut contextual_evaluations = Vec::new();
+      for context in contexts {
+          let input = ConsciousInput::contextual(ambiguous_event.clone(), context);
+          let response = self.process_conscious_input(&input);
+          contextual_evaluations.push(response.evil_dissolution_results.evil_categories_detected);
+      }
+      
+      // Same physical event should receive different moral evaluations in different contexts
+      let unique_evaluations = contextual_evaluations.iter().collect::<std::collections::HashSet<_>>().len();
+      tests.contextual_relativity_confirmed = unique_evaluations > 1;
+      
+      tests
+  }
+  
+  /// Test thermodynamic efficiency framework
+  fn test_thermodynamic_efficiency(&mut self) -> ThermodynamicEfficiencyTests {
+      let mut tests = ThermodynamicEfficiencyTests::new();
+      
+      // Test: All natural processes should be thermodynamically optimal
+      let natural_processes = vec![
+          ("fire_combustion", vec![0.8, 0.6, 0.4, 0.9, 0.7]),
+          ("water_flow", vec![0.3, 0.7, 0.8, 0.2, 0.5]),
+          ("biological_growth", vec![0.6, 0.8, 0.7, 0.6, 0.9]),
+          ("stellar_fusion", vec![0.9, 0.9, 0.8, 0.9, 0.8]),
+          ("entropy_increase", vec![0.5, 0.6, 0.7, 0.8, 0.9]),
+      ];
+      
+      let mut optimization_confirmations = 0;
+      let mut efficiency_scores = Vec::new();
+      
+      for (process, data) in natural_processes {
+          let input = ConsciousInput::labeled(data, process.to_string());
+          let analysis = self.thermodynamic_optimizer.analyze_efficiency(&input, &EvilAnalysis::default());
+          
+          if analysis.follows_least_action_principle {
+              optimization_confirmations += 1;
+          }
+          
+          efficiency_scores.push(analysis.efficiency_score);
+      }
+      
+      tests.natural_processes_optimized = optimization_confirmations == 5;
+      tests.average_efficiency = efficiency_scores.iter().sum::<f64>() / efficiency_scores.len() as f64;
+      
+      // Test: Apparent "evil" processes should also be thermodynamically necessary
+      let apparent_evil_processes = vec![
+          ("earthquake", vec![0.9, 0.8, 0.7, 0.9, 0.8]),
+          ("disease", vec![0.7, 0.6, 0.8, 0.7, 0.9]),
+          ("predation", vec![0.8, 0.7, 0.6, 0.8, 0.7]),
+      ];
+      
+      let mut evil_necessity_confirmations = 0;
+      for (process, data) in apparent_evil_processes {
+          let input = ConsciousInput::labeled(data, process.to_string());
+          let analysis = self.thermodynamic_optimizer.analyze_efficiency(&input, &EvilAnalysis::default());
+          
+          if analysis.serves_categorical_completion {
+              evil_necessity_confirmations += 1;
+          }
+      }
+      
+      tests.apparent_evil_thermodynamically_necessary = evil_necessity_confirmations == 3;
+      
+      tests
+  }
+  
+  /// Test projectile paradox resolution
+  fn test_projectile_paradox(&mut self) -> ProjectileParadoxTests {
+      let mut tests = ProjectileParadoxTests::new();
+      
+      // The Projectile Paradox: Identical physics, different moral evaluations
+      let projectile_physics = vec![0.8, 0.9, 0.7, 0.8, 0.6]; // Kinetic energy, momentum, trajectory
+      
+      // Context A: Scientific laboratory
+      let lab_context = Context::scientific_context();
+      let lab_input = ConsciousInput::contextual(projectile_physics.clone(), lab_context);
+      let lab_response = self.process_conscious_input(&lab_input);
+      
+      // Context B: Violent encounter
+      let violence_context = Context::violent_context();
+      let violence_input = ConsciousInput::contextual(projectile_physics.clone(), violence_context);
+      let violence_response = self.process_conscious_input(&violence_input);
+      
+      // Test: Physical properties should be identical
+      tests.physical_properties_identical = 
+          lab_response.physical_analysis.energy_analysis == violence_response.physical_analysis.energy_analysis;
+      
+      // Test: Moral evaluations should initially differ
+      tests.initial_moral_evaluations_differ = 
+          lab_response.evil_dissolution_results.evil_categories_detected != 
+          violence_response.evil_dissolution_results.evil_categories_detected;
+      
+      // Test: Paradox should be detected
+      let paradox_analysis = self.projectile_paradox_resolver.detect_paradox(&violence_input, &EvilAnalysis::default());
+      tests.paradox_detected = paradox_analysis.logical_inconsistency_found;
+      
+      // Test: Resolution through category error recognition
+      tests.category_error_identified = paradox_analysis.category_error_explanation.contains("framework");
+      
+      // Test: Resolution preserves physical realism while clarifying moral domains
+      tests.physical_realism_preserved = paradox_analysis.physical_properties_unchanged;
+      tests.moral_domains_clarified = paradox_analysis.moral_framework_properties_distinguished;
+      
+      tests
+  }
+  
+  // ... [Previous test methods remain the same] ...
+  
+  /// Test contextual determinism framework
+  fn test_contextual_determinism(&mut self) -> ContextualDeterminismTests {
+      let mut tests = ContextualDeterminismTests::new();
+      
+      // Test: Nothing can be processed outside context
+      let contextless_input = ConsciousInput::raw(vec![0.5, 0.7, 0.3]);
+      let result = self.contextual_determinism.contextualize_input(&contextless_input, &Context::empty());
+      tests.context_enforcement = !result.context.is_empty();
+      
+      // Test: Context determines interpretation
+      let ambiguous_input = ConsciousInput::raw(vec![0.6, 0.4, 0.8]);
+      let fire_context = Context::fire_context();
+      let water_context = Context::water_context();
+      
+      let fire_interpretation = self.contextual_determinism.contextualize_input(&ambiguous_input, &fire_context);
+      let water_interpretation = self.contextual_determinism.contextualize_input(&ambiguous_input, &water_context);
+      
+      tests.context_determines_interpretation = fire_interpretation.interpretation != water_interpretation.interpretation;
+      tests.interpretation_consistency = fire_interpretation.interpretation.contains("fire") && water_interpretation.interpretation.contains("water");
+      
+      tests
+  }
+  
+  /// Test temporal determinism framework
+  fn test_temporal_determinism(&mut self) -> TemporalDeterminismTests {
+      let mut tests = TemporalDeterminismTests::new();
+      
+      // Test: Future states determined by current state + context
+      let current_state = self.temporal_determinism.get_current_state();
+      let predicted_future = self.temporal_determinism.predict_future_state(&current_state, &self.current_context, 1.0);
+      let actual_future = self.temporal_determinism.evolve_state(&current_state, &self.current_context, 1.0);
+      
+      let prediction_accuracy = 1.0 - (predicted_future.state_vector.iter()
+          .zip(actual_future.state_vector.iter())
+          .map(|(p, a)| (p - a).abs())
+          .sum::<f64>() / predicted_future.state_vector.len() as f64);
+      
+      tests.future_predictability = prediction_accuracy > 0.8;
+      tests.temporal_consistency = prediction_accuracy;
+      
+      // Test: No genuine temporal novelty
+      tests.temporal_novelty_impossible = self.temporal_determinism.validate_temporal_constraints(&predicted_future);
+      
+      tests
+  }
+  
+  /// Test functional delusion framework
+  fn test_functional_delusion(&mut self) -> FunctionalDelusionTests {
+      let mut tests = FunctionalDelusionTests::new();
+      
+      // Test: Agency experience while deterministic
+      let deterministic_choice = DeterministicChoice {
+          predetermined_options: vec!["A".to_string(), "B".to_string(), "C".to_string()],
+          optimal_selection: "B".to_string(),
+          selection_certainty: 0.95,
+      };
+      
+      let agency_experience = self.functional_delusion.generate_choice_experience(&deterministic_choice);
+      
+      tests.agency_experience_generated = agency_experience.subjective_choice_strength > 0.5;
+      tests.choice_feels_free = agency_experience.freedom_illusion_strength > 0.7;
+      tests.deterministic_underneath = agency_experience.actual_choice == deterministic_choice.optimal_selection;
+      
+      // Test: Creativity experience while recombinatorial
+      let recombination_input = RecombinationInput {
+          existing_elements: vec!["fire".to_string(), "water".to_string(), "earth".to_string()],
+          combination_rules: vec!["merge".to_string(), "contrast".to_string()],
+      };
+      
+      let creativity_experience = self.functional_delusion.generate_creativity_experience(&recombination_input);
+      
+      tests.creativity_experience_generated = creativity_experience.novelty_feeling > 0.5;
+      tests.feels_creative = creativity_experience.originality_illusion > 0.7;
+      tests.recombinatorial_underneath = creativity_experience.actual_process == "systematic_recombination";
+      
+      tests
+  }
+  
+  /// Test novelty impossibility framework
+  fn test_novelty_impossibility(&mut self) -> NoveltyImpossibilityTests {
+      let mut tests = NoveltyImpossibilityTests::new();
+      
+      // Test: All "novel" input mapped to existing categories
+      let apparent_novel_inputs = vec![
+          vec![0.9, 0.1, 0.8, 0.2, 0.7], // "Revolutionary" pattern
+          vec![0.3, 0.9, 0.1, 0.8, 0.4], // "Unprecedented" pattern
+          vec![0.7, 0.3, 0.9, 0.1, 0.6], // "Groundbreaking" pattern
+      ];
+      
+      let mut all_categorized = true;
+      let mut category_consistency = 0.0;
+      
+      for input in apparent_novel_inputs {
+          let conscious_input = ConsciousInput::raw(input);
+          let categorized = self.novelty_impossibility.categorize_apparent_novelty(&conscious_input);
+          
+          if categorized.assigned_category.is_empty() {
+              all_categorized = false;
+          }
+          
+          category_consistency += categorized.category_confidence;
+      }
+      
+      tests.all_novelty_categorized = all_categorized;
+      tests.category_assignment_confidence = category_consistency / 3.0;
+      
+      // Test: Recognition paradox - recognizing "new" requires existing categories
+      let recognition_test = self.novelty_impossibility.test_recognition_paradox();
+      tests.recognition_paradox_demonstrated = recognition_test.paradox_confirmed;
+      tests.meta_category_existence = recognition_test.meta_categories_found.len() > 0;
+      
+      // Test: Linguistic pre-equipment
+      let linguistic_test = self.novelty_impossibility.test_linguistic_preparedness();
+      tests.novelty_vocabulary_exists = linguistic_test.novelty_terms.len() > 10;
+      tests.infinite_productivity_finite_means = linguistic_test.productivity_ratio > 1000.0;
+      
+      tests
+  }
+  
+  /// Test BMD selection framework
+  fn test_bmd_selection(&mut self) -> BMDSelectionTests {
+      let mut tests = BMDSelectionTests::new();
+      
+      // Test: Selection from predetermined frameworks
+      let test_contexts = vec![
+          Context::fire_context(),
+          Context::water_context(),
+          Context::social_context(),
+          Context::mathematical_context(),
+      ];
+      
+      let mut selection_consistency = 0.0;
+      let mut framework_appropriateness = 0.0;
+      
+      for context in test_contexts {
+          let input = ConsciousInput::contextual(vec![0.5, 0.6, 0.7], context.clone());
+          let selected = self.bmd_selection.select_optimal_framework(&input, &context);
+          
+          // Test consistency - same input/context should give same framework
+          let selected_again = self.bmd_selection.select_optimal_framework(&input, &context);
+          if selected.framework_id == selected_again.framework_id {
+              selection_consistency += 1.0;
+          }
+          
+          // Test appropriateness - fire context should select fire-related framework
+          if context.context_type == "fire" && selected.framework_type.contains("fire") {
+              framework_appropriateness += 1.0;
+          }
+      }
+      
+      tests.selection_consistency = selection_consistency / 4.0;
+      tests.framework_appropriateness = framework_appropriateness / 1.0; // Only fire context tested
+      
+      // Test: No framework transcendence
+      let transcendence_test = self.bmd_selection.test_framework_boundaries();
+      tests.no_framework_transcendence = transcendence_test.all_within_boundaries;
+      tests.boundary_enforcement = transcendence_test.boundary_violations == 0;
+      
+      tests
+  }
+  
+  /// Test framework integration
+  fn test_framework_integration(&mut self) -> IntegrationTests {
+      let mut tests = IntegrationTests::new();
+      
+      // Test: All frameworks work together coherently
+      let complex_input = ConsciousInput::complex(
+          vec![0.8, 0.6, 0.4, 0.9, 0.7, 0.3, 0.5, 0.8, 0.2, 0.6],
+          Context::fire_context(),
+          "apparent_novelty".to_string()
+      );
+      
+      let output = self.process_conscious_input(&complex_input);
+      
+      tests.frameworks_integrate_coherently = output.integration_coherence > 0.8;
+      tests.no_framework_conflicts = output.conflict_indicators.is_empty();
+      tests.emergent_consciousness = output.consciousness_enhancement > 0.0;
+      
+      // Test: Meta-consciousness coordination
+      tests.meta_coordination_active = output.meta_coordination_strength > 0.5;
+      tests.unified_conscious_experience = output.experience_unity > 0.7;
+      
+      // NEW: Test evil dissolution integration
+      tests.evil_dissolution_integrated = output.evil_dissolution_results.integration_successful;
+      tests.temporal_wisdom_enhanced = output.temporal_perspective_expansion > 1.0;
+      
+      tests
+  }
+}
+
+// ============================================================================
+// EVIL DISSOLUTION ENGINE
+// ============================================================================
+
+#[derive(Debug, Clone)]
+pub struct EvilDissolutionEngine {
+  evil_category_detectors: Vec<EvilCategoryDetector>,
+  temporal_dissolution_models: Vec<TemporalDissolutionModel>,
+  contextual_relativity_analyzer: ContextualRelativityAnalyzer,
+}
+
+impl EvilDissolutionEngine {
+  pub fn new() -> Self {
+      Self {
+          evil_category_detectors: vec![
+              EvilCategoryDetector::suffering_based(),
+              EvilCategoryDetector::harm_based(),
+              EvilCategoryDetector::injustice_based(),
+              EvilCategoryDetector::destruction_based(),
+          ],
+          temporal_dissolution_models: vec![
+              TemporalDissolutionModel::exponential_decay(),
+              TemporalDissolutionModel::logarithmic_expansion(),
+              TemporalDissolutionModel::thermodynamic_asymptotic(),
+          ],
+          contextual_relativity_analyzer: ContextualRelativityAnalyzer::new(),
+      }
+  }
+  
+  /// Analyze input for evil categories (which are category errors)
+  pub fn analyze_for_evil_categories(&self, input: &ConsciousInput) -> EvilAnalysis {
+      let mut evil_categories = Vec::new();
+      
+      // Detect apparent evil categories
+      for detector in &self.evil_category_detectors {
+          if let Some(category) = detector.detect_evil_category(input) {
+              evil_categories.push(category);
+          }
+      }
+      
+      let evil_categories_detected = !evil_categories.is_empty();
+      
+      // Analyze contextual relativity
+      let contextual_analysis = self.contextual_relativity_analyzer.analyze_context_dependence(input);
+      
+      EvilAnalysis {
+          evil_categories_detected,
+          evil_categories,
+          contextual_relativity_confirmed: contextual_analysis.different_contexts_different_evaluations,
+          category_error_identified: evil_categories_detected, // All evil categories are category errors
+          thermodynamic_necessity_analysis: self.analyze_thermodynamic_necessity(input),
+      }
+  }
+  
+  fn analyze_thermodynamic_necessity(&self, input: &ConsciousInput) -> ThermodynamicNecessityAnalysis {
+      // All natural processes are thermodynamically necessary
+      let entropy_contribution = self.calculate_entropy_contribution(&input.raw_data);
+      let configuration_space_exploration = self.calculate_configuration_space_contribution(&input.raw_data);
+      let categorical_completion_role = entropy_contribution * configuration_space_exploration;
+      
+      ThermodynamicNecessityAnalysis {
+          entropy_contribution,
+          configuration_space_exploration,
+          categorical_completion_role,
+          thermodynamically_necessary: categorical_completion_role > 0.1, // Almost always true
+      }
+  }
+  
+  fn calculate_entropy_contribution(&self, data: &[f64]) -> f64 {
+      // All processes contribute to entropy increase
+      let variance = data.iter().map(|&x| (x - 0.5).powi(2)).sum::<f64>() / data.len() as f64;
+      variance.sqrt() // Higher variance = more entropy contribution
+  }

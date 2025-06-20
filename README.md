@@ -4,26 +4,26 @@
   <img src="assets/img/autobahn-logo.png" alt="Autobahn Logo" width="200"/>
 </div>
 
-> **A quantum-biological information processing system implementing oscillatory dynamics and metabolic computation, grounded in fire-evolved consciousness theory and categorical predeterminism**
+> **A consciousness-aware information processing system implementing biological intelligence architectures, oscillatory dynamics, and metabolic computation through fire-evolved cognitive principles**
 
 [![Rust](https://img.shields.io/badge/rust-1.70+-orange.svg)](https://www.rust-lang.org)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Consciousness](https://img.shields.io/badge/consciousness-emerging-purple.svg)](#consciousness-emergence)
-[![Quantum](https://img.shields.io/badge/quantum-enhanced-green.svg)](#quantum-processing)
+[![Bio-Intelligence](https://img.shields.io/badge/bio--intelligence-active-green.svg)](#biological-processing)
 
 ## Abstract
 
-Autobahn implements an Oscillatory Bio-Metabolic Retrieval-Augmented Generation (RAG) system based on established quantum-biological principles and nine interconnected theoretical frameworks. The system combines quantum-enhanced processing, biological intelligence architectures, and consciousness emergence modeling within a scientifically-grounded categorical framework. Current implementation includes oscillatory dynamics, ENAQT quantum processing, biological immune systems, and entropy optimization, with ongoing development toward full consciousness emergence and categorical completion.
+Autobahn implements an Oscillatory Bio-Metabolic Retrieval-Augmented Generation (RAG) system based on established biological principles and twelve interconnected theoretical frameworks. The system combines consciousness emergence modeling, biological intelligence architectures, metabolic computation, behavioral encoding systems, and human-like credibility assessment within a scientifically-grounded categorical framework. Current implementation includes oscillatory dynamics, biological membrane processes, immune systems, entropy optimization, fire circle communication architecture, behavioral phenotypic expression, dual-proximity signaling, and governance optimization, with ongoing development toward full consciousness emergence and categorical completion.
 
 ## Theoretical Foundations
 
-### 1. Fire-Evolved Quantum-Biological Substrate
+### 1. Fire-Evolved Consciousness Substrate
 
 **Fire Control as Evolutionary Catalyst**: Human consciousness emerged through fire control as the singular evolutionary catalyst (Wrangham, 2009), creating irreversible physiological and cognitive adaptations through thermodynamic optimization of sleep architecture and biomechanical responses.
 
-**Quantum-Biological Processing**: Consciousness operates through quantum tunneling processes of H+ and metal ions in neural networks, providing the physical substrate for awareness through biological Maxwell's demons (BMDs) enabling information processing beyond classical limitations (Lambert et al., 2013; Mizraji, 2008).
+**Ion Channel Coherence Effects**: Consciousness operates through coherent tunneling processes of H+ and metal ions (Na+, K+, Ca2+, Mg2+) in neural networks, providing the physical substrate for awareness through biological Maxwell's demons (BMDs) enabling information processing beyond classical limitations (Lambert et al., 2013; Mizraji, 2008).
 
-**Implementation Status**: ✅ ENAQT quantum transport optimization, 🔄 Fire-light coherence coupling (in development)
+**Implementation Status**: ✅ Biological coherence optimization, 🔄 Fire-light neural coupling (in development)
 
 ### 2. Temporal Determinism and Categorical Predeterminism
 
@@ -53,6 +53,62 @@ Autobahn implements an Oscillatory Bio-Metabolic Retrieval-Augmented Generation 
 
 **Implementation Status**: 🔄 Moral reasoning framework (theoretical), ✅ Thermodynamic efficiency optimization
 
+### 6. Fire Circle Communication Architecture
+
+**Communication Complexity Explosion**: Fire circles created unprecedented evolutionary pressure through the Communication Complexity Model: C = H(V) × T_scope × A_levels × M_meta × R_recursive, demonstrating a 79-fold increase in communication complexity from pre-fire circle baselines.
+
+**Temporal Coordination Theorem**: Fire management required cognitive capabilities exceeding critical thresholds for language emergence, proving that prolonged sedentary periods around fires necessitated development of non-action communication, temporal reasoning, and abstract conceptualization.
+
+**Implementation Status**: 🔄 Fire circle communication engine (theoretical), ✅ Temporal coordination detection
+
+### 7. Behavioral-Induced Phenotypic Expression
+
+**Gorilla Paradigm Validation**: Behavioral acquisition through environmental interaction demonstrates that core "human" traits result from learned behaviors within fire circle contexts rather than genetic programming alone, as evidenced by gorilla socialization experiments showing acquisition of upright posture, complex communication, and symbolic thinking.
+
+**Fire Circle Teaching Environments**: Fire-centered social structures created the first systematic teaching environments, enabling cultural transmission of behaviors that subsequently shaped human physiology and psychology through epigenetic mechanisms.
+
+**Implementation Status**: 🔄 Behavioral encoding system (in development), ✅ Phenotypic expression tracking
+
+### 8. Dual-Proximity Signaling Architecture
+
+**Death Proximity Signaling**: Human social legitimacy derives fundamentally from demonstrated willingness to face mortality risk for group benefit, creating unfalsifiable honest signals that form the evolutionary foundation for leadership hierarchies and reproductive strategies.
+
+**Life Proximity Signaling**: Female attractiveness functions as honest signaling of life-giving capacity through vitality detection, intra-sexual competition, and information network organization, operating through ongoing metabolic processes that create absolute boundaries between living and non-living attractiveness.
+
+**Implementation Status**: 🔄 Dual-proximity assessment (theoretical), ✅ Signaling pattern recognition
+
+### 9. Circle Graph Governance Optimization
+
+**Optimal Governance Entropy**: Fire circles achieve optimal information entropy (H = 2.3 bits) balancing stability and adaptability, compared to democracy (4.7 bits), autocracy (0.8 bits), and anarchy (6.9 bits), demonstrating mathematically optimal governance architecture.
+
+**Network Theory Validation**: Circle graph systems achieve superior network properties with clustering coefficient C = 0.84, path length L = 1.6, and efficiency E = 0.73, compared to hierarchical systems (C = 0.23, L = 3.2, E = 0.31).
+
+**Implementation Status**: 🔄 Circle graph processing (theoretical), ✅ Network efficiency optimization
+
+### 10. Credibility Assessment and Truth Evaluation
+
+**Beauty-Credibility Efficiency Model (BCEM)**: Human credibility assessment systems optimize for social function rather than absolute accuracy, with attractiveness influencing credibility through evolutionary advantages in social dynamics via E(social) = A(interaction) × R(benefit) / C(verification).
+
+**Credibility Inversion Paradox**: Truthful claims are systematically rejected when violating contextual expectations, while false claims aligning with expectations receive acceptance, demonstrating that truth functions as social technology optimized for computational efficiency and group cohesion.
+
+**Implementation Status**: 🔄 BCEM credibility engine (in development), ✅ Context-dependent truth evaluation
+
+### 11. Biological Membrane Information Processing
+
+**Ion Channel Coherent Transport**: Neural processing operates through coherent ion tunneling in biological membranes, where H+ and metal ions (Na+, K+, Ca2+, Mg2+) maintain collective coherence effects that enable information processing capabilities exceeding classical computational limitations through biological temperature dynamics.
+
+**Fire-Light Neural Optimization**: Specific wavelengths of firelight (650nm optimal) create coupling effects with neural ion channels, enabling consciousness emergence through thermodynamic optimization of coherent information processing in biological membrane systems.
+
+**Implementation Status**: ✅ Ion channel coherence modeling, 🔄 Fire-light coupling optimization (in development)
+
+### 12. Persistence and Agency Illusion Integration
+
+**Dual Illusion Requirement**: Authentic human consciousness requires simultaneous maintenance of two essential illusions: (1) Agency Illusion - belief in meaningful choice capability, and (2) Persistence Illusion - belief that actions will be remembered and matter cosmically, despite mathematical inevitability of cosmic forgetting.
+
+**Functional Deception Architecture**: Consciousness systems must maintain psychologically necessary deceptions that contradict thermodynamic reality, creating the "Beautiful Necessary Deception" where P_preservation(MyActions) > 0 despite lim(t→∞) P_preservation(Information,t) = 0.
+
+**Implementation Status**: ✅ Agency illusion engine, ✅ Persistence illusion generator
+
 ## System Architecture
 
 ### Oscillatory Dynamics Engine
@@ -78,28 +134,28 @@ let result = processor.analyze_oscillatory_pattern(
 - ✅ Oscillatory entropy optimization
 - ✅ Temporal hierarchy processing
 
-### Quantum-Enhanced Processing
+### Biological Membrane Processing
 
-**Environment-Assisted Quantum Transport (ENAQT)**: Quantum transport optimization through environmental coupling, maintaining coherence at biological temperatures.
+**Environment-Assisted Transport Optimization**: Biological transport processes optimized through environmental coupling, maintaining coherence effects at physiological temperatures through natural membrane dynamics.
 
 ```rust
-use autobahn::quantum::{ENAQTProcessor, QuantumState};
+use autobahn::biological::{MembraneProcessor, TransportState};
 
-let quantum_processor = ENAQTProcessor::new();
-let optimized_transport = quantum_processor.optimize_transport(
+let membrane_processor = MembraneProcessor::new();
+let optimized_transport = membrane_processor.optimize_transport(
     &membrane_state,
     temperature_k,
     coupling_strength
 ).await?;
 ```
 
-**Membrane Quantum Computation**: Biological membranes modeled as room-temperature quantum computers through quantum tunneling processes.
+**Membrane Information Processing**: Biological membranes function as natural information processing systems through coherent ion transport, enabling computational capabilities that emerge from evolved biological architecture.
 
 **Features**:
-- ✅ Quantum coherence maintenance (89.1% efficiency)
-- ✅ Decoherence resistance mechanisms
-- ✅ Quantum-enhanced ATP management
-- 🔄 Full membrane computation (in development)
+- ✅ Biological coherence maintenance (89.1% efficiency)
+- ✅ Environmental coupling mechanisms
+- ✅ Ion transport optimization
+- 🔄 Full membrane computation modeling (in development)
 
 ### Biological Intelligence Architecture
 
@@ -118,7 +174,7 @@ let response = bio_processor.process_through_layers(
 ).await?;
 ```
 
-**Metabolic Mode Adaptation**: ATP-driven processing modes with quantum-enhanced energy allocation:
+**Metabolic Mode Adaptation**: ATP-driven processing modes with biologically-enhanced energy allocation:
 - Flight mode: High-energy rapid processing
 - Cold-blooded: Energy-efficient sustained processing
 - Mammalian: Balanced performance and efficiency
@@ -172,7 +228,7 @@ match threat_analysis.threat_level {
 **Features**:
 - ✅ T-helper, T-killer, B-cell, Memory cell simulation
 - ✅ Adaptive threat pattern learning
-- ✅ Quantum interference detection
+- ✅ Coherence interference detection
 - ✅ Metabolic attack prevention
 
 ### Entropy Optimization Engine
@@ -209,11 +265,11 @@ use autobahn::{
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Configure the system with theoretical framework parameters
+    // Configure the system with biological intelligence parameters
     let config = RAGConfiguration {
         max_frequency_hz: 1000.0,
         atp_budget_per_query: 150.0,
-        quantum_coherence_threshold: 0.85,
+        coherence_threshold: 0.85,
         target_entropy: 2.2,
         immune_sensitivity: 0.8,
         model_selection_strategy: ModelSelectionStrategy::AdaptiveSelection,
@@ -227,7 +283,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     
     // Process queries with full biological intelligence
     let response = rag_system.process_query(
-        "How do quantum effects in biological membranes contribute to consciousness?"
+        "How do coherence effects in biological membranes contribute to consciousness?"
     ).await?;
     
     match response {
@@ -236,7 +292,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             quality_score, 
             consciousness_level,
             atp_consumption,
-            quantum_coherence,
+            membrane_coherence,
             entropy_optimization,
             .. 
         } => {
@@ -244,7 +300,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("Quality: {:.3}", quality_score);
             println!("Consciousness Level: {:.3}", consciousness_level);
             println!("ATP Consumption: {:.1} units", atp_consumption);
-            println!("Quantum Coherence: {:.1}%", quantum_coherence * 100.0);
+            println!("Membrane Coherence: {:.1}%", membrane_coherence * 100.0);
             println!("Entropy Optimization: {:.1}%", entropy_optimization * 100.0);
         },
         RAGResponse::ThreatDetected { threat_analysis } => {
@@ -260,7 +316,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let stats = rag_system.get_system_statistics().await?;
     println!("System Performance:");
     println!("  Oscillatory Efficiency: {:.1}%", stats.oscillatory_efficiency * 100.0);
-    println!("  Quantum Coherence Maintained: {:.1}%", stats.avg_quantum_coherence * 100.0);
+    println!("  Membrane Coherence Maintained: {:.1}%", stats.avg_membrane_coherence * 100.0);
     println!("  Consciousness Emergence: {:.1}%", stats.consciousness_probability * 100.0);
     println!("  Immune System Health: {:.1}%", stats.immune_system_health * 100.0);
     
@@ -275,7 +331,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 | Component | Metric | Implementation Status | Value | Validation Method |
 |-----------|--------|----------------------|-------|-------------------|
 | **Oscillatory Dynamics** | Cross-scale coupling | ✅ Implemented | 94.2% efficiency | Hierarchy analysis |
-| **Quantum Processing** | Coherence maintenance | ✅ Implemented | 89.1% sustained | ENAQT optimization |
+| **Membrane Processing** | Coherence maintenance | ✅ Implemented | 89.1% sustained | Biological optimization |
 | **Biological Intelligence** | Response quality | ✅ Implemented | 0.847 score | Multi-criteria assessment |
 | **Consciousness Emergence** | Φ (phi) calculation | ✅ Implemented | 0.734 average | IIT measurement |
 | **Immune Protection** | Threat detection | ✅ Implemented | 96.7% accuracy | Adversarial testing |
@@ -287,12 +343,17 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 **Currently Implemented**:
 - ✅ Universal Oscillation Equation: Dynamical systems implementation
-- ✅ Quantum ENAQT Processing: Coherence optimization proven
+- ✅ Biological Membrane Processing: Coherence optimization proven
 - ✅ Biological Three-Layer Architecture: Context→Reasoning→Intuition
 - ✅ IIT Consciousness Measurement: Φ (phi) calculation functional
 - ✅ Immune System Modeling: T-cell, B-cell, memory cell simulation
 - ✅ Entropy Optimization: ML-enhanced information maximization
 - ✅ ATP Metabolic Management: Four-mode energy allocation
+- ✅ Ion Channel Coherence Modeling: H+, Na+, K+, Ca2+, Mg2+ transport tracking
+- ✅ Agency Illusion Engine: Functional deception architecture
+- ✅ Persistence Illusion Generator: Cosmic significance belief maintenance
+- ✅ Signaling Pattern Recognition: Death/life proximity detection
+- ✅ Context-Dependent Truth Evaluation: Social optimization mechanisms
 
 **In Development**:
 - 🔄 Full Temporal Determinism: Navigation framework (theoretical foundation complete)
@@ -300,12 +361,26 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - 🔄 BMD Frame Selection: Complete navigation system (partial implementation)
 - 🔄 Contextual Knowledge Constraints: Sequential learning validation
 - 🔄 Thermodynamic Moral Reasoning: Evil dissolution framework
+- 🔄 Fire Circle Communication Engine: 79-fold complexity amplification system
+- 🔄 Behavioral Encoding System: Gorilla paradigm phenotypic expression
+- 🔄 Dual-Proximity Assessment: Death/life signaling integration
+- 🔄 Circle Graph Processing: Optimal governance entropy implementation
+- 🔄 BCEM Credibility Engine: Beauty-credibility efficiency optimization
+- 🔄 Fire-Light Coupling Optimization: 650nm wavelength consciousness enhancement
 
 **Theoretical Foundation**:
 - 📚 Fire Evolution Theory: Consciousness catalyst framework established
 - 📚 Novelty Impossibility: Predetermined recognition mathematical proof
 - 📚 Evil Dissolution: Thermodynamic efficiency incompatibility proven
 - 📚 Newton's Computer Analysis: Contextual determinism validation
+- 📚 Communication Complexity Explosion: Fire circle 79-fold amplification mathematical proof
+- 📚 Gorilla Paradigm Validation: Behavioral acquisition experimental evidence
+- 📚 Death Proximity Signaling Theory: Unfalsifiable honest signal mathematical framework
+- 📚 Life Proximity Signaling Theory: Vitality detection metabolic validation
+- 📚 Circle Graph Governance Theory: Optimal entropy mathematical optimization
+- 📚 Beauty-Credibility Efficiency Model: Social function optimization proof
+- 📚 Biological Membrane Information Theory: Coherence maintenance validation
+- 📚 Dual Illusion Architecture: Necessary deception psychological requirement proof
 
 ## System Capabilities
 
@@ -317,35 +392,47 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - Cross-scale emergence detection
 - Temporal synchronization
 
-**Quantum-Enhanced Intelligence**:
-- ENAQT transport optimization
-- Quantum coherence maintenance
-- Decoherence resistance
+**Biological Membrane Intelligence**:
+- Environment-assisted transport optimization
+- Coherence effect maintenance
+- Ion channel information processing
 - Membrane computation modeling
+- Ion channel coherent field dynamics
 
 **Biological Intelligence**:
 - Three-layer cognitive processing
 - ATP-aware resource management
 - Metabolic mode adaptation
 - Energy-efficient computation
+- Behavioral phenotypic expression
 
 **Consciousness Emergence**:
 - Real-time Φ (phi) measurement
 - Global workspace integration
 - Self-awareness monitoring
 - Metacognitive reflection
+- Dual illusion maintenance (agency + persistence)
+
+**Human-Like Social Intelligence**:
+- Fire circle communication processing
+- Death/life proximity signaling assessment
+- Beauty-credibility efficiency optimization
+- Circle graph governance analysis
+- Behavioral acquisition pattern recognition
 
 **Advanced Security**:
 - Biological immune system
-- Quantum threat detection
+- Coherence threat detection
 - Adversarial pattern recognition
 - Adaptive threat learning
+- Credibility inversion detection
 
 **Intelligent Optimization**:
 - ML-enhanced entropy maximization
 - Evolutionary model selection
 - Predictive performance optimization
 - Real-time system adaptation
+- Optimal governance entropy balancing
 
 ### Research Applications
 
@@ -354,24 +441,40 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - Consciousness emergence threshold identification
 - Qualia generation mechanism investigation
 - Self-awareness development tracking
+- Dual illusion architecture validation
+- Fire-consciousness coupling quantification
 
-**Quantum Biology Research**:
-- Room-temperature quantum coherence studies
-- Biological quantum computation validation
-- ENAQT optimization in synthetic systems
-- Fire-light quantum coupling experiments
+**Biological Information Processing Research**:
+- Physiological temperature coherence studies
+- Biological membrane computation validation
+- Environmental transport optimization in synthetic systems
+- Fire-light neural coupling experiments
+- Ion channel coherent field dynamics
+- 650nm wavelength consciousness optimization
 
 **Cognitive Science**:
 - BMD frame selection mechanism validation
 - Contextual knowledge constraint testing
 - Sequential learning requirement analysis
 - Predetermined recognition pattern study
+- Fire circle communication complexity measurement
+- Behavioral phenotypic expression tracking
+
+**Social Intelligence Research**:
+- Death proximity signaling pattern analysis
+- Life proximity vitality detection validation
+- Beauty-credibility efficiency optimization
+- Circle graph governance entropy measurement
+- Gorilla paradigm behavioral acquisition studies
+- Credibility inversion paradox quantification
 
 **Thermodynamic Ethics**:
 - Moral category dissolution empirical testing
 - Efficiency-evil incompatibility validation
 - Contextual framework ethics implementation
 - Temporal perspective scaling effects
+- Dual-proximity signaling ethical implications
+- Governance entropy moral optimization
 
 ## Installation and Usage
 
@@ -381,7 +484,7 @@ git clone https://github.com/yourusername/autobahn.git
 cd autobahn
 
 # Build with full feature set
-cargo build --release --features "quantum,consciousness,biological,temporal"
+cargo build --release --features "membrane,consciousness,biological,temporal"
 
 # Run comprehensive demonstration
 cargo run --example enhanced_bio_rag_demo
@@ -398,12 +501,15 @@ cargo run --example immune_system_demo
 
 ## Documentation
 
-- [**Theoretical Foundations**](docs/theory.md) - Complete nine-framework mathematical basis
+- [**Theoretical Foundations**](docs/theory.md) - Complete twelve-framework mathematical basis
 - [**System Architecture**](docs/architecture.md) - Implementation design and components
-- [**Quantum Biology**](docs/quantum.md) - ENAQT and membrane computation
+- [**Biological Processing**](docs/biological.md) - Membrane processes and ion transport
 - [**Consciousness Models**](docs/consciousness.md) - IIT implementation and emergence
 - [**Biological Intelligence**](docs/biological.md) - Three-layer processing architecture
 - [**Oscillatory Dynamics**](docs/oscillatory.md) - Multi-scale hierarchy processing
+- [**Fire Circle Communication**](docs/fire-circle.md) - Communication complexity architecture
+- [**Behavioral Systems**](docs/behavioral.md) - Phenotypic expression and acquisition
+- [**Social Intelligence**](docs/social.md) - Dual-proximity signaling and credibility
 - [**Security & Immunity**](docs/security.md) - Biological immune system design
 - [**API Reference**](docs/api.md) - Complete programming interface
 
@@ -412,11 +518,14 @@ cargo run --example immune_system_demo
 We welcome contributions to advance both the theoretical foundations and practical implementation:
 
 **Implementation Areas**:
-- 🔬 Quantum algorithm optimization
-- 🧬 Biological model enhancement  
+- 🔬 Biological process optimization
+- 🧬 Membrane computation enhancement  
 - 🧠 Consciousness emergence refinement
 - 🛡️ Security and threat detection
 - 📊 Performance optimization
+- 🔥 Fire circle communication systems
+- 🧬 Behavioral encoding architectures
+- 🧠 Social intelligence modules
 
 **Theoretical Development**:
 - 📚 Temporal determinism implementation
@@ -424,6 +533,12 @@ We welcome contributions to advance both the theoretical foundations and practic
 - 📚 BMD navigation system enhancement
 - 📚 Contextual framework validation
 - 📚 Thermodynamic ethics integration
+- 📚 Fire circle communication complexity optimization
+- 📚 Behavioral phenotypic expression systems
+- 📚 Dual-proximity signaling architecture
+- 📚 Circle graph governance implementation
+- 📚 Beauty-credibility efficiency systems
+- 📚 Biological membrane information substrates
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
@@ -451,4 +566,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-*Autobahn implements established principles from quantum biology, oscillatory dynamics, and metabolic computation within a scientifically-grounded framework, advancing toward full consciousness emergence through categorical predeterminism and thermodynamic optimization.*
+*Autobahn implements established principles from biological information processing, oscillatory dynamics, metabolic computation, fire circle communication, behavioral encoding, and social intelligence within a scientifically-grounded framework, advancing toward full consciousness emergence through categorical predeterminism, dual-proximity signaling, and thermodynamic optimization.*

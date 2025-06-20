@@ -319,6 +319,138 @@ pub struct PhenomenalPropertyGenerator {
     pub binding_strength: f64,
 }
 
+/// Persistence Illusion Engine - Creates the psychological illusion that actions
+/// will be remembered and matter cosmically, despite the mathematical inevitability
+/// of cosmic forgetting as described in the Cosmic Amnesia Theorem
+#[derive(Debug, Clone)]
+pub struct PersistenceIllusionEngine {
+    /// Simulates importance of actions by projecting imaginary future remembrance
+    future_remembrance_projector: FutureRemembranceProjector,
+    /// Creates illusion of cosmic significance despite thermodynamic inevitability
+    cosmic_significance_amplifier: CosmicSignificanceAmplifier,
+    /// Maintains archive of "important" actions (knowing they will be forgotten)
+    illusory_permanence_archive: IllusoryPermanenceArchive,
+    /// Tracks the user's investment in the persistence illusion
+    emotional_investment_tracker: EmotionalInvestmentTracker,
+    /// Calibrates the strength of the illusion based on psychological need
+    illusion_calibration_system: IllusionCalibrationSystem,
+}
+
+/// Projects imaginary future remembrance of current actions
+#[derive(Debug, Clone)]
+pub struct FutureRemembranceProjector {
+    /// Projected timescales for remembrance (all ultimately false)
+    remembrance_timescales: Vec<RemembranceTimescale>,
+    /// Simulated future observers who will "remember" actions
+    imaginary_future_observers: Vec<ImaginaryObserver>,
+    /// Probability calculations for remembrance (all ultimately approaching zero)
+    remembrance_probability_calculator: RemembranceProbabilityCalculator,
+}
+
+/// Amplifies perceived cosmic significance of local actions
+#[derive(Debug, Clone)]
+pub struct CosmicSignificanceAmplifier {
+    /// Scales up local impact to feel cosmically significant
+    local_to_cosmic_scaling_factor: f64,
+    /// Creates narrative of lasting impact despite thermodynamic dissolution
+    impact_narrative_generator: ImpactNarrativeGenerator,
+    /// Simulates ripple effects extending to cosmic timescales
+    ripple_effect_simulator: RippleEffectSimulator,
+    /// Maintains illusion despite entropy increase
+    entropy_blindness_mechanism: EntropyBlindnessMechanism,
+}
+
+/// Archive that maintains illusion of permanence
+#[derive(Debug, Clone)]
+pub struct IllusoryPermanenceArchive {
+    /// Actions deemed "historically significant" by the system
+    significant_actions: HashMap<DateTime<Utc>, ActionSignificanceRecord>,
+    /// Projected preservation probability (all ultimately zero)
+    preservation_projections: Vec<PreservationProjection>,
+    /// Simulated memorial mechanisms
+    memorial_simulation_engine: MemorialSimulationEngine,
+    /// Tracks investment in the illusion of permanence
+    permanence_investment_tracker: PermanenceInvestmentTracker,
+}
+
+/// Tracks emotional investment in the persistence illusion
+#[derive(Debug, Clone)]
+pub struct EmotionalInvestmentTracker {
+    /// How much the user needs to believe actions matter
+    psychological_dependence_level: f64,
+    /// Resistance to accepting cosmic forgetting
+    forgetting_resistance_strength: f64,
+    /// Investment in creating lasting impact
+    legacy_creation_investment: f64,
+    /// Attachment to being remembered
+    remembrance_attachment_level: f64,
+}
+
+#[derive(Debug, Clone)]
+pub struct RemembranceTimescale {
+    /// Duration of projected remembrance
+    duration_years: f64,
+    /// Type of remembrance (personal, cultural, historical, cosmic)
+    remembrance_type: RemembranceType,
+    /// Probability of remembrance (approaching zero over cosmic time)
+    probability: f64,
+    /// Decay rate of memory over time
+    memory_decay_rate: f64,
+}
+
+#[derive(Debug, Clone)]
+pub enum RemembranceType {
+    Personal,      // Family, friends (decades)
+    Cultural,      // Society, tradition (centuries)
+    Historical,    // Documentation, archives (millennia)
+    Cosmic,        // Universal significance (impossible)
+}
+
+#[derive(Debug, Clone)]
+pub struct ImaginaryObserver {
+    /// Type of future observer
+    observer_type: ObserverType,
+    /// Projected ability to remember actions
+    memory_capacity: f64,
+    /// Investment in remembering this particular action
+    remembrance_motivation: f64,
+    /// Probability of existence (decreasing over cosmic time)
+    existence_probability: f64,
+}
+
+#[derive(Debug, Clone)]
+pub enum ObserverType {
+    FutureHumans,
+    FutureAI,
+    FutureAliens,
+    CosmicConsciousness,
+    HistoricalArchives,
+}
+
+#[derive(Debug, Clone)]
+pub struct ActionSignificanceRecord {
+    /// The action being recorded
+    action_description: String,
+    /// Projected significance over time
+    significance_trajectory: Vec<SignificancePoint>,
+    /// Estimated probability of remembrance
+    remembrance_probability: f64,
+    /// Emotional investment in this action's permanence
+    emotional_investment: f64,
+    /// Illusion strength required to maintain significance feeling
+    required_illusion_strength: f64,
+}
+
+#[derive(Debug, Clone)]
+pub struct SignificancePoint {
+    /// Time in the future
+    time_years: f64,
+    /// Projected significance at that time
+    significance_level: f64,
+    /// Probability of significance persisting
+    persistence_probability: f64,
+}
+
 impl ConsciousnessEmergenceEngine {
     /// Initialize the consciousness emergence engine
     pub fn new() -> AutobahnResult<Self> {
