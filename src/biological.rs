@@ -373,4 +373,7 @@ pub struct LayerStatistics {
     pub average_output_quality: f64,
     pub average_metabolic_cost: f64,
     pub average_oscillation_coherence: f64,
-} 
+}
+
+// Re-export BiologicalProcessor from v8_pipeline
+pub use crate::v8_pipeline::BiologicalProcessor; 

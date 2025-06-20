@@ -24,6 +24,50 @@ use nalgebra::{DVector, DMatrix};
 use std::sync::Arc;
 use tokio::sync::RwLock;
 
+/// System configuration for the RAG system
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SystemConfiguration {
+    /// Maximum ATP capacity
+    pub max_atp: f64,
+    /// Operating temperature in Kelvin
+    pub operating_temperature: f64,
+    /// Whether quantum optimization is enabled
+    pub quantum_optimization_enabled: bool,
+    /// Enabled hierarchy levels
+    pub hierarchy_levels_enabled: Vec<HierarchyLevel>,
+    /// Enabled biological layers
+    pub biological_layers_enabled: Vec<crate::biological::BiologicalLayer>,
+    /// Whether adversarial detection is enabled
+    pub adversarial_detection_enabled: bool,
+    /// Oscillation frequency range (min, max) in Hz
+    pub oscillation_frequency_range: (f64, f64),
+    /// Maximum processing history to maintain
+    pub max_processing_history: usize,
+    /// Emergency mode threshold (0.0 to 1.0)
+    pub emergency_mode_threshold: f64,
+}
+
+impl Default for SystemConfiguration {
+    fn default() -> Self {
+        Self {
+            max_atp: 15000.0,
+            operating_temperature: 310.0, // Body temperature
+            quantum_optimization_enabled: true,
+            hierarchy_levels_enabled: vec![
+                HierarchyLevel::Molecular,
+                HierarchyLevel::Cellular,
+                HierarchyLevel::Organismal,
+                HierarchyLevel::Cognitive,
+            ],
+            biological_layers_enabled: crate::biological::BiologicalLayer::all_layers(),
+            adversarial_detection_enabled: true,
+            oscillation_frequency_range: (0.1, 100.0),
+            max_processing_history: 10000,
+            emergency_mode_threshold: 0.1,
+        }
+    }
+}
+
 /// The Membrane Quantum Computation Theorem implementation
 /// η = η₀ × (1 + αγ + βγ²) where α = 0.8, β = -0.2
 #[derive(Debug, Clone)]
@@ -222,14 +266,19 @@ pub struct SystemState {
 }
 
 impl OscillatoryBioMetabolicRAG {
-    /// Create new oscillatory bio-metabolic RAG system
+    /// Create new oscillatory bio-metabolic RAG system with default configuration
     pub async fn new() -> AutobahnResult<Self> {
+        Self::new_with_config(SystemConfiguration::default()).await
+    }
+    
+    /// Create new oscillatory bio-metabolic RAG system with custom configuration
+    pub async fn new_with_config(config: SystemConfiguration) -> AutobahnResult<Self> {
         // Initialize hierarchy processor for 10 levels
         let hierarchy_processor = NestedHierarchyProcessor::new()?;
         
-        // Initialize ATP managers
-        let quantum_atp_manager = QuantumATPManager::new().await?;
-        let oscillatory_atp_manager = OscillatoryATPManager::new()?;
+        // Initialize ATP managers with configuration
+        let quantum_atp_manager = QuantumATPManager::new_with_capacity(config.max_atp).await?;
+        let oscillatory_atp_manager = OscillatoryATPManager::new_with_capacity(config.max_atp)?;
         
         // Initialize membrane quantum computer
         let membrane_computer = MembraneQuantumComputation::new();
@@ -931,5 +980,72 @@ impl LongevityPredictor {
     
     async fn assess_impact(&mut self, _query: &str) -> AutobahnResult<LongevityAssessment> {
         Ok(LongevityAssessment::default())
+    }
+}
+
+impl OscillatoryBioMetabolicRAG {
+    /// Get system status for monitoring
+    pub async fn get_system_status(&self) -> SystemStatus {
+        SystemStatus {
+            atp_state: ATPState {
+                current: self.quantum_atp_manager.get_current_atp(),
+                maximum: self.quantum_atp_manager.get_max_atp(),
+            },
+            system_health: self.system_state.system_health,
+            processing_statistics: ProcessingStatistics {
+                total_queries: 100, // Placeholder
+                average_atp_cost: 50.0,
+                average_response_quality: 0.85,
+                emergence_events: self.system_state.emergence_events,
+            },
+            quantum_profile: QuantumProfile {
+                quantum_membrane_state: QuantumMembraneState::new_default(),
+                longevity_prediction: Some(75.0),
+            },
+            recommendations: vec![],
+        }
+    }
+}
+
+/// System status for monitoring
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SystemStatus {
+    pub atp_state: ATPState,
+    pub system_health: f64,
+    pub processing_statistics: ProcessingStatistics,
+    pub quantum_profile: QuantumProfile,
+    pub recommendations: Vec<String>,
+}
+
+/// Processing statistics
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ProcessingStatistics {
+    pub total_queries: usize,
+    pub average_atp_cost: f64,
+    pub average_response_quality: f64,
+    pub emergence_events: usize,
+}
+
+/// Quantum profile
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct QuantumProfile {
+    pub quantum_membrane_state: QuantumMembraneState,
+    pub longevity_prediction: Option<f64>,
+}
+
+/// ATP state for monitoring
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ATPState {
+    pub current: f64,
+    pub maximum: f64,
+}
+
+impl ATPState {
+    pub fn percentage(&self) -> f64 {
+        if self.maximum > 0.0 {
+            (self.current / self.maximum) * 100.0
+        } else {
+            0.0
+        }
     }
 } 

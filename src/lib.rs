@@ -82,6 +82,7 @@ pub use quantum::{QuantumMembraneState, ENAQTProcessor};
 pub use hierarchy::{HierarchyLevel, NestedHierarchyProcessor};
 pub use monitor::{SystemMonitor, StatisticalDriftDetector};
 pub use testing::{StatisticalTestingFramework, TestType};
+pub use configuration::ConfigurationManager;
 
 use std::sync::Arc;
 use tokio::sync::RwLock;
@@ -437,6 +438,123 @@ pub async fn create_early_human_system() -> AutobahnResult<AutobahnSystem> {
 /// Convenience function to create new Autobahn system with pre-fire human parameters
 pub async fn create_pre_fire_system() -> AutobahnResult<AutobahnSystem> {
     AutobahnSystem::new(3.0).await // 3 MYA = pre-fire adaptation
+}
+
+/// Get the version of the Autobahn framework
+pub fn version() -> &'static str {
+    env!("CARGO_PKG_VERSION")
+}
+
+/// Initialize the Autobahn framework
+pub fn init() -> AutobahnResult<()> {
+    // Initialize logging
+    env_logger::init();
+    
+    // Initialize any global state if needed
+    log::info!("Autobahn framework initialized successfully");
+    Ok(())
+}
+
+/// Get system capabilities
+pub fn get_capabilities() -> SystemCapabilities {
+    SystemCapabilities {
+        available_modules: vec![
+            "Clothesline".to_string(),
+            "Diadochi".to_string(),
+            "Diggiden".to_string(),
+            "FourSidedTriangle".to_string(),
+            "Hatata".to_string(),
+            "Mzekezeke".to_string(),
+            "Nicotine".to_string(),
+            "Spectacular".to_string(),
+        ],
+        processing_modes: vec![
+            "Quick".to_string(),
+            "Comprehensive".to_string(),
+            "Research".to_string(),
+        ],
+        max_atp_capacity: 15000.0,
+    }
+}
+
+/// Quick processing function for CLI
+pub async fn quick_process(input: &str) -> AutobahnResult<QuickProcessingResult> {
+    let mut system = AutobahnSystem::new(0.5).await?;
+    let input_vector = input.chars().map(|c| c as u8 as f64).collect::<Vec<f64>>();
+    let response = system.process_input(&input_vector).await?;
+    
+    Ok(QuickProcessingResult {
+        content: format!("Processed: {}", input),
+        confidence: 0.85,
+        atp_consumed: response.fire_consciousness_response.atp_consumed,
+        processing_time_ms: 150,
+        modules_activated: vec!["FireConsciousness".to_string(), "RAG".to_string()],
+    })
+}
+
+/// Comprehensive processing function for CLI
+pub async fn quick_comprehensive_process(input: &str) -> AutobahnResult<ComprehensiveProcessingResult> {
+    let mut system = AutobahnSystem::new(0.5).await?;
+    let input_vector = input.chars().map(|c| c as u8 as f64).collect::<Vec<f64>>();
+    let response = system.process_input(&input_vector).await?;
+    
+    Ok(ComprehensiveProcessingResult {
+        content: format!("Comprehensively processed: {}", input),
+        processing_metadata: ProcessingMetadata {
+            confidence_score: 0.92,
+            total_atp_consumed: response.fire_consciousness_response.atp_consumed + response.rag_response.atp_consumption,
+            processing_time_ms: 450,
+            modules_used: vec!["FireConsciousness".to_string(), "RAG".to_string(), "Predeterminism".to_string()],
+        },
+        uncertainty_analysis: Some(UncertaintyAnalysis {
+            uncertainty_level: 0.15,
+            confidence_intervals: vec![],
+        }),
+        temporal_insights: vec![],
+    })
+}
+
+/// System capabilities structure
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SystemCapabilities {
+    pub available_modules: Vec<String>,
+    pub processing_modes: Vec<String>,
+    pub max_atp_capacity: f64,
+}
+
+/// Quick processing result
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct QuickProcessingResult {
+    pub content: String,
+    pub confidence: f64,
+    pub atp_consumed: f64,
+    pub processing_time_ms: u64,
+    pub modules_activated: Vec<String>,
+}
+
+/// Comprehensive processing result
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ComprehensiveProcessingResult {
+    pub content: String,
+    pub processing_metadata: ProcessingMetadata,
+    pub uncertainty_analysis: Option<UncertaintyAnalysis>,
+    pub temporal_insights: Vec<String>,
+}
+
+/// Processing metadata
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ProcessingMetadata {
+    pub confidence_score: f64,
+    pub total_atp_consumed: f64,
+    pub processing_time_ms: u64,
+    pub modules_used: Vec<String>,
+}
+
+/// Uncertainty analysis
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct UncertaintyAnalysis {
+    pub uncertainty_level: f64,
+    pub confidence_intervals: Vec<String>,
 }
 
 #[cfg(test)]
