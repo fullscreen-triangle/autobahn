@@ -8,6 +8,7 @@ use crate::error::{AutobahnError, AutobahnResult};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::path::Path;
+use crate::types::{ConfigMap, ConfigValue};
 
 /// Master configuration for the Autobahn system
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -30,6 +31,16 @@ pub struct AutobahnConfig {
     pub logging: LoggingConfig,
     /// Performance configuration
     pub performance: PerformanceConfig,
+    /// Fire consciousness configuration
+    pub fire_consciousness: FireConsciousnessConfig,
+    /// RAG system configuration
+    pub rag_system: RAGSystemConfig,
+    /// Predeterminism engine configuration
+    pub predeterminism: PredeterminismConfig,
+    /// System monitoring configuration
+    pub monitoring: MonitoringConfig,
+    /// ATP management configuration
+    pub atp_management: ATPConfig,
 }
 
 /// System-wide configuration
@@ -288,6 +299,48 @@ pub struct PerformanceThresholds {
     pub min_confidence: f64,
 }
 
+/// Fire consciousness configuration
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct FireConsciousnessConfig {
+    pub evolutionary_time_mya: f64,
+    pub fire_intensity_threshold: f64,
+    pub consciousness_emergence_threshold: f64,
+    pub quantum_coherence_time_ms: f64,
+}
+
+/// RAG system configuration
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct RAGSystemConfig {
+    pub hierarchy_levels: usize,
+    pub membrane_efficiency_alpha: f64,
+    pub membrane_efficiency_beta: f64,
+    pub max_processing_layers: usize,
+}
+
+/// Predeterminism configuration
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PredeterminismConfig {
+    pub thermodynamic_necessity_threshold: f64,
+    pub configuration_space_dimensions: usize,
+    pub heat_death_calculation_precision: f64,
+}
+
+/// Monitoring configuration
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct MonitoringConfig {
+    pub drift_detection_sensitivity: f64,
+    pub health_assessment_interval_ms: u64,
+    pub statistical_significance_threshold: f64,
+}
+
+/// ATP configuration
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ATPConfig {
+    pub initial_atp_pool: f64,
+    pub regeneration_rate: f64,
+    pub quantum_enhancement_factor: f64,
+}
+
 /// Configuration manager
 #[derive(Debug)]
 pub struct ConfigurationManager {
@@ -466,6 +519,33 @@ impl Default for AutobahnConfig {
             benchmarking: BenchmarkConfig::default(),
             logging: LoggingConfig::default(),
             performance: PerformanceConfig::default(),
+            fire_consciousness: FireConsciousnessConfig {
+                evolutionary_time_mya: 0.5,
+                fire_intensity_threshold: 0.5,
+                consciousness_emergence_threshold: 0.6,
+                quantum_coherence_time_ms: 100.0,
+            },
+            rag_system: RAGSystemConfig {
+                hierarchy_levels: 10,
+                membrane_efficiency_alpha: 0.8,
+                membrane_efficiency_beta: -0.2,
+                max_processing_layers: 100,
+            },
+            predeterminism: PredeterminismConfig {
+                thermodynamic_necessity_threshold: 0.7,
+                configuration_space_dimensions: 10,
+                heat_death_calculation_precision: 1e-15,
+            },
+            monitoring: MonitoringConfig {
+                drift_detection_sensitivity: 0.05,
+                health_assessment_interval_ms: 1000,
+                statistical_significance_threshold: 0.05,
+            },
+            atp_management: ATPConfig {
+                initial_atp_pool: 1000.0,
+                regeneration_rate: 10.0,
+                quantum_enhancement_factor: 1.2,
+            },
         }
     }
 }
@@ -669,5 +749,34 @@ impl Default for PerformanceThresholds {
 impl Default for ConfigurationManager {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+impl AutobahnConfig {
+    pub fn from_config_map(config: ConfigMap) -> AutobahnResult<Self> {
+        // Simple implementation - in practice would parse the config map
+        Ok(Self::default())
+    }
+    
+    pub fn to_config_map(&self) -> ConfigMap {
+        // Simple implementation - in practice would serialize to config map
+        HashMap::new()
+    }
+    
+    pub fn validate(&self) -> AutobahnResult<()> {
+        // Validate configuration parameters
+        if self.fire_consciousness.evolutionary_time_mya < 0.0 {
+            return Err(crate::error::AutobahnError::ConfigurationError(
+                "Evolutionary time cannot be negative".to_string()
+            ));
+        }
+        
+        if self.fire_consciousness.consciousness_emergence_threshold > 1.0 {
+            return Err(crate::error::AutobahnError::ConfigurationError(
+                "Consciousness emergence threshold cannot exceed 1.0".to_string()
+            ));
+        }
+        
+        Ok(())
     }
 } 

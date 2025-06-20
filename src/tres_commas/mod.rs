@@ -165,4 +165,23 @@ mod tests {
         assert_eq!(messages.len(), 1);
         assert_eq!(messages[0].content, "Test message");
     }
-} 
+}
+
+pub mod engine;
+
+// Re-export the main components
+pub use engine::{
+    ConsciousComputationalEngine,
+    CategoricalPredeterminismEngine,
+    ConfigurationSpaceExplorer,
+    HeatDeathTrajectoryCalculator,
+    CategoricalCompletionTracker,
+    ConsciousInput,
+    ConsciousOutput,
+    PredeterminismAnalysis,
+    ConfigurationSpacePosition,
+    TrajectoryAnalysis,
+    CompletionAnalysis,
+    Context,
+    ContextualizedInput,
+}; 

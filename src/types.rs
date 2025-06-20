@@ -691,6 +691,77 @@ pub enum EntropyControlMethod {
     Hybrid(Vec<EntropyControlMethod>),
 }
 
+/// Common vector type for numerical data
+pub type Vector = Vec<f64>;
+
+/// Common matrix type for 2D data
+pub type Matrix = Vec<Vec<f64>>;
+
+/// Configuration parameters
+pub type ConfigMap = HashMap<String, ConfigValue>;
+
+/// Configuration value types
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum ConfigValue {
+    String(String),
+    Integer(i64),
+    Float(f64),
+    Boolean(bool),
+    Array(Vec<ConfigValue>),
+    Object(HashMap<String, ConfigValue>),
+}
+
+/// Timestamp type
+pub type Timestamp = chrono::DateTime<chrono::Utc>;
+
+/// Probability type (0.0 to 1.0)
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
+pub struct Probability(f64);
+
+impl Probability {
+    pub fn new(value: f64) -> Result<Self, &'static str> {
+        if value >= 0.0 && value <= 1.0 {
+            Ok(Probability(value))
+        } else {
+            Err("Probability must be between 0.0 and 1.0")
+        }
+    }
+    
+    pub fn value(&self) -> f64 {
+        self.0
+    }
+}
+
+/// Efficiency metric (0.0 to 1.0)
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
+pub struct Efficiency(f64);
+
+impl Efficiency {
+    pub fn new(value: f64) -> Result<Self, &'static str> {
+        if value >= 0.0 && value <= 1.0 {
+            Ok(Efficiency(value))
+        } else {
+            Err("Efficiency must be between 0.0 and 1.0")
+        }
+    }
+    
+    pub fn value(&self) -> f64 {
+        self.0
+    }
+}
+
+/// Energy level type
+pub type EnergyLevel = f64;
+
+/// Frequency type (Hz)
+pub type Frequency = f64;
+
+/// Amplitude type
+pub type Amplitude = f64;
+
+/// Phase type (radians)
+pub type Phase = f64;
+
 #[cfg(test)]
 mod tests {
     use super::*;

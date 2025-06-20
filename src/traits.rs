@@ -6,6 +6,7 @@
 use crate::types::*;
 use crate::error::{AutobahnError, AutobahnResult};
 use async_trait::async_trait;
+use serde::{Deserialize, Serialize};
 
 /// Primary interface for metacognitive orchestration
 ///
@@ -433,6 +434,99 @@ impl Default for QualityRequirements {
             max_uncertainty: 0.3,
             robustness_required: true,
             adversarial_testing: false,
+        }
+    }
+}
+
+/// Trait for consciousness processing components
+#[async_trait]
+pub trait ConsciousnessProcessor {
+    type Input;
+    type Output;
+    
+    async fn process_consciousness(&mut self, input: Self::Input) -> AutobahnResult<Self::Output>;
+    fn get_consciousness_level(&self) -> f64;
+    fn set_consciousness_threshold(&mut self, threshold: f64);
+}
+
+/// Trait for oscillatory processing
+#[async_trait]
+pub trait OscillatoryProcessor {
+    type Data;
+    
+    async fn process_oscillation(&mut self, data: Self::Data, frequency: f64, phase: f64) -> AutobahnResult<Self::Data>;
+    fn get_oscillation_profile(&self) -> OscillationProfile;
+    fn set_oscillation_parameters(&mut self, frequency: f64, amplitude: f64, phase: f64);
+}
+
+/// Trait for quantum processing
+#[async_trait]
+pub trait QuantumProcessor {
+    type QuantumState;
+    
+    async fn process_quantum_state(&mut self, state: Self::QuantumState) -> AutobahnResult<Self::QuantumState>;
+    fn get_coherence_time(&self) -> f64;
+    fn calculate_tunneling_probability(&self, barrier_height: f64, barrier_width: f64) -> f64;
+}
+
+/// Trait for biological processing
+#[async_trait]
+pub trait BiologicalProcessor {
+    type BiologicalData;
+    
+    async fn process_biological_data(&mut self, data: Self::BiologicalData) -> AutobahnResult<Self::BiologicalData>;
+    fn get_metabolic_rate(&self) -> f64;
+    fn consume_atp(&mut self, amount: f64) -> AutobahnResult<()>;
+}
+
+/// Trait for hierarchical processing
+#[async_trait]
+pub trait HierarchicalProcessor {
+    type HierarchyData;
+    
+    async fn process_hierarchy_level(&mut self, level: usize, data: Self::HierarchyData) -> AutobahnResult<Self::HierarchyData>;
+    fn get_active_levels(&self) -> Vec<usize>;
+    fn set_hierarchy_depth(&mut self, depth: usize);
+}
+
+/// Trait for statistical validation
+pub trait StatisticalValidator {
+    fn validate_distribution(&self, data: &[f64]) -> AutobahnResult<bool>;
+    fn calculate_confidence_interval(&self, data: &[f64], confidence_level: f64) -> AutobahnResult<(f64, f64)>;
+    fn detect_anomalies(&self, data: &[f64]) -> AutobahnResult<Vec<usize>>;
+}
+
+/// Trait for system monitoring
+#[async_trait]
+pub trait SystemMonitor {
+    async fn monitor_system_health(&self) -> AutobahnResult<f64>;
+    async fn detect_drift(&self, data: &[f64]) -> AutobahnResult<bool>;
+    async fn validate_invariants(&self, data: &[f64]) -> AutobahnResult<bool>;
+}
+
+/// Trait for configurable components
+pub trait Configurable {
+    type Config;
+    
+    fn configure(&mut self, config: Self::Config) -> AutobahnResult<()>;
+    fn get_configuration(&self) -> Self::Config;
+    fn validate_configuration(config: &Self::Config) -> AutobahnResult<()>;
+}
+
+/// Basic oscillation profile
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct OscillationProfile {
+    pub frequency: f64,
+    pub amplitude: f64,
+    pub phase: f64,
+}
+
+impl Default for OscillationProfile {
+    fn default() -> Self {
+        Self {
+            frequency: 1.0,
+            amplitude: 1.0,
+            phase: 0.0,
         }
     }
 }

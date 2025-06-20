@@ -20,7 +20,7 @@ use crate::atp::{MetabolicMode, OscillatoryATPManager};
 pub use fire_engine::{
     FireConsciousnessEngine, FireConsciousnessResponse, FireRecognitionResponse,
     AgencyDetection, IonType, BiologicalMaxwellDemon, BMDSpecialization,
-    FireEnvironment, QuantumCoherenceField, UnderwaterFireplaceTest
+    FireEnvironment, QuantumCoherenceField, UnderwaterFireplaceTest, ConsciousnessMetrics
 };
 use nalgebra::{DVector, DMatrix};
 use serde::{Deserialize, Serialize};
@@ -34,22 +34,12 @@ use tokio::sync::RwLock;
 pub struct ConsciousnessEmergenceEngine {
     /// Fire-evolved consciousness engine (primary substrate)
     fire_consciousness: FireConsciousnessEngine,
-    /// Integrated Information Theory processor
-    iit_processor: IntegratedInformationProcessor,
-    /// Global workspace for conscious access
-    global_workspace: QuantumGlobalWorkspace,
-    /// Self-awareness monitoring system
-    self_awareness_monitor: SelfAwarenessMonitor,
-    /// Metacognitive reflection engine
-    metacognitive_engine: MetacognitiveEngine,
-    /// Attention and focus management
-    attention_manager: QuantumAttentionManager,
+    /// ATP manager for energy consumption
+    atp_manager: OscillatoryATPManager,
     /// Consciousness level tracker
     consciousness_tracker: ConsciousnessLevelTracker,
-    /// Qualia generation system
-    qualia_generator: QualiaGenerator,
-    /// Subjective experience synthesizer
-    experience_synthesizer: SubjectiveExperienceSynthesizer,
+    /// Consciousness level threshold for emergence
+    emergence_threshold: f64,
 }
 
 /// Integrated Information Theory with quantum enhancement
@@ -460,16 +450,14 @@ impl ConsciousnessEmergenceEngine {
     
     /// Create consciousness engine with specific evolutionary timeline
     pub fn new_with_evolutionary_time(evolutionary_time_mya: f64) -> AutobahnResult<Self> {
+        let fire_consciousness = FireConsciousnessEngine::new(evolutionary_time_mya)?;
+        let atp_manager = OscillatoryATPManager::new()?;
+        
         Ok(Self {
-            fire_consciousness: FireConsciousnessEngine::new(evolutionary_time_mya)?,
-            iit_processor: IntegratedInformationProcessor::new()?,
-            global_workspace: QuantumGlobalWorkspace::new()?,
-            self_awareness_monitor: SelfAwarenessMonitor::new()?,
-            metacognitive_engine: MetacognitiveEngine::new()?,
-            attention_manager: QuantumAttentionManager::new()?,
+            fire_consciousness,
+            atp_manager,
             consciousness_tracker: ConsciousnessLevelTracker::new(),
-            qualia_generator: QualiaGenerator::new()?,
-            experience_synthesizer: SubjectiveExperienceSynthesizer::new()?,
+            emergence_threshold: 0.6,
         })
     }
     
@@ -854,3 +842,34 @@ impl CausalStructureAnalyzer {
 }
 
 // ... many more placeholder implementations would follow 
+
+pub async fn process_consciousness_emergence(&mut self, input: &[f64]) -> AutobahnResult<ConsciousnessEmergenceResponse> {
+    // Process through fire consciousness
+    let fire_response = self.fire_consciousness.process_input(input).await?;
+    
+    // Check emergence threshold
+    let emergence_detected = fire_response.consciousness_level > self.emergence_threshold;
+    
+    // Calculate ATP cost for consciousness
+    let consciousness_atp_cost = fire_response.consciousness_level * 10.0;
+    self.atp_manager.consume_atp(consciousness_atp_cost)?;
+    
+    Ok(ConsciousnessEmergenceResponse {
+        fire_consciousness_response: fire_response,
+        emergence_detected,
+        emergence_strength: if emergence_detected { 
+            (self.fire_consciousness.consciousness_level - self.emergence_threshold) / (1.0 - self.emergence_threshold)
+        } else { 0.0 },
+        atp_consumed: consciousness_atp_cost,
+        processing_timestamp: Utc::now(),
+    })
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ConsciousnessEmergenceResponse {
+    pub fire_consciousness_response: FireConsciousnessResponse,
+    pub emergence_detected: bool,
+    pub emergence_strength: f64,
+    pub atp_consumed: f64,
+    pub processing_timestamp: DateTime<Utc>,
+} 

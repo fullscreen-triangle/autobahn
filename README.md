@@ -480,7 +480,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/autobahn.git
+git clone https://github.com/fullscreen-triangle/autobahn.git
 cd autobahn
 
 # Build with full feature set
@@ -560,9 +560,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-- 📧 **Email**: [research@autobahn-project.org](mailto:research@autobahn-project.org)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/yourusername/autobahn/discussions)
-- 🐛 **Issues**: [GitHub Issues](https://github.com/yourusername/autobahn/issues)
+- 📧 **Email**: [kundai.f.sachikonye@gmail.com](mailto:kundai.f.sachikonye@gmail.com)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/fullscreen-triangle/autobahn/discussions)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/fullscreen-triangle/autobahn/issues)
 
 ---
 
