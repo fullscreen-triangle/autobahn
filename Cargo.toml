@@ -79,6 +79,35 @@ num_cpus = "1.0"
 # CLI support
 clap = "2.34"
 
+# Hardware oscillation and system monitoring
+sysinfo = "0.29"
+psutil = "3.2"
+
+# Display capture and image processing
+image = "0.24"
+screenshots = "0.3"
+xcap = "0.0.8"
+
+# Color space conversions and analysis
+colorful = "0.2"
+palette = "0.7"
+
+# Real-time data processing
+crossbeam-channel = "0.5"
+parking_lot = "0.12"
+
+# Hardware interface capabilities
+serialport = "4.0"
+hidapi = "2.0"
+
+# Frequency analysis and signal processing
+rustfft = "6.0"
+spectrum-analyzer = "1.0"
+
+# LED and GPIO control (cross-platform)
+rppal = { version = "0.14", optional = true }
+ftdi = { version = "0.1", optional = true }
+
 [dev-dependencies]
 # Testing frameworks
 proptest = "1.0"
@@ -90,11 +119,15 @@ bencher = "0.1"
 
 [features]
 default = ["full"]
-full = ["v8-pipeline", "tres-commas", "champagne-phase", "adversarial"]
+full = ["v8-pipeline", "tres-commas", "champagne-phase", "adversarial", "hardware-sync", "optical-processing", "environmental-photosynthesis"]
 v8-pipeline = []
 tres-commas = []
 champagne-phase = []
 adversarial = []
+hardware-sync = []
+optical-processing = []
+environmental-photosynthesis = []
+gpio-control = ["rppal", "ftdi"]
 
 # Development features
 debug-mode = []
@@ -114,4 +147,8 @@ path = "examples/probabilistic_analysis.rs"
 
 [[example]]
 name = "bioinformatics_integration"
-path = "examples/bioinformatics_integration.rs" 
+path = "examples/bioinformatics_integration.rs"
+
+[[example]]
+name = "comprehensive_hardware_optical_demo"
+path = "examples/comprehensive_hardware_optical_demo.rs" 

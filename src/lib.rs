@@ -43,6 +43,14 @@ pub mod temporal_processor;
 pub mod probabilistic_engine;
 pub mod oscillatory_rag;
 
+// New hardware and optical systems
+#[cfg(feature = "hardware-sync")]
+pub mod hardware;
+#[cfg(feature = "optical-processing")]
+pub mod optical;
+#[cfg(feature = "environmental-photosynthesis")]
+pub mod photosynthesis;
+
 // Development and research
 pub mod research_dev;
 pub mod plugins;
@@ -83,6 +91,32 @@ pub use hierarchy::{HierarchyLevel, NestedHierarchyProcessor};
 pub use monitor::{SystemMonitor, StatisticalDriftDetector};
 pub use testing::{StatisticalTestingFramework, TestType};
 pub use configuration::ConfigurationManager;
+
+// Hardware and optical system re-exports
+#[cfg(feature = "hardware-sync")]
+pub use hardware::{
+    HardwareOscillationCapture, 
+    CoherenceSync, 
+    FrequencyDomain, 
+    OscillationData, 
+    SynchronizationState
+};
+#[cfg(feature = "optical-processing")]
+pub use optical::{
+    DigitalFireProcessor, 
+    OpticalCoherence, 
+    LightSource, 
+    LightData, 
+    DigitalFireCircle
+};
+#[cfg(feature = "environmental-photosynthesis")]
+pub use photosynthesis::{
+    EnvironmentalPhotosynthesis, 
+    ColorMetabolism, 
+    VisualATPManager, 
+    AgencyIllusionEngine, 
+    ChaosSubstrateGenerator
+};
 
 use std::sync::Arc;
 use tokio::sync::RwLock;

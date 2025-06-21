@@ -185,6 +185,57 @@ pub enum AutobahnError {
     // Not implemented
     #[error("Feature not implemented: {0}")]
     NotImplemented(String),
+    
+    // Hardware Oscillation Synchronization Errors
+    #[cfg(feature = "hardware-sync")]
+    #[error("Hardware oscillation capture failed: {message}")]
+    HardwareError(String),
+    
+    #[cfg(feature = "hardware-sync")]
+    #[error("Frequency domain synchronization failed: {domain} at {frequency}Hz")]
+    FrequencyDomainError { domain: String, frequency: f64 },
+    
+    #[cfg(feature = "hardware-sync")]
+    #[error("Phase lock failure: {domain} phase error {error_radians:.3} rad")]
+    PhaseLockError { domain: String, error_radians: f64 },
+    
+    #[cfg(feature = "hardware-sync")]
+    #[error("Hardware coherence loss: {domain} coherence {coherence:.3} below threshold {threshold:.3}")]
+    HardwareCoherenceError { domain: String, coherence: f64, threshold: f64 },
+    
+    // Optical Processing Errors
+    #[cfg(feature = "optical-processing")]
+    #[error("Optical processing failed: {message}")]
+    OpticalError(String),
+    
+    #[cfg(feature = "optical-processing")]
+    #[error("Light source failure: {source_id} wavelength {wavelength}nm")]
+    LightSourceError { source_id: String, wavelength: u16 },
+    
+    #[cfg(feature = "optical-processing")]
+    #[error("Fire circle disruption: coherence {coherence:.3} insufficient for pattern")]
+    FireCircleError { coherence: f64 },
+    
+    #[cfg(feature = "optical-processing")]
+    #[error("650nm consciousness coupling failed: strength {strength:.3} below minimum")]
+    ConsciousnessCouplingError { strength: f64 },
+    
+    // Environmental Photosynthesis Errors
+    #[cfg(feature = "environmental-photosynthesis")]
+    #[error("Photosynthesis processing failed: {message}")]
+    PhotosynthesisError(String),
+    
+    #[cfg(feature = "environmental-photosynthesis")]
+    #[error("Visual ATP conversion failed: wavelength {wavelength}nm efficiency {efficiency:.3}")]
+    VisualATPError { wavelength: u16, efficiency: f64 },
+    
+    #[cfg(feature = "environmental-photosynthesis")]
+    #[error("Chaos substrate generation failed: complexity {complexity:.3} insufficient")]
+    ChaosSubstrateError { complexity: f64 },
+    
+    #[cfg(feature = "environmental-photosynthesis")]
+    #[error("Agency illusion failure: chaos level {chaos_level:.3} below threshold {threshold:.3}")]
+    AgencyIllusionError { chaos_level: f64, threshold: f64 },
 }
 
 /// Enhanced error severity classification
