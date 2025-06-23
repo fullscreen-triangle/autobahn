@@ -132,7 +132,6 @@ pub struct TurbulanceLexer {
     position: usize,
     line: usize,
     column: usize,
-    indent_stack: Vec<usize>,
 }
 
 impl TurbulanceLexer {
@@ -143,7 +142,6 @@ impl TurbulanceLexer {
             position: 0,
             line: 1,
             column: 1,
-            indent_stack: vec![0],
         }
     }
 
@@ -153,21 +151,10 @@ impl TurbulanceLexer {
         self.position = 0;
         self.line = 1;
         self.column = 1;
-        self.indent_stack = vec![0];
 
         let mut tokens = Vec::new();
         
         while !self.is_at_end() {
-            // Handle indentation at the beginning of lines
-            if self.column == 1 && !self.is_at_end() {
-                let indent_tokens = self.handle_indentation()?;
-                tokens.extend(indent_tokens);
-            }
-
-            if self.is_at_end() {
-                break;
-            }
-
             let token_pos = TokenPosition {
                 line: self.line,
                 column: self.column,
@@ -176,26 +163,10 @@ impl TurbulanceLexer {
 
             match self.scan_token()? {
                 Some(token) => {
-                    tokens.push(TokenWithPosition {
-                        token,
-                        position: token_pos,
-                    });
+                    tokens.push(TokenWithPosition { token, position: token_pos });
                 }
                 None => {} // Skip whitespace and comments
             }
-        }
-
-        // Handle final dedents
-        while self.indent_stack.len() > 1 {
-            self.indent_stack.pop();
-            tokens.push(TokenWithPosition {
-                token: Token::Dedent,
-                position: TokenPosition {
-                    line: self.line,
-                    column: self.column,
-                    offset: self.position,
-                },
-            });
         }
 
         tokens.push(TokenWithPosition {
@@ -206,64 +177,6 @@ impl TurbulanceLexer {
                 offset: self.position,
             },
         });
-
-        Ok(tokens)
-    }
-
-    /// Handle indentation at the beginning of lines
-    fn handle_indentation(&mut self) -> Result<Vec<TokenWithPosition>, String> {
-        let mut tokens = Vec::new();
-        let mut indent_level = 0;
-
-        // Skip empty lines and count indentation
-        while !self.is_at_end() && (self.current_char() == ' ' || self.current_char() == '\t') {
-            if self.current_char() == ' ' {
-                indent_level += 1;
-            } else {
-                indent_level += 4; // Tab = 4 spaces
-            }
-            self.advance();
-        }
-
-        // If we hit a newline or comment, skip this line
-        if self.is_at_end() || self.current_char() == '\n' || self.current_char() == '#' {
-            return Ok(tokens);
-        }
-
-        let current_indent = *self.indent_stack.last().unwrap();
-
-        if indent_level > current_indent {
-            // Increased indentation
-            self.indent_stack.push(indent_level);
-            tokens.push(TokenWithPosition {
-                token: Token::Indent,
-                position: TokenPosition {
-                    line: self.line,
-                    column: self.column - indent_level,
-                    offset: self.position - indent_level,
-                },
-            });
-        } else if indent_level < current_indent {
-            // Decreased indentation
-            while let Some(&stack_indent) = self.indent_stack.last() {
-                if stack_indent <= indent_level {
-                    break;
-                }
-                self.indent_stack.pop();
-                tokens.push(TokenWithPosition {
-                    token: Token::Dedent,
-                    position: TokenPosition {
-                        line: self.line,
-                        column: self.column - indent_level,
-                        offset: self.position - indent_level,
-                    },
-                });
-            }
-
-            if self.indent_stack.last() != Some(&indent_level) {
-                return Err(format!("Indentation error at line {}", self.line));
-            }
-        }
 
         Ok(tokens)
     }
