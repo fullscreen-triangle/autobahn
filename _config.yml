@@ -1,0 +1,86 @@
+title: "Turbulance: Scientific Method Encoding for Biological Computing"
+description: "A comprehensive programming language and compiler system for biological computing with integrated scientific method encoding"
+url: "https://fullscreen-triangle.github.io/autobahn"
+baseurl: ""
+
+# GitHub Pages specific settings
+github:
+  repository_name: "autobahn"
+  owner_name: "fullscreen-triangle"
+
+# Theme
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Navigation
+navigation:
+  - title: "Home"
+    url: "/"
+  - title: "Language Reference"
+    url: "/language-reference"
+  - title: "Compiler Architecture"
+    url: "/compiler-architecture"
+  - title: "Biological Integration"
+    url: "/biological-integration"
+  - title: "Examples"
+    url: "/examples"
+  - title: "API Reference"
+    url: "/api-reference"
+
+# SEO and metadata
+author: "Autobahn Development Team"
+twitter:
+  username: "autobahn_bio"
+  card: "summary_large_image"
+
+social:
+  name: "Autobahn Biological Computing"
+  links:
+    - "https://github.com/fullscreen-triangle/autobahn"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: 'codehilite'
+
+# Collections for documentation
+collections:
+  docs:
+    output: true
+    permalink: /:collection/:name/
+
+# Default values
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+      type: "docs"
+    values:
+      layout: "doc"
+
+# Exclude from processing
+exclude:
+  - target/
+  - Cargo.toml
+  - Cargo.lock
+  - .gitignore
+  - README.md
+  - LICENSE
+  - scripts/
+  - benches/ 
