@@ -2,12 +2,6 @@
 //! This module implements Environment-Assisted Quantum Transport (ENAQT) and demonstrates
 //! how biological membranes function as room-temperature quantum computers.
 
-pub mod membrane;
-pub mod enaqt;
-pub mod computation;
-pub mod radicals;
-pub mod coherence;
-
 use crate::error::{AutobahnError, AutobahnResult};
 use crate::oscillatory::{OscillationProfile, OscillationPhase};
 use nalgebra::{Complex, DVector, DMatrix};

@@ -151,4 +151,8 @@ path = "examples/bioinformatics_integration.rs"
 
 [[example]]
 name = "comprehensive_hardware_optical_demo"
-path = "examples/comprehensive_hardware_optical_demo.rs" 
+path = "examples/comprehensive_hardware_optical_demo.rs"
+
+[[example]]
+name = "composable_quantum_processors"
+path = "examples/composable_quantum_processors.rs" 

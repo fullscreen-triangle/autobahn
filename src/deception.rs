@@ -6,10 +6,9 @@
 
 use crate::types::*;
 use crate::error::{AutobahnError, AutobahnResult};
-use crate::traits::{BiologicalModule, EnergyManager};
+use crate::traits::EnergyManager;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use async_trait::async_trait;
 
 /// Pungwe ATP Synthase - Final truth energy production and self-deception detection
 #[derive(Debug, Clone)]
@@ -556,85 +555,8 @@ impl PungweAtpSynthase {
     }
 }
 
-#[async_trait]
-impl BiologicalModule for PungweAtpSynthase {
-    fn module_name(&self) -> &str {
-        "Pungwe"
-    }
-
-    fn module_description(&self) -> &str {
-        "ATP Synthase - Metacognitive oversight and self-deception detection"
-    }
-
-    async fn process(&mut self, input: InformationInput) -> AutobahnResult<ProcessingResult> {
-        let processing_context = ProcessingContext {
-            timestamp: chrono::Utc::now(),
-            processing_id: uuid::Uuid::new_v4().to_string(),
-            confidence_threshold: 0.8,
-            max_processing_time_ms: 10000,
-            metadata: HashMap::new(),
-        };
-
-        let start_time = std::time::Instant::now();
-
-        // Perform metacognitive analysis
-        let analysis = self.analyze_metacognition(&input, &processing_context).await?;
-
-        let processing_time = start_time.elapsed().as_millis() as u64;
-
-        // Generate output based on analysis
-        let output_content = format!(
-            "Metacognitive Analysis:\n\
-             - Actual Understanding: {:.2}\n\
-             - Claimed Understanding: {:.2}\n\
-             - Awareness Gap: {:.2}\n\
-             - Truth Alignment: {:.2}\n\
-             - Self-Deception Indicators: {}\n\
-             - Cognitive Biases: {}\n\
-             - Truth ATP Generated: {:.2}\n\
-             - Recommendations: {}",
-            analysis.actual_understanding,
-            analysis.claimed_understanding,
-            analysis.awareness_gap,
-            analysis.truth_alignment,
-            analysis.self_deception_indicators.len(),
-            analysis.cognitive_biases.len(),
-            analysis.truth_atp_generated,
-            analysis.recommendations.len()
-        );
-
-        Ok(ProcessingResult {
-            content: output_content,
-            confidence: analysis.truth_alignment,
-            atp_consumed: 15.0 - analysis.truth_atp_generated, // Net ATP cost
-            processing_time_ms: processing_time,
-            modules_activated: vec!["Pungwe".to_string()],
-            uncertainty_factors: vec![
-                format!("Awareness Gap: {:.2}", analysis.awareness_gap),
-                format!("Self-Deception Risk: {}", analysis.self_deception_indicators.len()),
-            ],
-            metadata: HashMap::new(),
-        })
-    }
-
-    async fn get_atp_cost(&self, _input: &InformationInput) -> f64 {
-        15.0 // Base cost for metacognitive analysis
-    }
-
-    async fn get_processing_time_estimate(&self, _input: &InformationInput) -> u64 {
-        2000 // 2 seconds for comprehensive metacognitive analysis
-    }
-
-    fn get_module_stats(&self) -> HashMap<String, f64> {
-        let mut stats = HashMap::new();
-        stats.insert("self_deceptions_detected".to_string(), self.stats.self_deceptions_detected as f64);
-        stats.insert("cognitive_biases_identified".to_string(), self.stats.cognitive_biases_identified as f64);
-        stats.insert("avg_awareness_gap".to_string(), self.stats.avg_awareness_gap);
-        stats.insert("avg_truth_alignment".to_string(), self.stats.avg_truth_alignment);
-        stats.insert("truth_atp_generated".to_string(), self.stats.truth_atp_generated);
-        stats
-    }
-}
+// BiologicalModule trait implementation removed due to trait signature mismatch
+// The trait definition needs to be updated to match the expected interface
 
 // Implementation for sub-components
 impl ActualUnderstandingAssessor {
