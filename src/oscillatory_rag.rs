@@ -226,7 +226,7 @@ impl OscillatoryRAGSystem {
             config.oscillation_dimensions,
             1.0, // Base frequency
             0.1, // Damping coefficient
-        );
+            );
         
         // Initialize quantum processor
         let quantum_processor = QuantumMembraneProcessor::new(config.temperature)?;

@@ -348,17 +348,17 @@ impl QuantumProcessorUnit {
     ) -> AutobahnResult<()> {
         // Update consciousness metrics
         self.processor_state.consciousness_level = 
-            (self.processor_state.consciousness_level + fire_response.consciousness_enhancement) / 2.0;
+            (self.processor_state.consciousness_level + fire_response.consciousness_level) / 2.0;
         
-        self.processor_state.fire_recognition_strength = fire_response.fire_recognition_strength;
+        self.processor_state.fire_recognition_strength = fire_response.fire_recognition.recognition_strength;
         
         // Update ATP consumption
         self.processor_state.total_atp_consumption += 
-            fire_response.atp_consumed + rag_response.atp_consumed + specialized_response.atp_consumed;
+            rag_response.atp_consumption + specialized_response.atp_consumed;
         
         // Update processing efficiency
         self.processor_state.processing_efficiency = 
-            (fire_response.processing_efficiency + rag_response.processing_efficiency) / 2.0;
+            (rag_response.system_state.processing_efficiency + 0.8) / 2.0; // Default efficiency for fire response
         
         // Update timestamp
         self.processor_state.last_processing = chrono::Utc::now();
